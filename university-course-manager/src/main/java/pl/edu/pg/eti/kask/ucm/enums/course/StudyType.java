@@ -1,4 +1,4 @@
-package pl.edu.pg.eti.kask.ucm.enums.student;
+package pl.edu.pg.eti.kask.ucm.enums.course;
 
 public enum StudyType {
     BACHELOR,

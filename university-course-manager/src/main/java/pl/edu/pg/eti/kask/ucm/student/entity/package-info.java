@@ -1,1 +1,0 @@
-package pl.edu.pg.eti.kask.ucm.student.entity;
