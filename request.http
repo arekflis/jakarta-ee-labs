@@ -1,0 +1,79 @@
+# Get all tutors.
+
+GET http://localhost:9080/simple-ucm/api/tutors
+
+###
+
+# Get single tutor.
+
+GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+
+###
+
+# Get single tutor avatar.
+
+GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+
+###
+
+# Create new tutor.
+
+PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "Sigrid",
+  "dateOfBirth": "2005-05-15",
+  "email": "Sigrid@sigrid.com",
+  "tutorRank": "PROFESSOR"
+}
+
+###
+
+# Create tutor avatar.
+
+PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="ju2.jpg'
+
+< university-course-manager/src/main/resources/avatar/ju2.jpg
+--boundary--
+
+###
+
+# Update tutor.
+
+PATCH http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "email": "SirSigrid@Sigrid.com",
+  "tutorRank": "LECTURER"
+}
+
+###
+
+# Update tutor avatar.
+
+PATCH http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="klopp-juergen.jpg'
+
+< university-course-manager/src/main/resources/avatar/klopp-juergen.jpg
+--boundary--
+
+###
+
+# Delete tutor.
+
+DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+
+###
+
+# Delete tutor avatar.
+
+DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
