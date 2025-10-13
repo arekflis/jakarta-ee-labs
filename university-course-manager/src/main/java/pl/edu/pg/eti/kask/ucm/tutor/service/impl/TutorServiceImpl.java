@@ -1,9 +1,12 @@
 package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
+import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.NotFoundException;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,5 +47,27 @@ public class TutorServiceImpl implements TutorService {
     @Override
     public void update(Tutor entity){
         this.repository.update(entity);
+    }
+
+    @Override
+    public byte[] getAvatar(UUID id){
+        return this.repository.find(id)
+                .map(Tutor::getAvatar)
+                .orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public void putAvatar(UUID id, InputStream is) {
+        this.repository.find(id).ifPresent(
+                tutor -> {
+                    try {
+                        tutor.setAvatar(is.readAllBytes());
+                        this.repository.update(tutor);
+                    }
+                    catch (IOException ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                }
+        );
     }
 }

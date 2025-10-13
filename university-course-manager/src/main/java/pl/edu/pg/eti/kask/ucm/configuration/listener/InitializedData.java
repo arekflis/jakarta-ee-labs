@@ -10,7 +10,7 @@ import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Locale;
+import java.io.InputStream;
 import java.util.UUID;
 
 @WebListener
@@ -36,6 +36,7 @@ public class InitializedData implements ServletContextListener {
                 .email("johndoe@gmail.com")
                 .dateOfBirth(LocalDate.of(1990, 10, 10))
                 .tutorRank(TutorRank.LECTURER)
+                .avatar(getResourceAsByteArray("/avatar/calvian.png"))
                 .build();
 
         now = LocalDateTime.now();
@@ -78,5 +79,17 @@ public class InitializedData implements ServletContextListener {
         tutorService.create(tutor2);
         tutorService.create(tutor3);
         tutorService.create(tutor4);
+    }
+
+    @SneakyThrows
+    private byte[] getResourceAsByteArray(String name) {
+        try (InputStream is = this.getClass().getResourceAsStream(name)) {
+            if (is != null) {
+                return is.readAllBytes();
+            }
+            else {
+                throw new IllegalStateException("Unable to get resource %s".formatted(name));
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.tutor.repository.impl;
 
+import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.NotFoundException;
 import pl.edu.pg.eti.kask.ucm.datastore.component.DataStore;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
@@ -49,4 +50,6 @@ public class TutorInMemoryRepository implements TutorRepository {
                 .filter(tutor -> tutor.getEmail().equals(email))
                 .findFirst();
     }
+
+
 }

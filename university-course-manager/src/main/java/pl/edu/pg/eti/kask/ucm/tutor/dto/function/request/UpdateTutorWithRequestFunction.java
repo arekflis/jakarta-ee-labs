@@ -21,6 +21,7 @@ public class UpdateTutorWithRequestFunction implements BiFunction<Tutor, PatchTu
                 .email(request.getEmail())
                 .tutorRank(request.getTutorRank())
                 .dateOfBirth(entity.getDateOfBirth())
+                .avatar(entity.getAvatar())
                 .build();
     }
 }

@@ -10,6 +10,7 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorsResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.service.impl.TutorServiceImpl;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 public class TutorControllerImpl implements TutorController {
@@ -65,6 +66,21 @@ public class TutorControllerImpl implements TutorController {
     public void patchTutor(UUID id, PatchTutorRequest request) {
         this.service.find(id).ifPresentOrElse(
                 tutor -> this.service.update(this.factory.updateTutor().apply(tutor, request)),
+                () -> {
+                    throw new NotFoundException();
+                }
+        );
+    }
+
+    @Override
+    public byte[] getAvatar(UUID id) {
+        return this.service.getAvatar(id);
+    }
+
+    @Override
+    public void putAvatar(UUID id, InputStream is) {
+        this.service.find(id).ifPresentOrElse(
+                tutor -> service.putAvatar(id, is),
                 () -> {
                     throw new NotFoundException();
                 }

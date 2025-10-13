@@ -5,6 +5,7 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorsResponse;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 public interface TutorController {
@@ -18,4 +19,6 @@ public interface TutorController {
 
     void deleteTutor(UUID id);
 
+    byte[] getAvatar(UUID id);
+    void putAvatar(UUID id, InputStream is);
 }

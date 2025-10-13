@@ -10,6 +10,12 @@ GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65
 
 ###
 
+# Get single tutor portrait.
+
+GET http://localhost:9080/simple-ucm/api/tutor/e05b578e-08f5-40fd-aefc-c1615bd38b6a/avatar
+
+###
+
 # Create new tutor.
 
 PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
@@ -21,6 +27,19 @@ Content-Type: application/json
   "email": "Sigrid@sigrid.com",
   "tutorRank": "PROFESSOR"
 }
+
+###
+
+# Create tutor portrait.
+
+PUT http://localhost:9080/simple-ucm/api/tutor/65eea301-d3ed-4a9a-bc2c-0a82f4e61441/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="calvian.png'
+
+< university-course-manager/src/main/resources/avatar/calvian.png
+--boundary--
 
 ###
 

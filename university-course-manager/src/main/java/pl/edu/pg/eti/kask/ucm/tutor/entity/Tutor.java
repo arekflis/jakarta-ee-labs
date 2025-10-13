@@ -39,4 +39,8 @@ public class Tutor implements Serializable {
 
     @ToString.Exclude
     private List<Course> courses;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private byte[] avatar;
 }

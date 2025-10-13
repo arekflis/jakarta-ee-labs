@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.ucm.controller.servlet;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 @WebServlet(urlPatterns = {
         ApiServlet.Paths.API + "/*"
 })
+@MultipartConfig(maxFileSize = 200 * 1024)
 public class ApiServlet extends HttpServlet {
 
     private TutorControllerImpl tutorController;
@@ -33,6 +35,8 @@ public class ApiServlet extends HttpServlet {
         public static final Pattern TUTORS = Pattern.compile("/tutors/?");
 
         public static final Pattern TUTOR = Pattern.compile("/tutor/(%s)".formatted(UUID.pattern()));
+
+        public static final Pattern TUTOR_AVATAR = Pattern.compile("/tutor/(%s)/avatar".formatted(UUID.pattern()));
     }
 
     private final Jsonb jsonb = JsonbBuilder.create();
@@ -68,6 +72,13 @@ public class ApiServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.getWriter().write(jsonb.toJson(this.tutorController.getTutors()));
                 return;
+            } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
+                response.setContentType("image/png");
+                UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
+                byte[] avatar = tutorController.getAvatar(uuid);
+                response.setContentLength(avatar.length);
+                response.getOutputStream().write(avatar);
+                return;
             }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -81,6 +92,10 @@ public class ApiServlet extends HttpServlet {
                 UUID uuid = extractUUID(Patterns.TUTOR, path);
                 this.tutorController.putTutor(uuid, jsonb.fromJson(request.getReader(), PutTutorRequest.class));
                 response.addHeader("Location", createUrl(request, Paths.API, "tutors", uuid.toString()));
+                return;
+            } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
+                UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
+                tutorController.putAvatar(uuid, request.getPart("avatar").getInputStream());
                 return;
             }
         }
