@@ -9,6 +9,7 @@ import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log
@@ -34,7 +35,7 @@ public class DataStore {
 
     public synchronized void createTutor(Tutor entity) throws IllegalArgumentException {
         if (tutors.stream().anyMatch(tutor -> tutor.getId().equals(entity.getId()))) {
-            throw new IllegalArgumentException("The user id \"%s\" is not unique".formatted(entity.getId()));
+            throw new IllegalArgumentException("The tutor id \"%s\" is not unique".formatted(entity.getId()));
         }
         tutors.add(cloningUtility.clone(entity));
     }
@@ -44,7 +45,13 @@ public class DataStore {
             tutors.add(cloningUtility.clone(entity));
         }
         else {
-            throw new IllegalArgumentException("The user with id \"%s\" does not exist".formatted(entity.getId()));
+            throw new IllegalArgumentException("The tutor with id \"%s\" does not exist".formatted(entity.getId()));
+        }
+    }
+
+    public synchronized void deleteTutor(UUID id) throws IllegalArgumentException{
+        if (!tutors.removeIf(tutor -> tutor.getId().equals(id))) {
+            throw new IllegalArgumentException(("The tutor with id \"%s\" does not exist".formatted(id)));
         }
     }
 

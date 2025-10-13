@@ -1,25 +1,33 @@
 package pl.edu.pg.eti.kask.ucm.tutor.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
-import pl.edu.pg.eti.kask.ucm.entity.baseEntity.BaseEntity;
 import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@SuperBuilder
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@ToString
+@EqualsAndHashCode
 @Entity
-public class Tutor extends BaseEntity implements Serializable {
+public class Tutor implements Serializable {
+
+    @Id
+    private UUID id;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private String name;
 

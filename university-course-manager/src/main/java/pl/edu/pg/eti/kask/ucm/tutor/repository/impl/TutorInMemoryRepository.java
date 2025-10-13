@@ -34,8 +34,8 @@ public class TutorInMemoryRepository implements TutorRepository {
     }
 
     @Override
-    public void delete(Tutor entity){
-        throw new UnsupportedOperationException("Not implemented");
+    public void delete(UUID id){
+        this.dataStore.deleteTutor(id);
     }
 
     @Override

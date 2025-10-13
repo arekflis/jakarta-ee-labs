@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.ucm.tutor.dto.response;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class GetTutorsResponse {
     public static class Tutor {
         private UUID id;
 
-        private LocalDate createdAt;
+        private LocalDateTime createdAt;
 
         private String name;
     }

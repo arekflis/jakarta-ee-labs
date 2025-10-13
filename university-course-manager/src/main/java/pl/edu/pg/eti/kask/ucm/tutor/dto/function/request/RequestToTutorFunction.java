@@ -4,6 +4,7 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
@@ -11,7 +12,7 @@ public class RequestToTutorFunction implements BiFunction<UUID, PutTutorRequest,
 
     @Override
     public Tutor apply(UUID id, PutTutorRequest request){
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
 
         return Tutor.builder()
                 .id(id)

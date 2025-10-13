@@ -1,7 +1,7 @@
 package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
-import pl.edu.pg.eti.kask.ucm.tutor.repository.impl.TutorInMemoryRepository;
+import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class TutorServiceImpl implements TutorService {
 
-    private final TutorInMemoryRepository repository;
+    private final TutorRepository repository;
 
-    public TutorServiceImpl(TutorInMemoryRepository repository){
+    public TutorServiceImpl(TutorRepository repository){
         this.repository = repository;
     }
 
@@ -32,8 +32,8 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    public void delete(Tutor entity) {
-        this.repository.delete(entity);
+    public void delete(UUID id) {
+        this.repository.delete(id);
     }
 
     @Override

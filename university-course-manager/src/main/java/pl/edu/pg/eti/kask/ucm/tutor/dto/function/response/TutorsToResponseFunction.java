@@ -17,7 +17,8 @@ public class TutorsToResponseFunction implements Function<List<Tutor>, GetTutors
                                 .createdAt(tutor.getCreatedAt())
                                 .name(tutor.getName())
                                 .build())
-                        .toList())
+                        .toList
+                                ())
                 .build();
     }
 }
