@@ -86,4 +86,14 @@ public class TutorControllerImpl implements TutorController {
                 }
         );
     }
+
+    @Override
+    public void deleteAvatar(UUID id) {
+        this.service.find(id).ifPresentOrElse(
+                tutor -> service.deleteAvatar(id),
+                () -> {
+                    throw new NotFoundException();
+                }
+        );
+    }
 }

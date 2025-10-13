@@ -70,4 +70,17 @@ public class TutorServiceImpl implements TutorService {
                 }
         );
     }
+
+    @Override
+    public void deleteAvatar(UUID id) {
+        this.repository.find(id).ifPresentOrElse(
+                tutor -> {
+                        tutor.setAvatar(null);
+                        this.repository.update(tutor);
+                },
+                () -> {
+                    throw new NotFoundException();
+                }
+        );
+    }
 }

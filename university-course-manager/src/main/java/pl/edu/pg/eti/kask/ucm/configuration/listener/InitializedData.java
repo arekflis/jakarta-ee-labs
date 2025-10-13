@@ -36,7 +36,7 @@ public class InitializedData implements ServletContextListener {
                 .email("johndoe@gmail.com")
                 .dateOfBirth(LocalDate.of(1990, 10, 10))
                 .tutorRank(TutorRank.LECTURER)
-                .avatar(getResourceAsByteArray("/avatar/calvian.png"))
+                .avatar(getResourceAsByteArray("/avatar/ju2.jpg"))
                 .build();
 
         now = LocalDateTime.now();
@@ -49,6 +49,7 @@ public class InitializedData implements ServletContextListener {
                 .email("markdoe@gmail.com")
                 .dateOfBirth(LocalDate.of(1991, 10, 20))
                 .tutorRank(TutorRank.ASSISTANT)
+                .avatar(getResourceAsByteArray("/avatar/klopp-juergen.jpg"))
                 .build();
 
         now = LocalDateTime.now();
@@ -61,6 +62,7 @@ public class InitializedData implements ServletContextListener {
                 .email("peter@pg.edu.pl")
                 .dateOfBirth(LocalDate.of(1940, 1, 10))
                 .tutorRank(TutorRank.PROFESSOR)
+                .avatar(getResourceAsByteArray("/avatar/teacher.jpg"))
                 .build();
 
         now = LocalDateTime.now();
@@ -73,6 +75,7 @@ public class InitializedData implements ServletContextListener {
                 .email("george@gmail.com")
                 .dateOfBirth(LocalDate.of(2000, 10, 10))
                 .tutorRank(TutorRank.LECTURER)
+                .avatar(getResourceAsByteArray("/avatar/teacher2.jpg"))
                 .build();
 
         tutorService.create(tutor1);

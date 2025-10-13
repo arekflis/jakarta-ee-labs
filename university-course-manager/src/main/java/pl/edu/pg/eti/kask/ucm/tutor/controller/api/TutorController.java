@@ -21,4 +21,5 @@ public interface TutorController {
 
     byte[] getAvatar(UUID id);
     void putAvatar(UUID id, InputStream is);
+    void deleteAvatar(UUID id);
 }

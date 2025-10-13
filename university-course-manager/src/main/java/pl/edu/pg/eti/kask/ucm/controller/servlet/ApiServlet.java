@@ -75,7 +75,7 @@ public class ApiServlet extends HttpServlet {
             } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
                 response.setContentType("image/png");
                 UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
-                byte[] avatar = tutorController.getAvatar(uuid);
+                byte[] avatar = this.tutorController.getAvatar(uuid);
                 response.setContentLength(avatar.length);
                 response.getOutputStream().write(avatar);
                 return;
@@ -95,7 +95,7 @@ public class ApiServlet extends HttpServlet {
                 return;
             } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
                 UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
-                tutorController.putAvatar(uuid, request.getPart("avatar").getInputStream());
+                this.tutorController.putAvatar(uuid, request.getPart("avatar").getInputStream());
                 return;
             }
         }
@@ -111,6 +111,10 @@ public class ApiServlet extends HttpServlet {
             if (path.matches(Patterns.TUTOR.pattern())) {
                 UUID uuid = extractUUID(Patterns.TUTOR, path);
                 this.tutorController.deleteTutor(uuid);
+                return;
+            } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
+                UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
+                this.tutorController.deleteAvatar(uuid);
                 return;
             }
         }
