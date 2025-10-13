@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
-public class RequestToUserFunction implements BiFunction<UUID, PutTutorRequest, Tutor> {
+public class RequestToTutorFunction implements BiFunction<UUID, PutTutorRequest, Tutor> {
 
     @Override
     public Tutor apply(UUID id, PutTutorRequest request){
