@@ -32,7 +32,7 @@ public class ApiServlet extends HttpServlet {
 
         public static final Pattern TUTORS = Pattern.compile("/tutors/?");
 
-        public static final Pattern TUTOR = Pattern.compile("/tutors/(%s)".formatted(UUID.pattern()));
+        public static final Pattern TUTOR = Pattern.compile("/tutor/(%s)".formatted(UUID.pattern()));
     }
 
     private final Jsonb jsonb = JsonbBuilder.create();

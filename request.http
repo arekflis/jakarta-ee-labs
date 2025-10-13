@@ -1,0 +1,41 @@
+# Get all tutors.
+
+GET http://localhost:9080/simple-ucm/api/tutors
+
+###
+
+# Get single tutor.
+
+GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+
+###
+
+# Create new tutor.
+
+PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "Sigrid",
+  "dateOfBirth": "2005-05-15",
+  "email": "Sigrid@sigrid.com",
+  "tutorRank": "PROFESSOR"
+}
+
+###
+
+# Update tutor.
+
+PATCH http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "email": "SirSigrid@Sigrid.com",
+  "tutorRank": "LECTURER"
+}
+
+###
+
+# Delete tutor.
+
+DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
