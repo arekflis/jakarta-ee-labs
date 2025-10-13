@@ -36,7 +36,7 @@ public class InitializedData implements ServletContextListener {
                 .email("johndoe@gmail.com")
                 .dateOfBirth(LocalDate.of(1990, 10, 10))
                 .tutorRank(TutorRank.LECTURER)
-                .avatar(getResourceAsByteArray("/avatar/ju2.jpg"))
+                .avatar("ju2.jpg")
                 .build();
 
         now = LocalDateTime.now();
@@ -49,7 +49,7 @@ public class InitializedData implements ServletContextListener {
                 .email("markdoe@gmail.com")
                 .dateOfBirth(LocalDate.of(1991, 10, 20))
                 .tutorRank(TutorRank.ASSISTANT)
-                .avatar(getResourceAsByteArray("/avatar/klopp-juergen.jpg"))
+                .avatar("klopp-juergen.jpg")
                 .build();
 
         now = LocalDateTime.now();
@@ -62,7 +62,7 @@ public class InitializedData implements ServletContextListener {
                 .email("peter@pg.edu.pl")
                 .dateOfBirth(LocalDate.of(1940, 1, 10))
                 .tutorRank(TutorRank.PROFESSOR)
-                .avatar(getResourceAsByteArray("/avatar/teacher.jpg"))
+                .avatar("teacher.jpg")
                 .build();
 
         now = LocalDateTime.now();
@@ -75,24 +75,12 @@ public class InitializedData implements ServletContextListener {
                 .email("george@gmail.com")
                 .dateOfBirth(LocalDate.of(2000, 10, 10))
                 .tutorRank(TutorRank.LECTURER)
-                .avatar(getResourceAsByteArray("/avatar/teacher2.jpg"))
+                .avatar("teacher2.jpg")
                 .build();
 
         tutorService.create(tutor1);
         tutorService.create(tutor2);
         tutorService.create(tutor3);
         tutorService.create(tutor4);
-    }
-
-    @SneakyThrows
-    private byte[] getResourceAsByteArray(String name) {
-        try (InputStream is = this.getClass().getResourceAsStream(name)) {
-            if (is != null) {
-                return is.readAllBytes();
-            }
-            else {
-                throw new IllegalStateException("Unable to get resource %s".formatted(name));
-            }
-        }
     }
 }

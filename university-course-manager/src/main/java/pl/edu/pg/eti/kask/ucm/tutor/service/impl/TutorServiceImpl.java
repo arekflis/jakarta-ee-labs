@@ -7,6 +7,10 @@ import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,9 +18,11 @@ import java.util.UUID;
 public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository repository;
+    private final String avatarUploadPath;
 
-    public TutorServiceImpl(TutorRepository repository){
+    public TutorServiceImpl(TutorRepository repository, String avatarUploadPath){
         this.repository = repository;
+        this.avatarUploadPath = avatarUploadPath;
     }
 
     @Override
@@ -52,7 +58,17 @@ public class TutorServiceImpl implements TutorService {
     @Override
     public byte[] getAvatar(UUID id){
         return this.repository.find(id)
-                .map(Tutor::getAvatar)
+                .map(tutor -> {
+                    if (tutor.getAvatar() != null && !tutor.getAvatar().isEmpty()) {
+                        try {
+                            Path avatarPath = Paths.get(avatarUploadPath, tutor.getAvatar());
+                            return Files.readAllBytes(avatarPath);
+                        } catch (IOException ex) {
+                            throw new IllegalStateException("Unable to read avatar file", ex);
+                        }
+                    }
+                    return null;
+                })
                 .orElseThrow(NotFoundException::new);
     }
 
@@ -61,7 +77,13 @@ public class TutorServiceImpl implements TutorService {
         this.repository.find(id).ifPresent(
                 tutor -> {
                     try {
-                        tutor.setAvatar(is.readAllBytes());
+                        Path dirPath = Paths.get(avatarUploadPath);
+
+                        String fileName = id.toString() + ".jpg";
+                        Path filePath = dirPath.resolve(fileName);
+                        Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                        tutor.setAvatar(fileName);
                         this.repository.update(tutor);
                     }
                     catch (IOException ex) {
@@ -75,8 +97,17 @@ public class TutorServiceImpl implements TutorService {
     public void deleteAvatar(UUID id) {
         this.repository.find(id).ifPresentOrElse(
                 tutor -> {
-                        tutor.setAvatar(null);
-                        this.repository.update(tutor);
+                    if (tutor.getAvatar() != null) {
+                        try {
+                            Path dirPath = Paths.get(avatarUploadPath);
+                            Path avatarPath = dirPath.resolve(tutor.getAvatar());
+                            Files.deleteIfExists(avatarPath);
+                        } catch (IOException ex) {
+                            throw new IllegalStateException("Unable to read avatar file", ex);
+                        }
+                    }
+                    tutor.setAvatar(null);
+                    this.repository.update(tutor);
                 },
                 () -> {
                     throw new NotFoundException();
@@ -89,7 +120,13 @@ public class TutorServiceImpl implements TutorService {
         this.repository.find(id).ifPresent(
                 tutor -> {
                     try {
-                        tutor.setAvatar(is.readAllBytes());
+                        Path dirPath = Paths.get(avatarUploadPath);
+
+                        String fileName = id.toString() + ".jpg";
+                        Path filePath = dirPath.resolve(fileName);
+                        Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                        tutor.setAvatar(fileName);
                         this.repository.update(tutor);
                     }
                     catch (IOException ex) {

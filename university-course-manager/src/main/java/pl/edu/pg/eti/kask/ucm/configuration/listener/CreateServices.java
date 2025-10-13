@@ -17,6 +17,11 @@ public class CreateServices implements ServletContextListener {
 
         TutorRepository tutorRepository = new TutorInMemoryRepository(dataSource);
 
-        event.getServletContext().setAttribute("tutorService", new TutorServiceImpl(tutorRepository));
+        String avatarResourcesPath = event.getServletContext().getInitParameter("avatar.resources.path");
+        if (avatarResourcesPath == null) {
+            throw new IllegalStateException("avatar.resources.path is not set");
+        }
+
+        event.getServletContext().setAttribute("tutorService", new TutorServiceImpl(tutorRepository, avatarResourcesPath));
     }
 }

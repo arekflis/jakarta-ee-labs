@@ -5,6 +5,11 @@
          version="6.0"
          metadata-complete="false">
 
+    <context-param>
+        <param-name>avatar.resources.path</param-name>
+        <param-value>C:/Users/arkad/Desktop/avatars</param-value>
+    </context-param>
+
     <listener>
         <listener-class>pl.edu.pg.eti.kask.ucm.configuration.listener.CreateDataSource</listener-class>
     </listener>

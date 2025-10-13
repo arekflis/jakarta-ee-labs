@@ -12,7 +12,7 @@ GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65
 
 # Get single tutor avatar.
 
-GET http://localhost:9080/simple-ucm/api/tutor/3e35d8f7-f6aa-4a7b-8b44-39a63ed6205f/avatar
+GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
 
 ###
 
@@ -32,13 +32,13 @@ Content-Type: application/json
 
 # Create tutor avatar.
 
-PUT http://localhost:9080/simple-ucm/api/tutor/6a0cdff3-dc2d-4bb9-8582-3c7957fb01db/avatar
+PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="avatar"; filename="klopp-juergen.jpg'
+Content-Disposition: form-data; name="avatar"; filename="ju2.jpg'
 
-< university-course-manager/src/main/resources/avatar/klopp-juergen.jpg
+< university-course-manager/src/main/resources/avatar/ju2.jpg
 --boundary--
 
 ###
@@ -57,7 +57,7 @@ Content-Type: application/json
 
 # Update tutor avatar.
 
-PATCH http://localhost:9080/simple-ucm/api/tutor/3e35d8f7-f6aa-4a7b-8b44-39a63ed6205f/avatar
+PATCH http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
@@ -65,8 +65,6 @@ Content-Disposition: form-data; name="avatar"; filename="klopp-juergen.jpg'
 
 < university-course-manager/src/main/resources/avatar/klopp-juergen.jpg
 --boundary--
-
-###
 
 ###
 
@@ -78,4 +76,4 @@ DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2
 
 # Delete tutor avatar.
 
-DELETE http://localhost:9080/simple-ucm/api/tutor/6a0cdff3-dc2d-4bb9-8582-3c7957fb01db/avatar
+DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
