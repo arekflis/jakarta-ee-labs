@@ -14,4 +14,5 @@ public interface TutorService extends Service<Tutor, UUID> {
     byte[] getAvatar(UUID id);
     void putAvatar(UUID id, InputStream is);
     void deleteAvatar(UUID id);
+    void patchAvatar(UUID id, InputStream is);
 }

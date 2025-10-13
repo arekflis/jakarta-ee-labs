@@ -96,4 +96,14 @@ public class TutorControllerImpl implements TutorController {
                 }
         );
     }
+
+    @Override
+    public void patchAvatar(UUID id, InputStream is) {
+        this.service.find(id).ifPresentOrElse(
+                tutor -> service.patchAvatar(id, is),
+                () -> {
+                    throw new NotFoundException();
+                }
+        );
+    }
 }

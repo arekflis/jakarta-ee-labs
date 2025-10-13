@@ -130,6 +130,10 @@ public class ApiServlet extends HttpServlet {
                 UUID uuid = extractUUID(Patterns.TUTOR, path);
                 this.tutorController.patchTutor(uuid, jsonb.fromJson(request.getReader(), PatchTutorRequest.class));
                 return;
+            } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
+                UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
+                this.tutorController.patchAvatar(uuid, request.getPart("avatar").getInputStream());
+                return;
             }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);

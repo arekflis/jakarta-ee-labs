@@ -83,4 +83,19 @@ public class TutorServiceImpl implements TutorService {
                 }
         );
     }
+
+    @Override
+    public void patchAvatar(UUID id, InputStream is) {
+        this.repository.find(id).ifPresent(
+                tutor -> {
+                    try {
+                        tutor.setAvatar(is.readAllBytes());
+                        this.repository.update(tutor);
+                    }
+                    catch (IOException ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                }
+        );
+    }
 }
