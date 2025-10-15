@@ -102,12 +102,16 @@ public class TutorServiceImpl implements TutorService {
                             Path dirPath = Paths.get(avatarUploadPath);
                             Path avatarPath = dirPath.resolve(tutor.getAvatar());
                             Files.deleteIfExists(avatarPath);
+
+                            tutor.setAvatar(null);
+                            this.repository.update(tutor);
                         } catch (IOException ex) {
                             throw new IllegalStateException("Unable to read avatar file", ex);
                         }
                     }
-                    tutor.setAvatar(null);
-                    this.repository.update(tutor);
+                    else {
+                        throw new NotFoundException();
+                    }
                 },
                 () -> {
                     throw new NotFoundException();
