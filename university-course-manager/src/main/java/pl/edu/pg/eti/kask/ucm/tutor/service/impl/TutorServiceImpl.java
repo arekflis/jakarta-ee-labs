@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
+import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
 import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.NotFoundException;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
@@ -23,11 +24,12 @@ import java.util.UUID;
 public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository repository;
-    private final String avatarUploadPath = "C:/Users/arkad/Desktop/avatars";
+    private final String avatarUploadPath;
 
     @Inject
-    public TutorServiceImpl(TutorRepository repository) {
+    public TutorServiceImpl(TutorRepository repository, @AvatarPath String avatarUploadPath) {
         this.repository = repository;
+        this.avatarUploadPath = avatarUploadPath;
     }
 
     @Override
