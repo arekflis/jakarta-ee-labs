@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.controller.servlet;
 
+import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pl.edu.pg.eti.kask.ucm.tutor.controller.api.TutorController;
 import pl.edu.pg.eti.kask.ucm.tutor.controller.impl.TutorControllerImpl;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
@@ -23,7 +25,7 @@ import java.util.regex.Pattern;
 @MultipartConfig(maxFileSize = 200 * 1024)
 public class ApiServlet extends HttpServlet {
 
-    private TutorControllerImpl tutorController;
+    private final TutorController tutorController;
 
     public static final class Paths {
         public static final String API = "/api";
@@ -41,6 +43,11 @@ public class ApiServlet extends HttpServlet {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
+    @Inject
+    public ApiServlet(TutorController tutorController) {
+        this.tutorController = tutorController;
+    }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getMethod().equals("PATCH")){
@@ -49,12 +56,6 @@ public class ApiServlet extends HttpServlet {
         else {
             super.service(request, response);
         }
-    }
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        tutorController = (TutorControllerImpl) getServletContext().getAttribute("tutorController");
     }
 
     @SuppressWarnings("RedundantThrows")
@@ -102,7 +103,7 @@ public class ApiServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    @SuppressWarnings("ReduntantThrows")
+    @SuppressWarnings("RedundantThrows")
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = parseRequestPath(request);

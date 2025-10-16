@@ -1,31 +1,40 @@
-package pl.edu.pg.eti.kask.ucm.configuration.listener;
+package pl.edu.pg.eti.kask.ucm.configuration.observer;
 
-import jakarta.servlet.ServletContextEvent;
-import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.annotation.WebListener;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.context.control.RequestContextController;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
-import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
+import pl.edu.pg.eti.kask.ucm.tutor.service.impl.TutorServiceImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.io.InputStream;
 import java.util.UUID;
 
-@WebListener
-public class InitializedData implements ServletContextListener {
+@ApplicationScoped
+public class InitializedData {
 
-    private TutorService tutorService;
+    private final TutorServiceImpl tutorService;
 
-    @Override
-    public void contextInitialized(ServletContextEvent event) {
-        tutorService = (TutorService) event.getServletContext().getAttribute("tutorService");
+    private final RequestContextController requestContextController;
+
+    @Inject
+    public InitializedData(TutorServiceImpl tutorService, RequestContextController requestContextController) {
+        this.tutorService = tutorService;
+        this.requestContextController = requestContextController;
+    }
+
+    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
         init();
     }
 
     @SneakyThrows
     private void init() {
+        requestContextController.activate();
+
         LocalDateTime now = LocalDateTime.now();
 
         Tutor tutor1 = Tutor.builder()
@@ -82,5 +91,7 @@ public class InitializedData implements ServletContextListener {
         tutorService.create(tutor2);
         tutorService.create(tutor3);
         tutorService.create(tutor4);
+
+        requestContextController.deactivate();
     }
 }

@@ -1,5 +1,7 @@
 package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import pl.edu.pg.eti.kask.ucm.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.BadRequestException;
 import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.NotFoundException;
@@ -8,18 +10,21 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorsResponse;
+import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 import pl.edu.pg.eti.kask.ucm.tutor.service.impl.TutorServiceImpl;
 
 import java.io.InputStream;
 import java.util.UUID;
 
+@RequestScoped
 public class TutorControllerImpl implements TutorController {
 
-    private final TutorServiceImpl service;
+    private final TutorService service;
 
     private final DtoFunctionFactory factory;
 
-    public TutorControllerImpl(TutorServiceImpl service, DtoFunctionFactory factory){
+    @Inject
+    public TutorControllerImpl(TutorService service, DtoFunctionFactory factory){
         this.service = service;
         this.factory = factory;
     }
