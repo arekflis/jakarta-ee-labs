@@ -44,7 +44,7 @@ public class UniversityInMemoryRepository implements UniversityRepository {
 
     @Override
     public void delete(UUID id) {
-        this.dataStore.deleteTutor(id);
+        this.dataStore.deleteUniversity(id);
     }
 
     @Override
