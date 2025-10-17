@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.controller.api.TutorController;
-import pl.edu.pg.eti.kask.ucm.tutor.controller.impl.TutorControllerImpl;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.university.controller.api.UniversityController;

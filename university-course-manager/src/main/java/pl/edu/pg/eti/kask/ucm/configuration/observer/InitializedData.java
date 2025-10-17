@@ -8,7 +8,10 @@ import jakarta.inject.Inject;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
+import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 import pl.edu.pg.eti.kask.ucm.tutor.service.impl.TutorServiceImpl;
+import pl.edu.pg.eti.kask.ucm.university.entity.University;
+import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,13 +20,16 @@ import java.util.UUID;
 @ApplicationScoped
 public class InitializedData {
 
-    private final TutorServiceImpl tutorService;
+    private final TutorService tutorService;
+
+    private final UniversityService universityService;
 
     private final RequestContextController requestContextController;
 
     @Inject
-    public InitializedData(TutorServiceImpl tutorService, RequestContextController requestContextController) {
+    public InitializedData(TutorService tutorService, UniversityService universityService, RequestContextController requestContextController) {
         this.tutorService = tutorService;
+        this.universityService = universityService;
         this.requestContextController = requestContextController;
     }
 
@@ -36,7 +42,13 @@ public class InitializedData {
         requestContextController.activate();
 
         LocalDateTime now = LocalDateTime.now();
+        this.initializeTutors(now);
+        this.initializeUniversities(now);
 
+        requestContextController.deactivate();
+    }
+
+    private void initializeTutors(LocalDateTime now) {
         Tutor tutor1 = Tutor.builder()
                 .id(UUID.randomUUID())
                 .createdAt(now)
@@ -47,8 +59,6 @@ public class InitializedData {
                 .tutorRank(TutorRank.LECTURER)
                 .avatar("ju2.jpg")
                 .build();
-
-        now = LocalDateTime.now();
 
         Tutor tutor2 = Tutor.builder()
                 .id(UUID.randomUUID())
@@ -61,8 +71,6 @@ public class InitializedData {
                 .avatar("klopp-juergen.jpg")
                 .build();
 
-        now = LocalDateTime.now();
-
         Tutor tutor3 = Tutor.builder()
                 .id(UUID.randomUUID())
                 .createdAt(now)
@@ -73,8 +81,6 @@ public class InitializedData {
                 .tutorRank(TutorRank.PROFESSOR)
                 .avatar("teacher.jpg")
                 .build();
-
-        now = LocalDateTime.now();
 
         Tutor tutor4 = Tutor.builder()
                 .id(UUID.randomUUID())
@@ -91,7 +97,41 @@ public class InitializedData {
         tutorService.create(tutor2);
         tutorService.create(tutor3);
         tutorService.create(tutor4);
+    }
 
-        requestContextController.deactivate();
+    private void initializeUniversities(LocalDateTime now) {
+        University university1 = University.builder()
+                .id(UUID.randomUUID())
+                .createdAt(now)
+                .updatedAt(now)
+                .name("Gdansk University of Technology")
+                .numberOfEmployees(120)
+                .city("Gdansk")
+                .dateOfFoundation(LocalDate.of(1892, 10, 10))
+                .build();
+
+        University university2 = University.builder()
+                .id(UUID.randomUUID())
+                .createdAt(now)
+                .updatedAt(now)
+                .name("Medical University of Gdansk")
+                .numberOfEmployees(220)
+                .city("Gdansk")
+                .dateOfFoundation(LocalDate.of(1920, 1, 19))
+                .build();
+
+        University university3 = University.builder()
+                .id(UUID.randomUUID())
+                .createdAt(now)
+                .updatedAt(now)
+                .name("Warsaw University of Technology")
+                .numberOfEmployees(241)
+                .city("Warsaw")
+                .dateOfFoundation(LocalDate.of(1901, 12, 21))
+                .build();
+
+        this.universityService.create(university1);
+        this.universityService.create(university2);
+        this.universityService.create(university3);
     }
 }
