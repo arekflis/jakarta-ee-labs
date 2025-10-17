@@ -1,25 +1,21 @@
-package pl.edu.pg.eti.kask.ucm.university.entity;
+package pl.edu.pg.eti.kask.ucm.university.dto.response;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Entity
-public class University implements Serializable {
+@SuperBuilder
+public class GetUniversityResponse {
 
-    @Id
     private UUID id;
 
     private LocalDateTime createdAt;

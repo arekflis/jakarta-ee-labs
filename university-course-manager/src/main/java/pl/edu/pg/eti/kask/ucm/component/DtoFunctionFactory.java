@@ -5,10 +5,15 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.function.request.RequestToTutorFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.request.UpdateTutorWithRequestFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.response.TutorToResponseFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.response.TutorsToResponseFunction;
+import pl.edu.pg.eti.kask.ucm.university.dto.function.request.RequestToUniversityFunction;
+import pl.edu.pg.eti.kask.ucm.university.dto.function.request.UpdateUniversityWithRequestFunction;
+import pl.edu.pg.eti.kask.ucm.university.dto.function.response.UniversitiesToResponseFunction;
+import pl.edu.pg.eti.kask.ucm.university.dto.function.response.UniversityToResponseFunction;
 
 @ApplicationScoped
 public class DtoFunctionFactory {
 
+    /* Tutor functions */
     public TutorToResponseFunction tutorToResponse(){
         return new TutorToResponseFunction();
     }
@@ -23,5 +28,22 @@ public class DtoFunctionFactory {
 
     public RequestToTutorFunction requestToTutor(){
         return new RequestToTutorFunction();
+    }
+
+    /* University functions */
+    public UniversityToResponseFunction universityToResponse(){
+        return new UniversityToResponseFunction();
+    }
+
+    public UniversitiesToResponseFunction universitiesToResponse(){
+        return new UniversitiesToResponseFunction();
+    }
+
+    public UpdateUniversityWithRequestFunction updateUniversity(){
+        return new UpdateUniversityWithRequestFunction();
+    }
+
+    public RequestToUniversityFunction requestToUniversity(){
+        return new RequestToUniversityFunction();
     }
 }
