@@ -49,7 +49,9 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     public void delete(UUID id) {
-        this.deleteAvatar(id);
+        if (this.repository.find(id).get().getAvatar() != null) {
+            this.deleteAvatar(id);
+        }
         this.repository.delete(id);
     }
 
