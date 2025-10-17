@@ -3,7 +3,6 @@ package pl.edu.pg.eti.kask.ucm.tutor.dto.function.request;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.function.BiFunction;
