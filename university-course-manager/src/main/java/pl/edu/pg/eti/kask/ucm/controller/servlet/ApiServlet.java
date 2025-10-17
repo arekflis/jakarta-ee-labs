@@ -13,6 +13,9 @@ import pl.edu.pg.eti.kask.ucm.tutor.controller.api.TutorController;
 import pl.edu.pg.eti.kask.ucm.tutor.controller.impl.TutorControllerImpl;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
+import pl.edu.pg.eti.kask.ucm.university.controller.api.UniversityController;
+import pl.edu.pg.eti.kask.ucm.university.dto.request.PatchUniversityRequest;
+import pl.edu.pg.eti.kask.ucm.university.dto.request.PutUniversityRequest;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -27,6 +30,8 @@ public class ApiServlet extends HttpServlet {
 
     private final TutorController tutorController;
 
+    private final UniversityController universityController;
+
     public static final class Paths {
         public static final String API = "/api";
     }
@@ -39,13 +44,18 @@ public class ApiServlet extends HttpServlet {
         public static final Pattern TUTOR = Pattern.compile("/tutor/(%s)".formatted(UUID.pattern()));
 
         public static final Pattern TUTOR_AVATAR = Pattern.compile("/tutor/(%s)/avatar".formatted(UUID.pattern()));
+
+        public static final Pattern UNIVERSITY = Pattern.compile("/university/(%s)".formatted(UUID.pattern()));
+
+        public static final Pattern UNIVERSITIES = Pattern.compile("/universities/?");
     }
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
     @Inject
-    public ApiServlet(TutorController tutorController) {
+    public ApiServlet(TutorController tutorController, UniversityController universityController) {
         this.tutorController = tutorController;
+        this.universityController = universityController;
     }
 
     @Override
@@ -80,6 +90,15 @@ public class ApiServlet extends HttpServlet {
                 response.setContentLength(avatar.length);
                 response.getOutputStream().write(avatar);
                 return;
+            } else if (path.matches(Patterns.UNIVERSITY.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
+                response.getWriter().write(jsonb.toJson(this.universityController.getUniversityById(uuid)));
+                return;
+            } else if (path.matches(Patterns.UNIVERSITIES.pattern())) {
+                response.setContentType("application/json");
+                response.getWriter().write(jsonb.toJson(this.universityController.getUniversities()));
+                return;
             }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -97,6 +116,11 @@ public class ApiServlet extends HttpServlet {
             } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
                 UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
                 this.tutorController.putAvatar(uuid, request.getPart("avatar").getInputStream());
+                return;
+            } else if (path.matches(Patterns.UNIVERSITY.pattern())) {
+                UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
+                this.universityController.putUniversity(uuid, jsonb.fromJson(request.getReader(), PutUniversityRequest.class));
+                response.addHeader("Location", createUrl(request, Paths.API, "universities", uuid.toString()));
                 return;
             }
         }
@@ -117,6 +141,10 @@ public class ApiServlet extends HttpServlet {
                 UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
                 this.tutorController.deleteAvatar(uuid);
                 return;
+            } else if (path.matches(Patterns.UNIVERSITY.pattern())) {
+                UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
+                this.universityController.deleteUniversity(uuid);
+                return;
             }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -134,6 +162,10 @@ public class ApiServlet extends HttpServlet {
             } else if (path.matches(Patterns.TUTOR_AVATAR.pattern())) {
                 UUID uuid = extractUUID(Patterns.TUTOR_AVATAR, path);
                 this.tutorController.patchAvatar(uuid, request.getPart("avatar").getInputStream());
+                return;
+            } else if (path.matches(Patterns.UNIVERSITY.pattern())) {
+                UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
+                this.universityController.patchUniversity(uuid, jsonb.fromJson(request.getReader(), PatchUniversityRequest.class));
                 return;
             }
         }
