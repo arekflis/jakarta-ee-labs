@@ -61,4 +61,31 @@ public class DataStore {
         }
     }
 
+    public synchronized List<University> findAllUniversities() {
+        return universities.stream()
+                .map(cloningUtility::clone)
+                .collect(Collectors.toList());
+    }
+
+    public synchronized void createUniversity(University entity) throws IllegalArgumentException {
+        if (universities.stream().anyMatch(university -> university.getId().equals(entity.getId()))) {
+            throw new IllegalArgumentException("The university id \"%s\" is not unique".formatted(entity.getId()));
+        }
+        universities.add(cloningUtility.clone(entity));
+    }
+
+    public synchronized void updateUniversity(University entity) throws IllegalArgumentException {
+        if (universities.removeIf(university -> university.getId().equals(entity.getId()))) {
+            universities.add(cloningUtility.clone(entity));
+        }
+        else {
+            throw new IllegalArgumentException("The university with id \"%s\" does not exist".formatted(entity.getId()));
+        }
+    }
+
+    public synchronized void deleteUniversity(UUID id) throws IllegalArgumentException {
+        if (!universities.removeIf(university -> university.getId().equals(id))) {
+            throw new IllegalArgumentException("The university with id \"%s\" does not exist".formatted(id));
+        }
+    }
 }
