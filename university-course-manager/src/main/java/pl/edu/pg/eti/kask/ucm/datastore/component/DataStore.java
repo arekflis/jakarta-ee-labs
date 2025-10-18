@@ -88,4 +88,54 @@ public class DataStore {
             throw new IllegalArgumentException("The university with id \"%s\" does not exist".formatted(id));
         }
     }
+
+    public synchronized List<Course> findAllCourses() {
+        return courses.stream()
+                .map(cloningUtility::clone)
+                .collect(Collectors.toList());
+    }
+
+    public synchronized void createCourse(Course value) throws IllegalArgumentException {
+        if (courses.stream().anyMatch(course -> course.getId().equals(value.getId()))) {
+            throw new IllegalArgumentException("The course id \"%s\" is not unique".formatted(value.getId()));
+        }
+        Course entity = cloneWithRelationships(value);
+        courses.add(entity);
+    }
+
+    public synchronized void updateCourse(Course value) throws IllegalArgumentException {
+        Course entity = cloneWithRelationships(value);
+        if (courses.removeIf(course -> course.getId().equals(value.getId()))) {
+            courses.add(entity);
+        }
+        else {
+            throw new IllegalArgumentException("The course with id \"%s\" does not exist".formatted(value.getId()));
+        }
+    }
+
+    public synchronized void deleteCourse(UUID id) throws IllegalArgumentException {
+        if (!courses.removeIf(course -> course.getId().equals(id))) {
+            throw new IllegalArgumentException("The course with id \"%s\" does not exist".formatted(id));
+        }
+    }
+
+    private Course cloneWithRelationships(Course value) {
+        Course entity = cloningUtility.clone(value);
+
+        if (entity.getTutor() != null) {
+            entity.setTutor(tutors.stream()
+                    .filter(tutor -> tutor.getId().equals(value.getTutor().getId()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("No tutor with id \"%s\".".formatted(value.getTutor().getId()))));
+        }
+
+        if (entity.getUniversity() != null) {
+            entity.setUniversity(universities.stream()
+                    .filter(university -> university.getId().equals(value.getUniversity().getId()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("No university with id \"%s\".".formatted(value.getUniversity().getId()))));
+        }
+
+        return entity;
+    }
 }
