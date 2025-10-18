@@ -20,5 +20,5 @@ public class PutUniversityRequest {
 
     private String city;
 
-    private int numberOfEmployees;
+    private Integer numberOfEmployees;
 }

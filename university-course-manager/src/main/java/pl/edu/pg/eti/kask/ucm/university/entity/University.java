@@ -32,5 +32,5 @@ public class University implements Serializable {
 
     private String city;
 
-    private int numberOfEmployees;
+    private Integer numberOfEmployees;
 }

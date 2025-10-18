@@ -1,4 +1,4 @@
-package pl.edu.pg.eti.kask.ucm.university.dto.request;
+package pl.edu.pg.eti.kask.ucm.course.dto.request;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -8,11 +8,13 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @SuperBuilder
-@EqualsAndHashCode
 @ToString
-public class PatchUniversityRequest {
+@EqualsAndHashCode
+public class PatchCourseRequest {
 
     private String name;
 
-    private Integer numberOfEmployees;
+    private String description;
+
+    private Double passingThreshold;
 }
