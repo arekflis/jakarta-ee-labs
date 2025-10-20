@@ -9,21 +9,4 @@
         <param-name>avatar.resources.path</param-name>
         <param-value>C:/Users/arkad/Desktop/avatars</param-value>
     </context-param>
-
-    <listener>
-        <listener-class>pl.edu.pg.eti.kask.ucm.configuration.listener.CreateDataSource</listener-class>
-    </listener>
-
-    <listener>
-        <listener-class>pl.edu.pg.eti.kask.ucm.configuration.listener.CreateServices</listener-class>
-    </listener>
-
-    <listener>
-        <listener-class>pl.edu.pg.eti.kask.ucm.configuration.listener.CreateControllers</listener-class>
-    </listener>
-
-    <listener>
-        <listener-class>pl.edu.pg.eti.kask.ucm.configuration.listener.InitializedData</listener-class>
-    </listener>
-
 </web-app>

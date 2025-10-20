@@ -1,0 +1,41 @@
+# Get all universities.
+
+GET http://localhost:9080/simple-ucm/api/universities
+
+###
+
+# Get single university.
+
+GET http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+
+###
+
+# Create new university.
+
+PUT http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "UWM",
+  "dateOfFoundation": "1999-05-15",
+  "city": "Olsztyn",
+  "numberOfEmployees": "12"
+}
+
+###
+
+# Update university.
+
+PATCH http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "University of Warmia and Mazury",
+  "numberOfEmployees": "121"
+}
+
+###
+
+# Delete university.
+
+DELETE http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
