@@ -9,6 +9,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pl.edu.pg.eti.kask.ucm.course.controller.api.CourseController;
+import pl.edu.pg.eti.kask.ucm.course.dto.request.PatchCourseRequest;
+import pl.edu.pg.eti.kask.ucm.course.dto.request.PutCourseRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.controller.api.TutorController;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
@@ -31,6 +34,8 @@ public class ApiServlet extends HttpServlet {
 
     private final UniversityController universityController;
 
+    private final CourseController courseController;
+
     public static final class Paths {
         public static final String API = "/api";
     }
@@ -47,14 +52,24 @@ public class ApiServlet extends HttpServlet {
         public static final Pattern UNIVERSITY = Pattern.compile("/university/(%s)".formatted(UUID.pattern()));
 
         public static final Pattern UNIVERSITIES = Pattern.compile("/universities/?");
+
+        public static final Pattern COURSE = Pattern.compile("/course/(%s)".formatted(UUID.pattern()));
+
+        public static final Pattern COURSES = Pattern.compile("/courses/?");
+
+        public static final Pattern COURSES_BY_UNIVERSITY = Pattern.compile("/university/(%s)/courses/?".formatted(UUID.pattern()));
+
+        public static final Pattern COURSES_BY_TUTORS = Pattern.compile("/tutor/(%s)/courses/?".formatted(UUID.pattern()));
     }
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
     @Inject
-    public ApiServlet(TutorController tutorController, UniversityController universityController) {
+    public ApiServlet(TutorController tutorController, UniversityController universityController,
+                      CourseController courseController) {
         this.tutorController = tutorController;
         this.universityController = universityController;
+        this.courseController = courseController;
     }
 
     @Override
@@ -98,6 +113,25 @@ public class ApiServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.getWriter().write(jsonb.toJson(this.universityController.getUniversities()));
                 return;
+            } else if (path.matches(Patterns.COURSE.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUUID(Patterns.COURSE, path);
+                response.getWriter().write(jsonb.toJson(this.courseController.getCourseById(uuid)));
+                return;
+            } else if (path.matches(Patterns.COURSES.pattern())) {
+                response.setContentType("application/json");
+                response.getWriter().write(jsonb.toJson(this.courseController.getCourses()));
+                return;
+            } else if (path.matches(Patterns.COURSES_BY_UNIVERSITY.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUUID(Patterns.COURSES_BY_UNIVERSITY, path);
+                response.getWriter().write(jsonb.toJson(this.courseController.getCoursesByUniversity(uuid)));
+                return;
+            } else if (path.matches(Patterns.COURSES_BY_TUTORS.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUUID(Patterns.COURSES_BY_TUTORS, path);
+                response.getWriter().write(jsonb.toJson(this.courseController.getCoursesByTutor(uuid)));
+                return;
             }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -120,6 +154,11 @@ public class ApiServlet extends HttpServlet {
                 UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
                 this.universityController.putUniversity(uuid, jsonb.fromJson(request.getReader(), PutUniversityRequest.class));
                 response.addHeader("Location", createUrl(request, Paths.API, "universities", uuid.toString()));
+                return;
+            } else if (path.matches(Patterns.COURSE.pattern())) {
+                UUID uuid = extractUUID(Patterns.COURSE, path);
+                this.courseController.putCourse(uuid, jsonb.fromJson(request.getReader(), PutCourseRequest.class));
+                response.addHeader("Location", createUrl(request, Paths.API, "sourses", uuid.toString()));
                 return;
             }
         }
@@ -144,6 +183,10 @@ public class ApiServlet extends HttpServlet {
                 UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
                 this.universityController.deleteUniversity(uuid);
                 return;
+            } else if (path.matches(Patterns.COURSE.pattern())) {
+                UUID uuid = extractUUID(Patterns.COURSE, path);
+                this.courseController.deleteCourse(uuid);
+                return;
             }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -165,6 +208,10 @@ public class ApiServlet extends HttpServlet {
             } else if (path.matches(Patterns.UNIVERSITY.pattern())) {
                 UUID uuid = extractUUID(Patterns.UNIVERSITY, path);
                 this.universityController.patchUniversity(uuid, jsonb.fromJson(request.getReader(), PatchUniversityRequest.class));
+                return;
+            } else if (path.matches(Patterns.COURSE.pattern())) {
+                UUID uuid = extractUUID(Patterns.COURSE, path);
+                this.courseController.patchCourse(uuid, jsonb.fromJson(request.getReader(), PatchCourseRequest.class));
                 return;
             }
         }
