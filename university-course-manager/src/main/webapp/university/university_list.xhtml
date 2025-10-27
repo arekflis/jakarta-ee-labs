@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <ui:define name="content">
+        <article>
+            <header>
+                <h2 class="text-center mb-4">Universities</h2>
+            </header>
+
+            <div class="container">
+                <div class="card shadow-sm p-4">
+                    <h:dataTable value="#{universityList.universities.universities}" var="university"
+                                 styleClass="table table-striped table-bordered align-middle text-center">
+
+                        <h:column>
+                            <f:facet name="header">Id</f:facet>
+                            <h:outputText value="#{university.id}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:outputText value="#{university.name}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">View</f:facet>
+                            <h:link outcome="/university/university_view.xhtml" value="View">
+                                <f:param name="id" value="#{university.id}"/>
+                            </h:link>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Edit</f:facet>
+                            <h:link outcome="/university/university_edit.xhtml" value="Edit">
+                                <f:param name="id" value="#{university.id}"/>
+                            </h:link>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Delete</f:facet>
+                            <h:form>
+                                <h:commandButton styleClass="btn btn-danger btn-sm" value="Delete"
+                                                 action="#{universityList.deleteAction(university)}"/>
+                            </h:form>
+                        </h:column>
+
+                        <f:facet name="footer">
+                            <div class="text-center mt-3">
+                                <h:button styleClass="btn btn-secondary"
+                                          outcome="/university/university_create.xhtml"
+                                          value="Add New University"/>
+                            </div>
+                        </f:facet>
+                    </h:dataTable>
+                </div>
+            </div>
+        </article>
+    </ui:define>
+
+</ui:composition>

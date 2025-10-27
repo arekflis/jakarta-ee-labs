@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{universityView.id}" required="true"/>
+        <f:viewAction action="#{universityView.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <article>
+            <div class="container d-flex justify-content-center mb-5">
+                <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
+                    <div class="text-center mb-3">
+                        <h4 class="fw-bold text-primary">
+                            <h:outputText value="#{universityView.university.name}"/>
+                        </h4>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>ID:</strong>
+                            <span><h:outputText value="#{universityView.university.id}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Created At:</strong>
+                            <span><h:outputText value="#{universityView.university.createdAt}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Updated At:</strong>
+                            <span><h:outputText value="#{universityView.university.updatedAt}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>City:</strong>
+                            <span><h:outputText value="#{universityView.university.city}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Date of Foundation:</strong>
+                            <span><h:outputText value="#{universityView.university.dateOfFoundation}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Number of Employees:</strong>
+                            <span><h:outputText value="#{universityView.university.numberOfEmployees}"/></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="container">
+                <h3 class="text-center mb-3">Courses in this university:</h3>
+
+                <h:dataTable value="#{universityView.university.courses}" var="course"
+                             styleClass="table table-striped table-bordered align-middle text-center">
+
+                    <h:column>
+                        <f:facet name="header">Id</f:facet>
+                        <h:outputText value="#{course.id}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{course.name}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">View</f:facet>
+                        <h:link outcome="/course/course_view.xhtml" value="View">
+                            <f:param name="id" value="#{course.id}"/>
+                        </h:link>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Edit</f:facet>
+                        <h:link outcome="/course/course_edit.xhtml" value="Edit">
+                            <f:param name="id" value="#{course.id}"/>
+                        </h:link>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Delete</f:facet>
+                        <h:form>
+                            <h:commandButton styleClass="btn btn-danger btn-sm" value="Delete"
+                                             action="#{universityView.deleteCourse(course.id)}"/>
+                        </h:form>
+                    </h:column>
+
+                    <f:facet name="footer">
+                        <h:button styleClass="btn btn-secondary mt-3" outcome="/university/university_list.xhtml"
+                                  value="Back to university list"/>
+                    </f:facet>
+                </h:dataTable>
+            </div>
+        </article>
+    </ui:define>
+
+</ui:composition>
