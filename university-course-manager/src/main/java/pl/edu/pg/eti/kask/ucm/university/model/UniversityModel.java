@@ -1,9 +1,8 @@
-package pl.edu.pg.eti.kask.ucm.university.entity;
+package pl.edu.pg.eti.kask.ucm.university.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.*;
-import pl.edu.pg.eti.kask.ucm.course.entity.Course;
+import lombok.experimental.SuperBuilder;
+import pl.edu.pg.eti.kask.ucm.course.model.CourseModel;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,13 +14,11 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@ToString
+@SuperBuilder
 @EqualsAndHashCode
-@Entity
-public class University implements Serializable {
+@ToString
+public class UniversityModel implements Serializable {
 
-    @Id
     private UUID id;
 
     private LocalDateTime createdAt;
@@ -36,6 +33,6 @@ public class University implements Serializable {
 
     private Integer numberOfEmployees;
 
-    @ToString.Exclude
-    private List<Course> courses;
+    @Singular
+    List<CourseModel> courses;
 }

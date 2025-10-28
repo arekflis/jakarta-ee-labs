@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{courseView.id}" required="true"/>
+        <f:viewAction action="#{courseView.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <article>
+            <div class="container d-flex justify-content-center mb-5">
+                <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
+                    <div class="text-center mb-3">
+                        <h4 class="fw-bold text-primary">
+                            <h:outputText value="#{courseView.course.name}"/>
+                        </h4>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>ID:</strong>
+                            <span><h:outputText value="#{courseView.course.id}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Created At:</strong>
+                            <span><h:outputText value="#{courseView.course.createdAt}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Updated At:</strong>
+                            <span><h:outputText value="#{courseView.course.updatedAt}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Description:</strong>
+                            <span><h:outputText value="#{courseView.course.description}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>StudyType:</strong>
+                            <span><h:outputText value="#{courseView.course.studyType}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>PassingThreshold:</strong>
+                            <span><h:outputText value="#{courseView.course.passingThreshold}"/></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Semester:</strong>
+                            <span><h:outputText value="#{courseView.course.semester}"/></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-3">
+                <h:button styleClass="btn btn-secondary" outcome="/university/university_view.xhtml"
+                          value="Back to University Details">
+                    <f:param name="id" value="#{courseView.universityId}"/>
+                </h:button>
+            </div>
+        </article>
+    </ui:define>
+
+</ui:composition>
