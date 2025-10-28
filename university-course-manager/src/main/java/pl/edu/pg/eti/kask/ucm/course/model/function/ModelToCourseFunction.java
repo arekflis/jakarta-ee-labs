@@ -6,11 +6,12 @@ import pl.edu.pg.eti.kask.ucm.course.model.CourseCreateModel;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.function.Function;
 
-public class ModelToCourseFunction implements Function<CourseCreateModel, Course> {
+public class ModelToCourseFunction implements Function<CourseCreateModel, Course>, Serializable {
 
     @Override
     public Course apply(CourseCreateModel model) {

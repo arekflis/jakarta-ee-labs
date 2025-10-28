@@ -3,9 +3,10 @@ package pl.edu.pg.eti.kask.ucm.course.model.function;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.model.CourseDetailsModel;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
-public class CourseDetailsToModelFunction implements Function<Course, CourseDetailsModel> {
+public class CourseDetailsToModelFunction implements Function<Course, CourseDetailsModel>, Serializable {
 
     @Override
     public CourseDetailsModel apply(Course entity) {

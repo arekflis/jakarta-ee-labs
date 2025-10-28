@@ -1,9 +1,7 @@
 package pl.edu.pg.eti.kask.ucm.component;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import pl.edu.pg.eti.kask.ucm.course.model.function.CourseDetailsToModelFunction;
-import pl.edu.pg.eti.kask.ucm.course.model.function.CourseToModelFunction;
-import pl.edu.pg.eti.kask.ucm.course.model.function.ModelToCourseFunction;
+import pl.edu.pg.eti.kask.ucm.course.model.function.*;
 import pl.edu.pg.eti.kask.ucm.university.model.function.UniversitiesToModelFunction;
 import pl.edu.pg.eti.kask.ucm.university.model.function.UniversityToModelFunction;
 
@@ -28,5 +26,13 @@ public class ModelFunctionFactory {
 
     public ModelToCourseFunction modelToCourse() {
         return new ModelToCourseFunction();
+    }
+
+    public CourseToEditModelFunction courseToEditModel() {
+        return new CourseToEditModelFunction();
+    }
+
+    public UpdateCourseWithModelFunction updateCourseWithModel() {
+        return new UpdateCourseWithModelFunction();
     }
 }
