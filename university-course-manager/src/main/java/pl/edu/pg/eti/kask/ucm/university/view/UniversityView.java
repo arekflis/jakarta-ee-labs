@@ -10,7 +10,6 @@ import lombok.Setter;
 import pl.edu.pg.eti.kask.ucm.component.ModelFunctionFactory;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
-import pl.edu.pg.eti.kask.ucm.university.model.UniversitiesModel;
 import pl.edu.pg.eti.kask.ucm.university.model.UniversityModel;
 import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 
