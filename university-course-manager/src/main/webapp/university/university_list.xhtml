@@ -34,13 +34,6 @@
                         </h:column>
 
                         <h:column>
-                            <f:facet name="header">Edit</f:facet>
-                            <h:link outcome="/university/university_edit.xhtml" value="Edit">
-                                <f:param name="id" value="#{university.id}"/>
-                            </h:link>
-                        </h:column>
-
-                        <h:column>
                             <f:facet name="header">Delete</f:facet>
                             <h:form>
                                 <h:commandButton styleClass="btn btn-danger btn-sm" value="Delete"
@@ -51,8 +44,8 @@
                         <f:facet name="footer">
                             <div class="text-center mt-3">
                                 <h:button styleClass="btn btn-secondary"
-                                          outcome="/university/university_create.xhtml"
-                                          value="Add New University"/>
+                                          outcome="/course/course_create.xhtml"
+                                          value="Add New Course"/>
                             </div>
                         </f:facet>
                     </h:dataTable>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{courseCreate.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <article>
+            <div class="container d-flex justify-content-center mt-5">
+                <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
+                    <header class="mb-4 text-center">
+                        <h2>Create Course - Basic Information</h2>
+                    </header>
+
+                    <h:form enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                            <h:inputText id="name" value="#{courseCreate.course.name}" styleClass="form-control"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <h:outputLabel for="description" value="Description:" styleClass="form-label"/>
+                            <h:inputTextarea id="description" value="#{courseCreate.course.description}"
+                                             styleClass="form-control" rows="3"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <h:outputLabel for="studyType" value="StudyType:" styleClass="form-label"/>
+                            <h:selectOneMenu id="studyType" value="#{courseCreate.course.studyType}" styleClass="form-select">
+                                <f:selectItems value="#{courseCreate.studyTypes}" var="type" itemValue="#{type}" itemLabel="#{type}"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="mb-3">
+                            <h:outputLabel for="passingThreshold" value="Passing Threshold:" styleClass="form-label"/>
+                            <h:inputText id="passingThreshold" value="#{courseCreate.course.passingThreshold}" styleClass="form-control">
+                                <f:convertNumber type="number" />
+                            </h:inputText>
+                        </div>
+
+                        <div class="mb-3">
+                            <h:outputLabel for="semester" value="Semester:" styleClass="form-label"/>
+                            <h:inputText id="semester" value="#{courseCreate.course.semester}" styleClass="form-control">
+                                <f:convertNumber integerOnly="true"/>
+                            </h:inputText>
+                        </div>
+
+                        <div class="mb-3">
+                            <h:outputLabel for="university" value="University:" styleClass="form-label"/>
+                            <h:selectOneMenu id="university" value="#{courseCreate.course.university}" styleClass="form-select">
+                                <f:selectItems value="#{courseCreate.universities}" var="uni"
+                                               itemValue="#{uni}" itemLabel="#{uni.name}"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <h:commandButton value="Create" styleClass="btn btn-primary"
+                                            action="#{courseCreate.saveAction()}"/>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </article>
+    </ui:define>
+</ui:composition>
