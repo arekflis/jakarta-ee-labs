@@ -6,13 +6,13 @@ GET http://localhost:9080/simple-ucm/api/universities
 
 # Get single university.
 
-GET http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+GET http://localhost:9080/simple-ucm/api/universities/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 
 ###
 
 # Create new university.
 
-PUT http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+PUT http://localhost:9080/simple-ucm/api/universities/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 # Update university.
 
-PATCH http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+PATCH http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4
 Content-Type: application/json
 
 {
@@ -38,4 +38,4 @@ Content-Type: application/json
 
 # Delete university.
 
-DELETE http://localhost:9080/simple-ucm/api/university/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+DELETE http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd
