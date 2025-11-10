@@ -86,6 +86,8 @@ public class DataStore {
     public synchronized void deleteUniversity(UUID id) throws IllegalArgumentException {
         if (!universities.removeIf(university -> university.getId().equals(id))) {
             throw new IllegalArgumentException("The university with id \"%s\" does not exist".formatted(id));
+        } else {
+            courses.removeIf(course -> course.getUniversity().getId().equals(id));
         }
     }
 
