@@ -23,7 +23,7 @@ public interface UniversityController {
     GetUniversityResponse getUniversityById(@PathParam("id") UUID id);
 
     @GET
-    @Path("/universities/{city}")
+    @Path("/universities/city/{city}")
     @Produces(MediaType.APPLICATION_JSON)
     GetUniversitiesResponse getUniversitiesByCity(@PathParam("city") String city);
 

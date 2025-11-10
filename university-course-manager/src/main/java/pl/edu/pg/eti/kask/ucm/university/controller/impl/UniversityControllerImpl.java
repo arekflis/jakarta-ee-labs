@@ -74,12 +74,14 @@ public class UniversityControllerImpl implements UniversityController {
         try {
             this.service.create(this.factory.requestToUniversity().apply(id, request));
 
-            response.setHeader("Location", uriInfo.getBaseUriBuilder()
-                    .path(UniversityController.class, "getUniversity")
-                    .build(id)
-                    .toString());
-
-            throw new WebApplicationException(Response.Status.CREATED);
+            throw new WebApplicationException(
+                    Response.status(Response.Status.CREATED)
+                            .location(uriInfo.getBaseUriBuilder()
+                                    .path(UniversityController.class)
+                                    .path("universities/{id}")
+                                    .build(id))
+                            .build()
+            );
         } catch (IllegalArgumentException ex) {
             throw new BadRequestException(ex);
         }
