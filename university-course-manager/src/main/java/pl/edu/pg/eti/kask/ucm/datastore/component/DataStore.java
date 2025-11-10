@@ -124,12 +124,14 @@ public class DataStore {
     private Course cloneWithRelationships(Course value) {
         Course entity = cloningUtility.clone(value);
 
+        /*
         if (entity.getTutor() != null) {
             entity.setTutor(tutors.stream()
                     .filter(tutor -> tutor.getId().equals(value.getTutor().getId()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("No tutor with id \"%s\".".formatted(value.getTutor().getId()))));
         }
+        */
 
         if (entity.getUniversity() != null) {
             entity.setUniversity(universities.stream()
