@@ -86,10 +86,13 @@ public class UniversityControllerImpl implements UniversityController {
                                     .build(id))
                             .build()
             );
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
         } catch (TransactionalException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
                 log.log(Level.WARNING, ex.getMessage(), ex);
-                throw new BadRequestException(ex);
+                throw new BadRequestException(ex.getCause().getMessage());
             }
             throw ex;
         }
