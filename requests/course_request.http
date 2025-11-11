@@ -6,25 +6,19 @@ GET http://localhost:9080/simple-ucm/api/courses
 
 # Get single course.
 
-GET http://localhost:9080/simple-ucm/api/course/cc0b0577-bb6f-45b7-81d6-3db88e6ac19f
-
-###
-
-# Get courses by tutor.
-
-GET http://localhost:9080/simple-ucm/api/tutor/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/courses
+GET http://localhost:9080/simple-ucm/api/courses/cc0b0577-bb6f-45b7-81d6-3db88e6ac19f
 
 ###
 
 # Get courses by university.
 
-GET http://localhost:9080/simple-ucm/api/university/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses
+GET http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/courses
 
 ###
 
 # Create new course.
 
-PUT http://localhost:9080/simple-ucm/api/course/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+PUT http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 Content-Type: application/json
 
 {
@@ -32,16 +26,14 @@ Content-Type: application/json
   "description": "An advanced course on Mathematics",
   "studyType": "BACHELOR",
   "passingThreshold": "2.99",
-  "semester": "1",
-  "tutor": "f5875513-bf7b-4ae1-b8a5-5b70a1b90e76",
-  "university": "5d1da2ae-6a14-4b6d-8b4f-d117867118d4"
+  "semester": "1"
 }
 
 ###
 
 # Update course.
 
-PATCH http://localhost:9080/simple-ucm/api/course/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+PATCH http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4/courses/cc0b0577-bb6f-45b7-81d6-3db88e6ac19f
 Content-Type: application/json
 
 {
@@ -54,4 +46,4 @@ Content-Type: application/json
 
 # Delete course.
 
-DELETE http://localhost:9080/simple-ucm/api/course/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+DELETE http://localhost:9080/simple-ucm/api/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
