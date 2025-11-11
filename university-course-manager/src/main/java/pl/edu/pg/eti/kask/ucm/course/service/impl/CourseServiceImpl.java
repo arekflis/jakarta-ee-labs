@@ -45,6 +45,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void create(Course entity) {
         if (this.courseRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Course already exists");
