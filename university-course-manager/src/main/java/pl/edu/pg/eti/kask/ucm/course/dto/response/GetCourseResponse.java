@@ -16,6 +16,7 @@ import java.util.UUID;
 @ToString
 public class GetCourseResponse {
 
+    /*
     @Getter
     @Setter
     @NoArgsConstructor
@@ -29,6 +30,7 @@ public class GetCourseResponse {
 
         private String name;
     }
+    */
 
     @Getter
     @Setter
@@ -60,7 +62,7 @@ public class GetCourseResponse {
 
     private Integer semester;
 
-    private Tutor tutor;
+    //private Tutor tutor;
 
     private University university;
 }

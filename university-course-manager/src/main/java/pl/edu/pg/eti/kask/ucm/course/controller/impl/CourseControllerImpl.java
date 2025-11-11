@@ -79,12 +79,14 @@ public class CourseControllerImpl implements CourseController {
         try {
             this.courseService.create(this.factory.requestToCourse().apply(id, universityId, request));
 
-            response.setHeader("Location", uriInfo.getBaseUriBuilder()
-                    .path(CourseController.class, "getCourse")
-                    .build(id)
-                    .toString());
-
-            throw new WebApplicationException(Response.Status.CREATED);
+            throw new WebApplicationException(
+                    Response.status(Response.Status.CREATED)
+                            .location(uriInfo.getBaseUriBuilder()
+                                    .path(CourseController.class)
+                                    .path("courses/{id}")
+                                    .build(id))
+                            .build()
+            );
         } catch (IllegalArgumentException ex) {
             throw new BadRequestException(ex);
         }
@@ -92,12 +94,16 @@ public class CourseControllerImpl implements CourseController {
 
     @Override
     public void patchCourse(UUID id, UUID universityId, PatchCourseRequest request) {
-        this.courseService.find(id).ifPresentOrElse(
-                course -> this.courseService.update(this.factory.updateCourse().apply(course, universityId, request)),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+        try {
+            this.courseService.find(id).ifPresentOrElse(
+                    course -> this.courseService.update(this.factory.updateCourse().apply(course, universityId, request)),
+                    () -> {
+                        throw new NotFoundException();
+                    }
+            );
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException(ex);
+        }
     }
 
     @Override
