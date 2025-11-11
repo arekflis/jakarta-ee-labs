@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.ucm.university.service.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @ApplicationScoped
 @NoArgsConstructor(force = true)
+@Log
 public class UniversityServiceImpl implements UniversityService {
 
     private final UniversityRepository universityRepository;
@@ -24,7 +26,8 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public Optional<University> find(UUID id) {
-        return this.universityRepository.find(id);
+        Optional<University> university = this.universityRepository.find(id);
+        return university;
     }
 
     @Override

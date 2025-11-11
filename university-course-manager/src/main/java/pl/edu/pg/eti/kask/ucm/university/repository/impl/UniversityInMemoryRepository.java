@@ -1,8 +1,8 @@
 package pl.edu.pg.eti.kask.ucm.university.repository.impl;
 
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import pl.edu.pg.eti.kask.ucm.datastore.component.DataStore;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 
@@ -13,44 +13,42 @@ import java.util.UUID;
 @RequestScoped
 public class UniversityInMemoryRepository implements UniversityRepository {
 
-    private final DataStore dataStore;
+    private EntityManager em;
 
-    @Inject
-    public UniversityInMemoryRepository(DataStore dataStore) {
-        this.dataStore = dataStore;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     @Override
     public Optional<University> find(UUID id) {
-        return this.dataStore.findAllUniversities().stream()
-                .filter(university -> university.getId().equals(id))
-                .findFirst();
+        return Optional.ofNullable(this.em.find(University.class, id));
     }
 
     @Override
     public List<University> findAll() {
-        return this.dataStore.findAllUniversities();
+        return this.em.createQuery("select u from University u", University.class).getResultList();
     }
 
     @Override
     public void create(University entity) {
-        this.dataStore.createUniversity(entity);
+        this.em.persist(entity);
     }
 
     @Override
     public void update(University entity) {
-        this.dataStore.updateUniversity(entity);
+        this.em.merge(entity);
     }
 
     @Override
     public void delete(UUID id) {
-        this.dataStore.deleteUniversity(id);
+        this.em.remove(this.em.find(University.class, id));
     }
 
     @Override
     public List<University> findByCity(String city) {
-        return this.dataStore.findAllUniversities().stream()
-                .filter(university -> university.getCity().equals(city))
-                .toList();
+        return this.em.createQuery("select u from University u where u.city = :city", University.class)
+                .setParameter("city", city)
+                .getResultList();
     }
 }
