@@ -1,10 +1,16 @@
 package pl.edu.pg.eti.kask.ucm.university.controller.impl;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.ucm.component.DtoFunctionFactory;
-import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.BadRequestException;
-import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.NotFoundException;
 import pl.edu.pg.eti.kask.ucm.university.controller.api.UniversityController;
 import pl.edu.pg.eti.kask.ucm.university.dto.request.PatchUniversityRequest;
 import pl.edu.pg.eti.kask.ucm.university.dto.request.PutUniversityRequest;
@@ -15,17 +21,31 @@ import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
+@Path("")
 public class UniversityControllerImpl implements UniversityController {
 
     private final UniversityService service;
 
     private final DtoFunctionFactory factory;
 
+    private final UriInfo uriInfo;
+
+    private HttpServletResponse response;
+
+    @Context
+    public void setResponse(HttpServletResponse response){
+        this.response = response;
+    }
+
     @Inject
-    public UniversityControllerImpl(UniversityService service, DtoFunctionFactory factory) {
+    public UniversityControllerImpl(
+            UniversityService service,
+            DtoFunctionFactory factory,
+            @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo
+    ) {
         this.service = service;
         this.factory = factory;
+        this.uriInfo = uriInfo;
     }
 
     @Override
@@ -49,9 +69,19 @@ public class UniversityControllerImpl implements UniversityController {
     }
 
     @Override
+    @SneakyThrows
     public void putUniversity(UUID id, PutUniversityRequest request) {
         try {
             this.service.create(this.factory.requestToUniversity().apply(id, request));
+
+            throw new WebApplicationException(
+                    Response.status(Response.Status.CREATED)
+                            .location(uriInfo.getBaseUriBuilder()
+                                    .path(UniversityController.class)
+                                    .path("universities/{id}")
+                                    .build(id))
+                            .build()
+            );
         } catch (IllegalArgumentException ex) {
             throw new BadRequestException(ex);
         }

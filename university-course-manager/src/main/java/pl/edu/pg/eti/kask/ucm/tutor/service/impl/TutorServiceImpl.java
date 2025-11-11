@@ -2,9 +2,9 @@ package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
-import pl.edu.pg.eti.kask.ucm.controller.servlet.exception.NotFoundException;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;

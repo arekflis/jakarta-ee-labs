@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.ucm.course.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
