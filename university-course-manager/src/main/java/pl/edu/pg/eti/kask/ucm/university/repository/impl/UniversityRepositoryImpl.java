@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequestScoped
-public class UniversityInMemoryRepository implements UniversityRepository {
+public class UniversityRepositoryImpl implements UniversityRepository {
 
     private EntityManager em;
 

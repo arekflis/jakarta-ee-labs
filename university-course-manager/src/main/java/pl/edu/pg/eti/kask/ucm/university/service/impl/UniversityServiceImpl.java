@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.ucm.university.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
@@ -41,16 +42,23 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    @Transactional
     public void create(University entity) {
+        if (this.universityRepository.find(entity.getId()).isEmpty()) {
+            throw new IllegalArgumentException("University already exists");
+        }
+
         this.universityRepository.create(entity);
     }
 
     @Override
+    @Transactional
     public void update(University entity) {
         this.universityRepository.update(entity);
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         this.universityRepository.delete(id);
     }
