@@ -1,7 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edu.pg.eti.kask.ucm.enums.course.StudyType;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
@@ -19,6 +18,7 @@ import java.util.UUID;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Table(name = "courses")
 public class Course implements Serializable {
 
     @Id
@@ -38,7 +38,11 @@ public class Course implements Serializable {
 
     private Integer semester;
 
-    private Tutor tutor;
+    //private Tutor tutor;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "university_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private University university;
 }
