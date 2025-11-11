@@ -44,7 +44,7 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     @Transactional
     public void create(University entity) {
-        if (this.universityRepository.find(entity.getId()).isEmpty()) {
+        if (this.universityRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("University already exists");
         }
 
