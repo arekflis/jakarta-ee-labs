@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface CourseService extends Service<Course, UUID> {
 
-    Optional<Course> findByIdAndTutor(UUID id, Tutor tutor);
+    //Optional<Course> findByIdAndTutor(UUID id, Tutor tutor);
 
-    Optional<List<Course>> findAllByTutor(UUID id);
+    //Optional<List<Course>> findAllByTutor(UUID id);
 
     Optional<List<Course>> findAllByUniversity(UUID id);
 }

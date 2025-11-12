@@ -1,10 +1,10 @@
 package pl.edu.pg.eti.kask.ucm.course.repository.impl;
 
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
-import pl.edu.pg.eti.kask.ucm.datastore.component.DataStore;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 
@@ -16,40 +16,39 @@ import java.util.stream.Collectors;
 @RequestScoped
 public class CourseRepositoryImpl implements CourseRepository {
 
-    private final DataStore dataStore;
+    private EntityManager em;
 
-    @Inject
-    public CourseRepositoryImpl(DataStore dataStore) {
-        this.dataStore = dataStore;
+    @PersistenceContext
+    public void setEm(EntityManager em){
+        this.em = em;
     }
 
     @Override
     public List<Course> findAll() {
-        return this.dataStore.findAllCourses();
+        return this.em.createQuery("select c from Course c", Course.class).getResultList();
     }
 
     @Override
     public Optional<Course> find(UUID id) {
-        return this.dataStore.findAllCourses().stream()
-                .filter(course -> course.getId().equals(id))
-                .findFirst();
+        return Optional.ofNullable(this.em.find(Course.class, id));
     }
 
     @Override
     public void create(Course entity) {
-        this.dataStore.createCourse(entity);
+        this.em.persist(entity);
     }
 
     @Override
     public void delete(UUID id) {
-        this.dataStore.deleteCourse(id);
+        this.em.remove(this.em.find(Course.class, id));
     }
 
     @Override
     public void update(Course entity) {
-        this.dataStore.updateCourse(entity);
+        this.em.merge(entity);
     }
 
+    /*
     @Override
     public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
         return this.dataStore.findAllCourses().stream()
@@ -64,11 +63,12 @@ public class CourseRepositoryImpl implements CourseRepository {
                 .filter(course -> tutor.equals(course.getTutor()))
                 .collect(Collectors.toList());
     }
+    */
 
     @Override
     public List<Course> findAllByUniversity(University university) {
-        return this.dataStore.findAllCourses().stream()
-                .filter(course -> university.equals(course.getUniversity()))
-                .collect(Collectors.toList());
+        return this.em.createQuery("select c from Course c where c.university = :university", Course.class)
+                .setParameter("university", university)
+                .getResultList();
     }
 }

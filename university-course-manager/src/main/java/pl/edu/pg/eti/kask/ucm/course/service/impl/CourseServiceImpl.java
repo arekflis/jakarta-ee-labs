@@ -2,7 +2,7 @@ package pl.edu.pg.eti.kask.ucm.course.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
@@ -44,34 +44,55 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
-        return this.courseRepository.findByIdAndTutor(id, tutor);
-    }
-
-    @Override
+    @Transactional
     public void create(Course entity) {
+        if (this.courseRepository.find(entity.getId()).isPresent()) {
+            throw new IllegalArgumentException("Course already exists");
+        }
+
+        if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
+            throw new IllegalArgumentException("University does not exists");
+        }
+
         this.courseRepository.create(entity);
     }
 
     @Override
+    @Transactional
     public void update(Course entity) {
+        if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
+            throw new IllegalArgumentException("University does not exists");
+        }
+
         this.courseRepository.update(entity);
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         this.courseRepository.delete(id);
     }
 
     @Override
     public Optional<List<Course>> findAllByUniversity(UUID id) {
+        if (this.universityRepository.find(id).isEmpty()) {
+            throw new IllegalArgumentException("University does not exists");
+        }
+
         return this.universityRepository.find(id)
                 .map(courseRepository::findAllByUniversity);
     }
 
+    /*
     @Override
     public Optional<List<Course>> findAllByTutor(UUID id) {
         return this.tutorRepository.find(id)
                 .map(courseRepository::findAllByTutor);
     }
+
+    @Override
+    public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
+        return this.courseRepository.findByIdAndTutor(id, tutor);
+    }
+     */
 }

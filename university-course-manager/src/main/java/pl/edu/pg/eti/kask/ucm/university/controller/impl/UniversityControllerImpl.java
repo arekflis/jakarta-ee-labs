@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.ucm.university.controller.impl;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
@@ -10,6 +11,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.ucm.university.controller.api.UniversityController;
 import pl.edu.pg.eti.kask.ucm.university.dto.request.PatchUniversityRequest;
@@ -20,8 +22,10 @@ import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Path("")
+@Log
 public class UniversityControllerImpl implements UniversityController {
 
     private final UniversityService service;
@@ -83,7 +87,14 @@ public class UniversityControllerImpl implements UniversityController {
                             .build()
             );
         } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex.getCause().getMessage());
+            }
+            throw ex;
         }
     }
 

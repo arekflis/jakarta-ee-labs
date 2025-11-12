@@ -1,7 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.university.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 
@@ -19,6 +18,7 @@ import java.util.UUID;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Table(name = "universities")
 public class University implements Serializable {
 
     @Id
@@ -36,6 +36,8 @@ public class University implements Serializable {
 
     private Integer numberOfEmployees;
 
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Course> courses;
 }

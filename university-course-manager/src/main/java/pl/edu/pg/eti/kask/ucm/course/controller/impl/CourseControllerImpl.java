@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.ucm.course.controller.impl;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
@@ -9,6 +10,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.ucm.course.controller.api.CourseController;
 import pl.edu.pg.eti.kask.ucm.course.dto.request.PatchCourseRequest;
@@ -18,8 +20,10 @@ import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCoursesResponse;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Path("")
+@Log
 public class CourseControllerImpl implements CourseController {
 
     private final CourseService courseService;
@@ -69,9 +73,14 @@ public class CourseControllerImpl implements CourseController {
 
     @Override
     public GetCoursesResponse getCoursesByUniversity(UUID id) {
-        return this.courseService.findAllByUniversity(id)
-                .map(this.factory.coursesToResponse())
-                .orElseThrow(NotFoundException::new);
+        try{
+            return this.courseService.findAllByUniversity(id)
+                    .map(this.factory.coursesToResponse())
+                    .orElseThrow(NotFoundException::new);
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        }
     }
 
     @Override
@@ -88,7 +97,14 @@ public class CourseControllerImpl implements CourseController {
                             .build()
             );
         } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex.getCause().getMessage());
+            }
+            throw ex;
         }
     }
 
@@ -102,7 +118,8 @@ public class CourseControllerImpl implements CourseController {
                     }
             );
         } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
         }
     }
 
