@@ -73,9 +73,14 @@ public class CourseControllerImpl implements CourseController {
 
     @Override
     public GetCoursesResponse getCoursesByUniversity(UUID id) {
-        return this.courseService.findAllByUniversity(id)
-                .map(this.factory.coursesToResponse())
-                .orElseThrow(NotFoundException::new);
+        try{
+            return this.courseService.findAllByUniversity(id)
+                    .map(this.factory.coursesToResponse())
+                    .orElseThrow(NotFoundException::new);
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        }
     }
 
     @Override
@@ -97,7 +102,7 @@ public class CourseControllerImpl implements CourseController {
         } catch (TransactionalException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
                 log.log(Level.WARNING, ex.getMessage(), ex);
-                throw new BadRequestException(ex);
+                throw new BadRequestException(ex.getCause().getMessage());
             }
             throw ex;
         }
@@ -113,7 +118,8 @@ public class CourseControllerImpl implements CourseController {
                     }
             );
         } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
         }
     }
 

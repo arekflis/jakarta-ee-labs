@@ -3,7 +3,6 @@ package pl.edu.pg.eti.kask.ucm.course.service.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
@@ -61,6 +60,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public void update(Course entity) {
+        if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
+            throw new IllegalArgumentException("University does not exists");
+        }
+
         this.courseRepository.update(entity);
     }
 
@@ -72,6 +75,10 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Optional<List<Course>> findAllByUniversity(UUID id) {
+        if (this.universityRepository.find(id).isEmpty()) {
+            throw new IllegalArgumentException("University does not exists");
+        }
+
         return this.universityRepository.find(id)
                 .map(courseRepository::findAllByUniversity);
     }
