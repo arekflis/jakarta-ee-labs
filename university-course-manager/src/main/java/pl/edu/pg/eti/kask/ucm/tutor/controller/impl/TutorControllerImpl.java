@@ -2,8 +2,16 @@ package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.component.DtoFunctionFactory;
 import pl.edu.pg.eti.kask.ucm.tutor.controller.api.TutorController;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
@@ -14,18 +22,34 @@ import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.io.InputStream;
 import java.util.UUID;
+import java.util.logging.Level;
 
-@RequestScoped
+@Path("")
+@Log
 public class TutorControllerImpl implements TutorController {
 
     private final TutorService service;
 
     private final DtoFunctionFactory factory;
 
+    private final UriInfo uriInfo;
+
+    private HttpServletResponse response;
+
+    @Context
+    public void setResponse(HttpServletResponse response){
+        this.response = response;
+    }
+
     @Inject
-    public TutorControllerImpl(TutorService service, DtoFunctionFactory factory){
+    public TutorControllerImpl(
+            TutorService service,
+            DtoFunctionFactory factory,
+            @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo)
+    {
         this.service = service;
         this.factory = factory;
+        this.uriInfo = uriInfo;
     }
 
     @Override
@@ -61,8 +85,24 @@ public class TutorControllerImpl implements TutorController {
     public void putTutor(UUID id, PutTutorRequest request) {
         try {
             this.service.create(this.factory.requestToTutor().apply(id, request));
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+
+            throw new WebApplicationException(
+                    Response.status(Response.Status.CREATED)
+                            .location(uriInfo.getBaseUriBuilder()
+                                    .path(TutorController.class)
+                                    .path("tutors/{id}")
+                                    .build(id))
+                            .build()
+            );
+        }  catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex.getCause().getMessage());
+            }
+            throw ex;
         }
     }
 
@@ -78,6 +118,7 @@ public class TutorControllerImpl implements TutorController {
 
     @Override
     public byte[] getAvatar(UUID id) {
+        service.find(id).orElseThrow(NotFoundException::new);
         return this.service.getAvatar(id);
     }
 
