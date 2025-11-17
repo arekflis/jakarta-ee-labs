@@ -1,10 +1,9 @@
 package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
 import jakarta.ejb.EJB;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
@@ -101,7 +100,7 @@ public class TutorControllerImpl implements TutorController {
         }  catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
-        } catch (TransactionalException ex) {
+        } catch (EJBException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
                 log.log(Level.WARNING, ex.getMessage(), ex);
                 throw new BadRequestException(ex.getCause().getMessage());
