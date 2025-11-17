@@ -1,6 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.tutor.repository.impl;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
-public class TutorInMemoryRepository implements TutorRepository {
+@Dependent
+public class TutorRepositoryImpl implements TutorRepository {
 
     private EntityManager em;
 

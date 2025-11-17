@@ -1,6 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.repository.impl;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequestScoped
+@Dependent
 public class CourseRepositoryImpl implements CourseRepository {
 
     private EntityManager em;

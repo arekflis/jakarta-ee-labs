@@ -1,6 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.university.repository.impl;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestScoped
+@Dependent
 public class UniversityRepositoryImpl implements UniversityRepository {
 
     private EntityManager em;
