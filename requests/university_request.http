@@ -38,4 +38,4 @@ Content-Type: application/json
 
 # Delete university.
 
-DELETE http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd
+DELETE http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4
