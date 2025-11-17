@@ -62,14 +62,17 @@ public class CourseControllerImpl implements CourseController {
         return this.factory.coursesToResponse().apply(this.courseService.findAll());
     }
 
-    /*
     @Override
     public GetCoursesResponse getCoursesByTutor(UUID id) {
-        return this.courseService.findAllByTutor(id)
-                .map(this.factory.coursesToResponse())
-                .orElseThrow(NotFoundException::new);
+        try {
+            return this.courseService.findAllByTutor(id)
+                    .map(this.factory.coursesToResponse())
+                    .orElseThrow(NotFoundException::new);
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        }
     }
-    */
 
     @Override
     public GetCoursesResponse getCoursesByUniversity(UUID id) {
@@ -84,9 +87,9 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    public void putCourse(UUID id, UUID universityId, PutCourseRequest request) {
+    public void putCourse(UUID id, PutCourseRequest request) {
         try {
-            this.courseService.create(this.factory.requestToCourse().apply(id, universityId, request));
+            this.courseService.create(this.factory.requestToCourse().apply(id, request));
 
             throw new WebApplicationException(
                     Response.status(Response.Status.CREATED)
@@ -109,10 +112,10 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    public void patchCourse(UUID id, UUID universityId, PatchCourseRequest request) {
+    public void patchCourse(UUID id, PatchCourseRequest request) {
         try {
             this.courseService.find(id).ifPresentOrElse(
-                    course -> this.courseService.update(this.factory.updateCourse().apply(course, universityId, request)),
+                    course -> this.courseService.update(this.factory.updateCourse().apply(course, request)),
                     () -> {
                         throw new NotFoundException();
                     }

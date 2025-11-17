@@ -24,7 +24,7 @@ public class UpdateCourseWithModelFunction implements BiFunction<Course, CourseE
                 .passingThreshold(model.getPassingThreshold())
                 .semester(entity.getSemester())
                 .studyType(entity.getStudyType())
-                //.tutor(entity.getTutor())
+                .tutor(entity.getTutor())
                 .university(entity.getUniversity())
                 .build();
     }

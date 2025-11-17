@@ -22,12 +22,11 @@ public interface CourseController {
     @Produces(MediaType.APPLICATION_JSON)
     GetCourseResponse getCourseById(@PathParam("id") UUID id);
 
-    /*
+
     @GET
     @Path("/tutors/{id}/courses")
     @Produces(MediaType.APPLICATION_JSON)
     GetCoursesResponse getCoursesByTutor(@PathParam("id") UUID id);
-    */
 
     @GET
     @Path("/universities/{id}/courses")
@@ -35,14 +34,14 @@ public interface CourseController {
     GetCoursesResponse getCoursesByUniversity(@PathParam("id") UUID id);
 
     @PUT
-    @Path("/universities/{universityId}/courses/{id}")
+    @Path("/courses/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    void putCourse(@PathParam("id") UUID id, @PathParam("universityId") UUID universityId, PutCourseRequest request);
+    void putCourse(@PathParam("id") UUID id, PutCourseRequest request);
 
     @PATCH
-    @Path("/universities/{universityId}/courses/{id}")
+    @Path("/courses/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    void patchCourse(@PathParam("id") UUID id, @PathParam("universityId") UUID universityId, PatchCourseRequest request);
+    void patchCourse(@PathParam("id") UUID id, PatchCourseRequest request);
 
     @DELETE
     @Path("/courses/{id}")

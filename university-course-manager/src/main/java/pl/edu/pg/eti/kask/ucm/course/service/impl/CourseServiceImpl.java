@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
-import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 
@@ -54,16 +53,16 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("University does not exists");
         }
 
+        if (this.tutorRepository.find(entity.getTutor().getId()).isEmpty()) {
+            throw new IllegalArgumentException("Tutor does not exists");
+        }
+
         this.courseRepository.create(entity);
     }
 
     @Override
     @Transactional
     public void update(Course entity) {
-        if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
-            throw new IllegalArgumentException("University does not exists");
-        }
-
         this.courseRepository.update(entity);
     }
 
@@ -83,16 +82,14 @@ public class CourseServiceImpl implements CourseService {
                 .map(courseRepository::findAllByUniversity);
     }
 
-    /*
+
     @Override
     public Optional<List<Course>> findAllByTutor(UUID id) {
+        if (this.tutorRepository.find(id).isEmpty()) {
+            throw new IllegalArgumentException("Tutor does not exists");
+        }
+
         return this.tutorRepository.find(id)
                 .map(courseRepository::findAllByTutor);
     }
-
-    @Override
-    public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
-        return this.courseRepository.findByIdAndTutor(id, tutor);
-    }
-     */
 }
