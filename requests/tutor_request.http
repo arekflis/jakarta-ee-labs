@@ -6,19 +6,19 @@ GET http://localhost:9080/simple-ucm/api/tutors
 
 # Get single tutor.
 
-GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+GET http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 
 ###
 
 # Get single tutor avatar.
 
-GET http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+GET http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
 
 ###
 
 # Create new tutor.
 
-PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+PUT http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 Content-Type: application/json
 
 {
@@ -32,20 +32,16 @@ Content-Type: application/json
 
 # Create tutor avatar.
 
-PUT http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
-Content-Type: multipart/form-data; boundary=boundary
-
---boundary
-Content-Disposition: form-data; name="avatar"; filename="ju2.jpg'
+PUT http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+Content-Type: application/octet-stream
 
 < university-course-manager/src/main/resources/avatar/ju2.jpg
---boundary--
 
 ###
 
 # Update tutor.
 
-PATCH http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+PATCH http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 Content-Type: application/json
 
 {
@@ -57,23 +53,19 @@ Content-Type: application/json
 
 # Update tutor avatar.
 
-PATCH http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
-Content-Type: multipart/form-data; boundary=boundary
+PATCH http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+Content-Type: application/octet-stream
 
---boundary
-Content-Disposition: form-data; name="avatar"; filename="klopp-juergen.jpg'
-
-< university-course-manager/src/main/resources/avatar/klopp-juergen.jpg
---boundary--
+< university-course-manager/src/main/resources/avatar/teacher2.jpg
 
 ###
 
 # Delete tutor.
 
-DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+DELETE http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
 
 ###
 
 # Delete tutor avatar.
 
-DELETE http://localhost:9080/simple-ucm/api/tutor/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar
+DELETE http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87/avatar

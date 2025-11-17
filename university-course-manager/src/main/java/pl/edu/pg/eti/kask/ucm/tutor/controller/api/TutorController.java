@@ -26,7 +26,7 @@ public interface TutorController {
     GetTutorResponse getTutorById(@PathParam("id") UUID id);
 
     @GET
-    @Path("/tutors/{email}")
+    @Path("/tutors/email/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     GetTutorResponse getTutorByEmail(@PathParam("email") String email);
 
@@ -40,13 +40,13 @@ public interface TutorController {
     @Consumes(MediaType.APPLICATION_JSON)
     void patchTutor(@PathParam("id") UUID id, PatchTutorRequest request);
 
-    @PATCH
+    @DELETE
     @Path("/tutors/{id}")
     void deleteTutor(@PathParam("id") UUID id);
 
     @GET
     @Path("/tutors/{id}/avatar")
-    @Produces({"images/png", "image/jpeg"})
+    @Produces({"image/png", "image/jpg"})
     @SneakyThrows
     byte[] getAvatar(@PathParam("id") UUID id);
 
@@ -57,7 +57,7 @@ public interface TutorController {
 
     @DELETE
     @Path("/tutors/{id}/avatar")
-    void deleteAvatar(UUID id);
+    void deleteAvatar(@PathParam("id") UUID id);
 
     @PATCH
     @Path("/tutors/{id}/avatar")
