@@ -48,56 +48,6 @@ public class InitializedData {
         requestContextController.activate();
 
         LocalDateTime now = LocalDateTime.now();
-        /*
-        Tutor tutor1 = Tutor.builder()
-                .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
-                .createdAt(now)
-                .updatedAt(now)
-                .name("John")
-                .email("johndoe@gmail.com")
-                .dateOfBirth(LocalDate.of(1990, 10, 10))
-                .tutorRank(TutorRank.LECTURER)
-                .avatar("ju2.jpg")
-                .build();
-
-        Tutor tutor2 = Tutor.builder()
-                .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
-                .createdAt(now)
-                .updatedAt(now)
-                .name("Mark")
-                .email("markdoe@gmail.com")
-                .dateOfBirth(LocalDate.of(1991, 10, 20))
-                .tutorRank(TutorRank.ASSISTANT)
-                .avatar("klopp-juergen.jpg")
-                .build();
-
-        Tutor tutor3 = Tutor.builder()
-                .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
-                .createdAt(now)
-                .updatedAt(now)
-                .name("Peter")
-                .email("peter@pg.edu.pl")
-                .dateOfBirth(LocalDate.of(1940, 1, 10))
-                .tutorRank(TutorRank.PROFESSOR)
-                .avatar("teacher.jpg")
-                .build();
-
-        Tutor tutor4 = Tutor.builder()
-                .id(UUID.fromString("f5875513-bf7b-4ae1-b8a5-5b70a1b90e76"))
-                .createdAt(now)
-                .updatedAt(now)
-                .name("George")
-                .email("george@gmail.com")
-                .dateOfBirth(LocalDate.of(2000, 10, 10))
-                .tutorRank(TutorRank.LECTURER)
-                .avatar("teacher2.jpg")
-                .build();
-
-        tutorService.create(tutor1);
-        tutorService.create(tutor2);
-        tutorService.create(tutor3);
-        tutorService.create(tutor4);
-         */
 
         if (universityService.find(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4")).isEmpty()) {
             University university1 = University.builder()
@@ -134,6 +84,55 @@ public class InitializedData {
             this.universityService.create(university2);
             this.universityService.create(university3);
 
+            Tutor tutor1 = Tutor.builder()
+                    .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("John")
+                    .email("johndoe@gmail.com")
+                    .dateOfBirth(LocalDate.of(1990, 10, 10))
+                    .tutorRank(TutorRank.LECTURER)
+                    .avatar("ju2.jpg")
+                    .build();
+
+            Tutor tutor2 = Tutor.builder()
+                    .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Mark")
+                    .email("markdoe@gmail.com")
+                    .dateOfBirth(LocalDate.of(1991, 10, 20))
+                    .tutorRank(TutorRank.ASSISTANT)
+                    .avatar("klopp-juergen.jpg")
+                    .build();
+
+            Tutor tutor3 = Tutor.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Peter")
+                    .email("peter@pg.edu.pl")
+                    .dateOfBirth(LocalDate.of(1940, 1, 10))
+                    .tutorRank(TutorRank.PROFESSOR)
+                    .avatar("teacher.jpg")
+                    .build();
+
+            Tutor tutor4 = Tutor.builder()
+                    .id(UUID.fromString("f5875513-bf7b-4ae1-b8a5-5b70a1b90e76"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("George")
+                    .email("george@gmail.com")
+                    .dateOfBirth(LocalDate.of(2000, 10, 10))
+                    .tutorRank(TutorRank.LECTURER)
+                    .avatar("teacher2.jpg")
+                    .build();
+
+            tutorService.create(tutor1);
+            tutorService.create(tutor2);
+            tutorService.create(tutor3);
+            tutorService.create(tutor4);
+
             Course course1 = Course.builder()
                     .id(UUID.fromString("cc0b0577-bb6f-45b7-81d6-3db88e6ac19f"))
                     .createdAt(now)
@@ -144,7 +143,7 @@ public class InitializedData {
                     .passingThreshold(3.0)
                     .semester(2)
                     .university(university1)
-                    //.tutor(tutor1)
+                    .tutor(tutor1)
                     .build();
 
             Course course2 = Course.builder()
@@ -157,7 +156,7 @@ public class InitializedData {
                     .passingThreshold(3.5)
                     .semester(2)
                     .university(university1)
-                    //.tutor(tutor1)
+                    .tutor(tutor1)
                     .build();
 
             Course course3 = Course.builder()
@@ -170,7 +169,7 @@ public class InitializedData {
                     .passingThreshold(4.0)
                     .semester(2)
                     .university(university2)
-                    //.tutor(tutor2)
+                    .tutor(tutor2)
                     .build();
 
             this.courseService.create(course1);
