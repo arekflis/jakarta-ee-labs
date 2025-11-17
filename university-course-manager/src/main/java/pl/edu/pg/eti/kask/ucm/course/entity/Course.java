@@ -38,7 +38,12 @@ public class Course implements Serializable {
 
     private Integer semester;
 
-    //private Tutor tutor;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tutor_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Tutor tutor;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "university_id")
