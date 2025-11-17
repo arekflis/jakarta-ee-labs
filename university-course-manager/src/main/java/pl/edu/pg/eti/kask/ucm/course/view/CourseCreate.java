@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.view;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(force = true)
 public class CourseCreate implements Serializable {
 
-    private final CourseService courseService;
+    private CourseService courseService;
 
-    private final UniversityService universityService;
+    private UniversityService universityService;
 
     private final ModelFunctionFactory factory;
 
@@ -39,12 +40,18 @@ public class CourseCreate implements Serializable {
     private StudyType[] studyTypes;
 
     @Inject
-    public CourseCreate(CourseService courseService,
-                        UniversityService universityService,
-                        ModelFunctionFactory factory) {
-        this.courseService = courseService;
-        this.universityService = universityService;
+    public CourseCreate(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setUniversityService(UniversityService universityService) {
+        this.universityService = universityService;
+    }
+
+    @EJB
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
     }
 
     public void init() {

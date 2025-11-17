@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +29,7 @@ import java.util.logging.Level;
 @Log
 public class TutorControllerImpl implements TutorController {
 
-    private final TutorService service;
+    private TutorService service;
 
     private final DtoFunctionFactory factory;
 
@@ -43,13 +44,16 @@ public class TutorControllerImpl implements TutorController {
 
     @Inject
     public TutorControllerImpl(
-            TutorService service,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo)
     {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setTutorService(TutorService tutorService) {
+        this.service = tutorService;
     }
 
     @Override

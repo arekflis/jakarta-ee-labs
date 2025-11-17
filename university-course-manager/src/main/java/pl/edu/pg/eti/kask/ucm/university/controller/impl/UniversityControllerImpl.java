@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.university.controller.impl;
 
+import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.TransactionalException;
@@ -28,7 +29,7 @@ import java.util.logging.Level;
 @Log
 public class UniversityControllerImpl implements UniversityController {
 
-    private final UniversityService service;
+    private UniversityService service;
 
     private final DtoFunctionFactory factory;
 
@@ -43,13 +44,16 @@ public class UniversityControllerImpl implements UniversityController {
 
     @Inject
     public UniversityControllerImpl(
-            UniversityService service,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo
     ) {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setUniversityService(UniversityService universityService) {
+        this.service = universityService;
     }
 
     @Override
