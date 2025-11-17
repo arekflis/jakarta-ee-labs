@@ -2,8 +2,10 @@ package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
@@ -21,6 +23,7 @@ import java.util.UUID;
 
 @ApplicationScoped
 @NoArgsConstructor(force = true)
+@Log
 public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository repository;
@@ -34,12 +37,14 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     public Optional<Tutor> find(UUID id) {
-        return this.repository.find(id);
+        Optional<Tutor> tutor = this.repository.find(id);
+        return tutor;
     }
 
     @Override
-    public Optional<Tutor> findByEmail(String email){
-        return this.repository.findByEmail(email);
+    public Optional<Tutor> findByEmail(String email) {
+        Optional<Tutor> tutor = this.repository.findByEmail(email);
+        return tutor;
     }
 
     @Override
@@ -48,6 +53,7 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         if (this.repository.find(id).get().getAvatar() != null) {
             this.deleteAvatar(id);
@@ -56,11 +62,16 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    @Transactional
     public void create(Tutor entity) {
+        if (this.repository.find(entity.getId()).isPresent()) {
+            throw new IllegalArgumentException("Tutor already exists");
+        }
         this.repository.create(entity);
     }
 
     @Override
+    @Transactional
     public void update(Tutor entity){
         this.repository.update(entity);
     }
@@ -83,6 +94,7 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    @Transactional
     public void putAvatar(UUID id, InputStream is) {
         this.repository.find(id).ifPresent(
                 tutor -> {
@@ -104,6 +116,7 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    @Transactional
     public void deleteAvatar(UUID id) {
         this.repository.find(id).ifPresentOrElse(
                 tutor -> {
@@ -130,6 +143,7 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    @Transactional
     public void patchAvatar(UUID id, InputStream is) {
         this.repository.find(id).ifPresent(
                 tutor -> {
