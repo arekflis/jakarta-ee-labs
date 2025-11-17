@@ -34,7 +34,7 @@ Content-Type: application/json
   "studyType": "BACHELOR",
   "passingThreshold": "2.99",
   "semester": "1",
-  "tutor": "c4804e0f-769e-4ab9-9ebe-0578fb4f00a6",
+  "tutor": "3c6f1eb1-8069-44ab-988f-d7fed2b65d87",
   "university": "2d9b1e8c-67c5-4188-a911-5f064a63d8cd"
 }
 
