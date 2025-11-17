@@ -1,8 +1,8 @@
 package pl.edu.pg.eti.kask.ucm.course.service.impl;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class CourseServiceImpl implements CourseService {
 
@@ -43,7 +44,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
     public void create(Course entity) {
         if (this.courseRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Course already exists");
@@ -61,13 +61,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
     public void update(Course entity) {
         this.courseRepository.update(entity);
     }
 
     @Override
-    @Transactional
     public void delete(UUID id) {
         this.courseRepository.delete(id);
     }

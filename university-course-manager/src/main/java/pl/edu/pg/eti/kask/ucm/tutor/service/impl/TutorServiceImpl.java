@@ -1,11 +1,10 @@
 package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
-import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
@@ -21,9 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
-@Log
 public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository repository;
@@ -53,7 +52,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Transactional
     public void delete(UUID id) {
         if (this.repository.find(id).get().getAvatar() != null) {
             this.deleteAvatar(id);
@@ -62,7 +60,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Transactional
     public void create(Tutor entity) {
         if (this.repository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Tutor already exists");
@@ -71,7 +68,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Transactional
     public void update(Tutor entity){
         this.repository.update(entity);
     }
@@ -94,7 +90,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Transactional
     public void putAvatar(UUID id, InputStream is) {
         this.repository.find(id).ifPresent(
                 tutor -> {
@@ -116,7 +111,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Transactional
     public void deleteAvatar(UUID id) {
         this.repository.find(id).ifPresentOrElse(
                 tutor -> {
@@ -143,7 +137,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Transactional
     public void patchAvatar(UUID id, InputStream is) {
         this.repository.find(id).ifPresent(
                 tutor -> {
