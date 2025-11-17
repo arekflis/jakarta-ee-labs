@@ -1,10 +1,8 @@
-package pl.edu.pg.eti.kask.ucm.configuration.observer;
+package pl.edu.pg.eti.kask.ucm.configuration.singleton;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Initialized;
-import jakarta.enterprise.context.control.RequestContextController;
-import jakarta.enterprise.event.Observes;
-import jakarta.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.*;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
@@ -19,34 +17,36 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@ApplicationScoped
-public class InitializedData {
+@Singleton
+@Startup
+@TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
+@NoArgsConstructor
+public class InitializeData {
 
-    private final TutorService tutorService;
+    private TutorService tutorService;
 
-    private final UniversityService universityService;
+    private UniversityService universityService;
 
-    private final CourseService courseService;
+    private CourseService courseService;
 
-    private final RequestContextController requestContextController;
-
-    @Inject
-    public InitializedData(TutorService tutorService, UniversityService universityService,
-                           RequestContextController requestContextController, CourseService courseService) {
+    @EJB
+    public void setTutorService(TutorService tutorService) {
         this.tutorService = tutorService;
+    }
+
+    @EJB
+    public void setUniversityService(UniversityService universityService) {
         this.universityService = universityService;
+    }
+
+    @EJB
+    public void setCourseService(CourseService courseService) {
         this.courseService = courseService;
-        this.requestContextController = requestContextController;
     }
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        init();
-    }
-
+    @PostConstruct
     @SneakyThrows
-    private void init() {
-        requestContextController.activate();
-
+    private void init(){
         LocalDateTime now = LocalDateTime.now();
 
         if (universityService.find(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4")).isEmpty()) {
@@ -176,7 +176,5 @@ public class InitializedData {
             this.courseService.create(course2);
             this.courseService.create(course3);
         }
-
-        requestContextController.deactivate();
     }
 }
