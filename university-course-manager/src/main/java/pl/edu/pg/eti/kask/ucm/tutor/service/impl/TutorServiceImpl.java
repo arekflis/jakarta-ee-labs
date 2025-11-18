@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
@@ -26,12 +27,19 @@ import java.util.UUID;
 public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository repository;
+
     private final String avatarUploadPath;
 
+    private final Pbkdf2PasswordHash passwordHash;
+
     @Inject
-    public TutorServiceImpl(TutorRepository repository, @AvatarPath String avatarUploadPath) {
+    public TutorServiceImpl(TutorRepository repository,
+                            @AvatarPath String avatarUploadPath,
+                            @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash
+    ) {
         this.repository = repository;
         this.avatarUploadPath = avatarUploadPath;
+        this.passwordHash = passwordHash;
     }
 
     @Override
@@ -70,6 +78,7 @@ public class TutorServiceImpl implements TutorService {
         if (this.repository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Tutor already exists");
         }
+        entity.setPassword(passwordHash.generate(entity.getPassword().toCharArray()));
         this.repository.create(entity);
     }
 
