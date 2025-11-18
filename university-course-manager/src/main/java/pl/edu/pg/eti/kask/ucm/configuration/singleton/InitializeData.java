@@ -2,6 +2,8 @@ package pl.edu.pg.eti.kask.ucm.configuration.singleton;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.*;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
@@ -9,12 +11,14 @@ import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
 import pl.edu.pg.eti.kask.ucm.enums.course.StudyType;
 import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Singleton
@@ -28,6 +32,10 @@ public class InitializeData {
     private UniversityService universityService;
 
     private CourseService courseService;
+
+    @Inject
+    @SuppressWarnings("CdiInjectionPointsInspection")
+    private Pbkdf2PasswordHash passwordHash;
 
     @EJB
     public void setTutorService(TutorService tutorService) {
@@ -88,44 +96,56 @@ public class InitializeData {
                     .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                     .createdAt(now)
                     .updatedAt(now)
+                    .login("john")
+                    .password(passwordHash.generate("john".toCharArray()))
                     .name("John")
                     .email("johndoe@gmail.com")
                     .dateOfBirth(LocalDate.of(1990, 10, 10))
                     .tutorRank(TutorRank.LECTURER)
                     .avatar("ju2.jpg")
+                    .roles(List.of(TutorRoles.USER))
                     .build();
 
             Tutor tutor2 = Tutor.builder()
                     .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
                     .createdAt(now)
                     .updatedAt(now)
+                    .login("mark")
+                    .password(passwordHash.generate("mark".toCharArray()))
                     .name("Mark")
                     .email("markdoe@gmail.com")
                     .dateOfBirth(LocalDate.of(1991, 10, 20))
                     .tutorRank(TutorRank.ASSISTANT)
                     .avatar("klopp-juergen.jpg")
+                    .roles(List.of(TutorRoles.USER))
                     .build();
 
             Tutor tutor3 = Tutor.builder()
                     .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
                     .createdAt(now)
                     .updatedAt(now)
+                    .login("peter")
+                    .password(passwordHash.generate("peter".toCharArray()))
                     .name("Peter")
                     .email("peter@pg.edu.pl")
                     .dateOfBirth(LocalDate.of(1940, 1, 10))
                     .tutorRank(TutorRank.PROFESSOR)
                     .avatar("teacher.jpg")
+                    .roles(List.of(TutorRoles.USER))
                     .build();
 
             Tutor tutor4 = Tutor.builder()
                     .id(UUID.fromString("f5875513-bf7b-4ae1-b8a5-5b70a1b90e76"))
                     .createdAt(now)
                     .updatedAt(now)
+                    .login("george")
+                    .password(passwordHash.generate("george".toCharArray()))
                     .name("George")
                     .email("george@gmail.com")
                     .dateOfBirth(LocalDate.of(2000, 10, 10))
                     .tutorRank(TutorRank.LECTURER)
                     .avatar("teacher2.jpg")
+                    .roles(List.of(TutorRoles.ADMIN))
                     .build();
 
             tutorService.create(tutor1);
