@@ -1,0 +1,118 @@
+# Get all universities. NO credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/universities
+
+###
+
+# Get all universities. USER credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/universities
+Authorization: Basic am9objpqb2hu
+
+###
+
+
+# Get all universities. ADMIN credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/universities
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+
+###
+
+# Get single university. NO credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4
+
+###
+
+# Get single university. USER credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4
+Authorization: Basic am9objpqb2hu
+
+###
+
+# Get single university. ADMIN credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/universities/5d1da2ae-6a14-4b6d-8b4f-d117867118d4
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+
+###
+
+# Create new university. NO credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/universities/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "UWM",
+  "dateOfFoundation": "1999-05-15",
+  "city": "Olsztyn",
+  "numberOfEmployees": "12"
+}
+
+###
+
+# Create new university. USER credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/universities/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Authorization: Basic am9objpqb2hu
+Content-Type: application/json
+
+{
+  "name": "UWM",
+  "dateOfFoundation": "1999-05-15",
+  "city": "Olsztyn",
+  "numberOfEmployees": "12"
+}
+
+###
+
+# Create new university. ADMIN credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/universities/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+Content-Type: application/json
+
+{
+  "name": "UWM",
+  "dateOfFoundation": "1999-05-15",
+  "city": "Olsztyn",
+  "numberOfEmployees": "12"
+}
+
+###
+
+# Delete university. NO credentials.
+
+// @no-cookie-jar
+DELETE http://localhost:9080/simple-ucm/api/universities/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+
+
+###
+
+# Delete university. USER credentials.
+
+// @no-cookie-jar
+DELETE http://localhost:9080/simple-ucm/api/universities/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+Authorization: Basic am9objpqb2hu
+
+###
+
+
+# Delete university. ADMIN credentials.
+
+// @no-cookie-jar
+DELETE http://localhost:9080/simple-ucm/api/universities/525d3e7b-bb1f-4c13-bf17-926d1a12e4c0
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+
+###

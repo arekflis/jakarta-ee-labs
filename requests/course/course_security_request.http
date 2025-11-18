@@ -1,0 +1,163 @@
+# Get all courses. NO credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/courses
+
+###
+
+# Get all courses. USER credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/courses
+Authorization: Basic am9objpqb2hu
+
+###
+
+# Get all courses. ADMIN credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/courses
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+
+###
+
+# Get single course. NO credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/courses/ff327e8a-77c0-4f9b-90a2-89e16895d1e1
+
+### 
+
+# Get single course. USER credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/courses/ff327e8a-77c0-4f9b-90a2-89e16895d1e1
+Authorization: Basic am9objpqb2hu
+
+### 
+
+# Get single course. ADMIN credentials.
+
+// @no-cookie-jar
+GET http://localhost:9080/simple-ucm/api/courses/ff327e8a-77c0-4f9b-90a2-89e16895d1e1
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+
+### 
+
+# Create new course. NO credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "Mathematics",
+  "description": "An advanced course on Mathematics",
+  "studyType": "BACHELOR",
+  "passingThreshold": "2.99",
+  "semester": "1",
+  "tutor": "3c6f1eb1-8069-44ab-988f-d7fed2b65d87",
+  "university": "2d9b1e8c-67c5-4188-a911-5f064a63d8cd"
+}
+
+###
+
+# Create new course. USER credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Authorization: Basic am9objpqb2hu
+Content-Type: application/json
+
+{
+  "name": "Mathematics",
+  "description": "An advanced course on Mathematics",
+  "studyType": "BACHELOR",
+  "passingThreshold": "2.99",
+  "semester": "1",
+  "tutor": "3c6f1eb1-8069-44ab-988f-d7fed2b65d87",
+  "university": "2d9b1e8c-67c5-4188-a911-5f064a63d8cd"
+}
+
+###
+
+# Create new course. ADMIN credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d86
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+Content-Type: application/json
+
+{
+  "name": "Mathematics",
+  "description": "An advanced course on Mathematics",
+  "studyType": "BACHELOR",
+  "passingThreshold": "2.99",
+  "semester": "1",
+  "tutor": "3c6f1eb1-8069-44ab-988f-d7fed2b65d87",
+  "university": "2d9b1e8c-67c5-4188-a911-5f064a63d8cd"
+}
+
+###
+
+# Update course. NO credentials.
+
+// @no-cookie-jar
+PATCH http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d86
+Content-Type: application/json
+
+{
+  "name": "Law and Economics",
+  "description": "An introductory course on Law and Economics",
+  "passingThreshold": "2.98"
+}
+
+###
+
+# Update course. USER credentials.
+
+// @no-cookie-jar
+PATCH http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d86
+Authorization: Basic am9objpqb2hu
+Content-Type: application/json
+
+{
+  "name": "Law and Economics",
+  "description": "An introductory course on Law and Economics",
+  "passingThreshold": "2.98"
+}
+
+###
+
+# Update course. ADMIN credentials.
+
+// @no-cookie-jar
+PATCH http://localhost:9080/simple-ucm/api/universities/2d9b1e8c-67c5-4188-a911-5f064a63d8cd/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d86
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
+Content-Type: application/json
+
+{
+  "name": "Law and Economics",
+  "description": "An introductory course on Law and Economics",
+  "passingThreshold": "2.98"
+}
+
+###
+
+# Delete course. NO credentials.
+
+// @no-cookie-jar
+DELETE http://localhost:9080/simple-ucm/api/courses/ff327e8a-77c0-4f9b-90a2-89e16895d1e1
+
+
+# Delete course. USER credentials.
+
+// @no-cookie-jar
+DELETE http://localhost:9080/simple-ucm/api/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d86
+Authorization: Basic am9objpqb2hu
+
+# Delete course. ADMIN credentials.
+
+// @no-cookie-jar
+DELETE http://localhost:9080/simple-ucm/api/courses/3c6f1eb1-8069-44ab-988f-d7fed2b65d86
+Authorization: Basic Z2VvcmdlOmdlb3JnZQ==
