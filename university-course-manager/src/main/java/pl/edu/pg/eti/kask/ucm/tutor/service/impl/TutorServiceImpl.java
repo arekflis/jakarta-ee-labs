@@ -47,6 +47,12 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    public Optional<Tutor> findByLogin(String login) {
+        Optional<Tutor> tutor = this.repository.findByLogin(login);
+        return tutor;
+    }
+
+    @Override
     public List<Tutor> findAll() {
         return this.repository.findAll();
     }

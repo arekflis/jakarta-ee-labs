@@ -13,6 +13,7 @@ public class TutorToResponseFunction implements Function<Tutor, GetTutorResponse
                 .id(tutor.getId())
                 .createdAt(tutor.getCreatedAt())
                 .updatedAt(tutor.getUpdatedAt())
+                .login(tutor.getLogin())
                 .name(tutor.getName())
                 .dateOfBirth(tutor.getDateOfBirth())
                 .email(tutor.getEmail())

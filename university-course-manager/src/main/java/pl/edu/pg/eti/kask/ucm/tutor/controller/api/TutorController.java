@@ -30,6 +30,11 @@ public interface TutorController {
     @Produces(MediaType.APPLICATION_JSON)
     GetTutorResponse getTutorByEmail(@PathParam("email") String email);
 
+    @GET
+    @Path("/tutors/login/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    GetTutorResponse getTutorByLogin(@PathParam("login") String login);
+
     @PUT
     @Path("/tutors/{id}")
     @Consumes(MediaType.APPLICATION_JSON)

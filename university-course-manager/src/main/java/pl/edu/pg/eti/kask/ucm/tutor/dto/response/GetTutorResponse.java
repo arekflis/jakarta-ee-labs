@@ -22,6 +22,8 @@ public class GetTutorResponse {
 
     private LocalDateTime updatedAt;
 
+    private String login;
+
     private String name;
 
     private LocalDate dateOfBirth;

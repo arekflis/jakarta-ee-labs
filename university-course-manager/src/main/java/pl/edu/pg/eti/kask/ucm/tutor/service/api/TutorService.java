@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface TutorService extends Service<Tutor, UUID> {
 
     Optional<Tutor> findByEmail(String email);
+    Optional<Tutor> findByLogin(String login);
 
     byte[] getAvatar(UUID id);
     void putAvatar(UUID id, InputStream is);

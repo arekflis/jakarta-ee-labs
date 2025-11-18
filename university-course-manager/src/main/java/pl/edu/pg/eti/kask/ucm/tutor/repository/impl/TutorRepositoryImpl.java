@@ -51,4 +51,11 @@ public class TutorRepositoryImpl implements TutorRepository {
                 .setParameter("email", email)
                 .getSingleResult());
     }
+
+    @Override
+    public Optional<Tutor> findByLogin(String login){
+        return Optional.ofNullable(this.em.createQuery("select t from Tutor t where t.login = :login", Tutor.class)
+                .setParameter("login", login)
+                .getSingleResult());
+    }
 }

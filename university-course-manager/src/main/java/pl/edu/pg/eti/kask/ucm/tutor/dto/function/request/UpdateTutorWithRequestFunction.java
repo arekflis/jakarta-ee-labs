@@ -17,6 +17,8 @@ public class UpdateTutorWithRequestFunction implements BiFunction<Tutor, PatchTu
                 .id(entity.getId())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(now)
+                .login(entity.getLogin())
+                .password(entity.getPassword())
                 .name(entity.getName())
                 .email(request.getEmail())
                 .tutorRank(request.getTutorRank())

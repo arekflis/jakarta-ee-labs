@@ -17,6 +17,7 @@ public class RequestToTutorFunction implements BiFunction<UUID, PutTutorRequest,
                 .id(id)
                 .createdAt(now)
                 .updatedAt(now)
+                .login(request.getLogin())
                 .name(request.getName())
                 .email(request.getEmail())
                 .dateOfBirth(request.getDateOfBirth())

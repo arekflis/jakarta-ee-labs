@@ -29,6 +29,11 @@ public class Tutor implements Serializable {
 
     private LocalDateTime updatedAt;
 
+    private String login;
+
+    @ToString.Exclude
+    private String password;
+
     private String name;
 
     private LocalDate dateOfBirth;
@@ -45,4 +50,11 @@ public class Tutor implements Serializable {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Course> courses;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @CollectionTable(name = "tutor__roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<TutorRoles> roles;
 }

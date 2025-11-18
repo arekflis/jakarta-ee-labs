@@ -75,6 +75,13 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
+    public GetTutorResponse getTutorByLogin(String login) {
+        return this.service.findByLogin(login)
+                .map(this.factory.tutorToResponse())
+                .orElseThrow(NotFoundException::new);
+    }
+
+    @Override
     public void deleteTutor(UUID id) {
         this.service.find(id).ifPresentOrElse(
                 tutor -> this.service.delete(id),

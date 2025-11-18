@@ -6,6 +6,7 @@ import pl.edu.pg.eti.kask.ucm.course.dto.function.request.UpdateCourseWithReques
 import pl.edu.pg.eti.kask.ucm.course.dto.function.response.CourseToResponseFunction;
 import pl.edu.pg.eti.kask.ucm.course.dto.function.response.CoursesToResponseFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.request.RequestToTutorFunction;
+import pl.edu.pg.eti.kask.ucm.tutor.dto.function.request.UpdateTutorPasswordWithRequestFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.request.UpdateTutorWithRequestFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.response.TutorToResponseFunction;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.function.response.TutorsToResponseFunction;
@@ -32,6 +33,10 @@ public class DtoFunctionFactory {
 
     public RequestToTutorFunction requestToTutor(){
         return new RequestToTutorFunction();
+    }
+
+    public UpdateTutorPasswordWithRequestFunction updateTutorPassword() {
+        return  new UpdateTutorPasswordWithRequestFunction();
     }
 
     /* University functions */
