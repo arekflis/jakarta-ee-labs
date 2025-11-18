@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
@@ -18,6 +19,7 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorsResponse;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.io.InputStream;
@@ -56,6 +58,7 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorsResponse getTutors() {
         return this.factory.tutorsToResponse().apply(this.service.findAll());
     }

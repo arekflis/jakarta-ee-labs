@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.controller.impl;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
@@ -19,6 +20,7 @@ import pl.edu.pg.eti.kask.ucm.course.dto.request.PutCourseRequest;
 import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCourseResponse;
 import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCoursesResponse;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -55,6 +57,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetCourseResponse getCourseById(UUID id) {
         return this.courseService.find(id)
                 .map(this.factory.courseToResponse())
@@ -62,6 +65,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetCoursesResponse getCourses() {
         return this.factory.coursesToResponse().apply(this.courseService.findAll());
     }
@@ -91,6 +95,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void putCourse(UUID id, PutCourseRequest request) {
         try {
             this.courseService.create(this.factory.requestToCourse().apply(id, request));
@@ -116,6 +121,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void patchCourse(UUID id, PatchCourseRequest request) {
         try {
             this.courseService.find(id).ifPresentOrElse(
@@ -131,6 +137,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void deleteCourse(UUID id) {
         this.courseService.find(id).ifPresentOrElse(
                 course -> this.courseService.delete(id),
