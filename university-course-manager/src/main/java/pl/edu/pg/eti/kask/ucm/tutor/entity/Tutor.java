@@ -56,5 +56,5 @@ public class Tutor implements Serializable {
     @CollectionTable(name = "tutor__roles", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<TutorRoles> roles;
+    private List<String> roles;
 }

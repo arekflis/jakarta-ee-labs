@@ -20,6 +20,7 @@ public class UpdateTutorPasswordWithRequestFunction implements BiFunction<Tutor,
                 .tutorRank(entity.getTutorRank())
                 .dateOfBirth(entity.getDateOfBirth())
                 .avatar(entity.getAvatar())
+                .roles(entity.getRoles())
                 .build();
     }
 }

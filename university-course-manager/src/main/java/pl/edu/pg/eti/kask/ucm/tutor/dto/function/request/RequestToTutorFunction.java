@@ -2,8 +2,10 @@ package pl.edu.pg.eti.kask.ucm.tutor.dto.function.request;
 
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
@@ -23,6 +25,7 @@ public class RequestToTutorFunction implements BiFunction<UUID, PutTutorRequest,
                 .email(request.getEmail())
                 .dateOfBirth(request.getDateOfBirth())
                 .tutorRank(request.getTutorRank())
+                .roles(List.of(TutorRoles.USER))
                 .build();
     }
 }
