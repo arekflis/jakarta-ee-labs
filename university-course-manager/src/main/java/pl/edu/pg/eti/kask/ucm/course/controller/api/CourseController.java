@@ -34,14 +34,14 @@ public interface CourseController {
     GetCoursesResponse getCoursesByUniversity(@PathParam("id") UUID id);
 
     @PUT
-    @Path("/courses/{id}")
+    @Path("/universities/{universityId}/courses/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    void putCourse(@PathParam("id") UUID id, PutCourseRequest request);
+    void putCourse(@PathParam("id") UUID id, @PathParam("universityId") UUID universityId, PutCourseRequest request);
 
     @PATCH
-    @Path("/courses/{id}")
+    @Path("/universities/{universityId}/courses/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    void patchCourse(@PathParam("id") UUID id, PatchCourseRequest request);
+    void patchCourse(@PathParam("id") UUID id, @PathParam("universityId") UUID universityId, PatchCourseRequest request);
 
     @DELETE
     @Path("/courses/{id}")

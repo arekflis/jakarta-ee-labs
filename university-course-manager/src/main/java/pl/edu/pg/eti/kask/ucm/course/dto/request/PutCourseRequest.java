@@ -24,8 +24,4 @@ public class PutCourseRequest {
     private Double passingThreshold;
 
     private Integer semester;
-
-    private UUID tutor;
-
-    private UUID university;
 }

@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface CourseRepository extends Repository<Course, UUID> {
 
+    Optional<Course> findByIdAndTutor(UUID id, Tutor tutor);
+
     List<Course> findAllByTutor(Tutor tutor);
 
     List<Course> findAllByUniversity(University university);

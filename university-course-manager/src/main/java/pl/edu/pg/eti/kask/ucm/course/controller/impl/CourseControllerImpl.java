@@ -1,6 +1,5 @@
 package pl.edu.pg.eti.kask.ucm.course.controller.impl;
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
@@ -19,9 +18,10 @@ import pl.edu.pg.eti.kask.ucm.course.dto.request.PatchCourseRequest;
 import pl.edu.pg.eti.kask.ucm.course.dto.request.PutCourseRequest;
 import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCourseResponse;
 import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCoursesResponse;
+import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
-import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -57,17 +57,25 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetCourseResponse getCourseById(UUID id) {
-        return this.courseService.find(id)
+        try {
+            return this.courseService.find(id)
                 .map(this.factory.courseToResponse())
                 .orElseThrow(NotFoundException::new);
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        }
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetCoursesResponse getCourses() {
-        return this.factory.coursesToResponse().apply(this.courseService.findAll());
+        try {
+            return this.factory.coursesToResponse().apply(this.courseService.findAll());
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        }
     }
 
     @Override
@@ -95,10 +103,9 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
-    public void putCourse(UUID id, PutCourseRequest request) {
+    public void putCourse(UUID id, UUID universityId, PutCourseRequest request) {
         try {
-            this.courseService.create(this.factory.requestToCourse().apply(id, request));
+            this.courseService.create(this.factory.requestToCourse().apply(id, universityId, request));
 
             throw new WebApplicationException(
                     Response.status(Response.Status.CREATED)
@@ -121,15 +128,14 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
-    public void patchCourse(UUID id, PatchCourseRequest request) {
+    public void patchCourse(UUID id, UUID universityId, PatchCourseRequest request) {
         try {
-            this.courseService.find(id).ifPresentOrElse(
-                    course -> this.courseService.update(this.factory.updateCourse().apply(course, request)),
-                    () -> {
-                        throw new NotFoundException();
-                    }
-            );
+            Optional<Course> course = this.courseService.find(id);
+            if (course.isEmpty()) {
+                throw new NotFoundException();
+            }
+
+            this.courseService.update(this.factory.updateCourse().apply(course.get(), universityId, request));
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
@@ -137,13 +143,17 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void deleteCourse(UUID id) {
-        this.courseService.find(id).ifPresentOrElse(
-                course -> this.courseService.delete(id),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+        try {
+            Optional<Course> course = this.courseService.find(id);
+            if (course.isEmpty()) {
+                throw new NotFoundException();
+            }
+
+            this.courseService.delete(id);
+        } catch (IllegalArgumentException ex) {
+            log.log(Level.WARNING, ex.getMessage(), ex);
+            throw new BadRequestException(ex.getMessage());
+        }
     }
 }

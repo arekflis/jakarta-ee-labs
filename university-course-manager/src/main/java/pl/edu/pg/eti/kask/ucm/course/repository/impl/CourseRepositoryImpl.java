@@ -61,4 +61,14 @@ public class CourseRepositoryImpl implements CourseRepository {
                 .setParameter("university", university)
                 .getResultList();
     }
+
+    @Override
+    public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
+        List<Course> result = em.createQuery("select c from Course c where c.id = :id and c.tutor = :tutor", Course.class)
+                .setParameter("id", id)
+                .setParameter("tutor", tutor)
+                .getResultList();
+
+        return result.stream().findFirst();
+    }
 }
