@@ -1,13 +1,11 @@
 package pl.edu.pg.eti.kask.ucm.course.controller.impl;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
-import jakarta.ejb.EJBException;
+import jakarta.ejb.EJBAccessException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
@@ -20,6 +18,7 @@ import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCourseResponse;
 import pl.edu.pg.eti.kask.ucm.course.dto.response.GetCoursesResponse;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -57,6 +56,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetCourseResponse getCourseById(UUID id) {
         try {
             return this.courseService.find(id)
@@ -65,16 +65,21 @@ public class CourseControllerImpl implements CourseController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetCoursesResponse getCourses() {
         try {
             return this.factory.coursesToResponse().apply(this.courseService.findAll());
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
@@ -87,6 +92,8 @@ public class CourseControllerImpl implements CourseController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
@@ -99,10 +106,13 @@ public class CourseControllerImpl implements CourseController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void putCourse(UUID id, UUID universityId, PutCourseRequest request) {
         try {
             this.courseService.create(this.factory.requestToCourse().apply(id, universityId, request));
@@ -118,16 +128,13 @@ public class CourseControllerImpl implements CourseController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
-        } catch (EJBException ex) {
-            if (ex.getCause() instanceof IllegalArgumentException) {
-                log.log(Level.WARNING, ex.getMessage(), ex);
-                throw new BadRequestException(ex.getCause().getMessage());
-            }
-            throw ex;
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void patchCourse(UUID id, UUID universityId, PatchCourseRequest request) {
         try {
             Optional<Course> course = this.courseService.find(id);
@@ -139,10 +146,13 @@ public class CourseControllerImpl implements CourseController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void deleteCourse(UUID id) {
         try {
             Optional<Course> course = this.courseService.find(id);
@@ -154,6 +164,8 @@ public class CourseControllerImpl implements CourseController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 }

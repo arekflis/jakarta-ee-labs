@@ -1,7 +1,5 @@
 package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -10,7 +8,6 @@ import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
-import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
@@ -46,34 +43,29 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public Optional<Tutor> find(UUID id) {
         Optional<Tutor> tutor = this.repository.find(id);
         return tutor;
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public Optional<Tutor> findByEmail(String email) {
         Optional<Tutor> tutor = this.repository.findByEmail(email);
         return tutor;
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public Optional<Tutor> findByLogin(String login) {
         Optional<Tutor> tutor = this.repository.findByLogin(login);
         return tutor;
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public List<Tutor> findAll() {
         return this.repository.findAll();
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public void delete(UUID id) {
         if (this.repository.find(id).get().getAvatar() != null) {
             this.deleteAvatar(id);
@@ -82,7 +74,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @PermitAll
     public void create(Tutor entity) {
         if (this.repository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Tutor already exists");
@@ -92,7 +83,6 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public void update(Tutor entity){
         this.repository.update(entity);
     }

@@ -1,13 +1,12 @@
 package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
-import jakarta.ejb.EJBException;
+import jakarta.ejb.EJBAccessException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
@@ -18,6 +17,7 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorsResponse;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.io.InputStream;
@@ -56,42 +56,69 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorsResponse getTutors() {
-        return this.factory.tutorsToResponse().apply(this.service.findAll());
+        try {
+            return this.factory.tutorsToResponse().apply(this.service.findAll());
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
+
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorResponse getTutorById(UUID id) {
-        return this.service.find(id)
-                .map(this.factory.tutorToResponse())
-                .orElseThrow(NotFoundException::new);
+        try {
+            return this.service.find(id)
+                    .map(this.factory.tutorToResponse())
+                    .orElseThrow(NotFoundException::new);
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorResponse getTutorByEmail(String email) {
-        return this.service.findByEmail(email)
-                .map(this.factory.tutorToResponse())
-                .orElseThrow(NotFoundException::new);
+        try {
+            return this.service.findByEmail(email)
+                    .map(this.factory.tutorToResponse())
+                    .orElseThrow(NotFoundException::new);
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorResponse getTutorByLogin(String login) {
-        return this.service.findByLogin(login)
-                .map(this.factory.tutorToResponse())
-                .orElseThrow(NotFoundException::new);
+        try {
+            return this.service.findByLogin(login)
+                    .map(this.factory.tutorToResponse())
+                    .orElseThrow(NotFoundException::new);
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void deleteTutor(UUID id) {
-        this.service.find(id).ifPresentOrElse(
-                tutor -> this.service.delete(id),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+        try {
+            this.service.find(id).ifPresentOrElse(
+                    tutor -> this.service.delete(id),
+                    () -> {
+                        throw new NotFoundException();
+                    }
+            );
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
     }
 
     @Override
+    @PermitAll
     public void putTutor(UUID id, PutTutorRequest request) {
         try {
             this.service.create(this.factory.requestToTutor().apply(id, request));
@@ -107,23 +134,24 @@ public class TutorControllerImpl implements TutorController {
         }  catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
-        } catch (EJBException ex) {
-            if (ex.getCause() instanceof IllegalArgumentException) {
-                log.log(Level.WARNING, ex.getMessage(), ex);
-                throw new BadRequestException(ex.getCause().getMessage());
-            }
-            throw ex;
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void patchTutor(UUID id, PatchTutorRequest request) {
-        this.service.find(id).ifPresentOrElse(
-                tutor -> this.service.update(this.factory.updateTutor().apply(tutor, request)),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+        try {
+            this.service.find(id).ifPresentOrElse(
+                    tutor -> this.service.update(this.factory.updateTutor().apply(tutor, request)),
+                    () -> {
+                        throw new NotFoundException();
+                    }
+            );
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
     }
 
     @Override

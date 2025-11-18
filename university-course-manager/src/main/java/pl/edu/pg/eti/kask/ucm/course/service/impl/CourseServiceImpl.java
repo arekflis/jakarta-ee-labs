@@ -1,6 +1,5 @@
 package pl.edu.pg.eti.kask.ucm.course.service.impl;
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -44,7 +43,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public Optional<Course> find(UUID id) {
         if (this.isAdmin()){
             return this.courseRepository.find(id);
@@ -58,7 +56,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public List<Course> findAll() {
         if (this.isAdmin()) {
             return this.courseRepository.findAll();
@@ -94,7 +91,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void update(Course entity) {
         if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
             throw new IllegalArgumentException("University does not exists");
@@ -104,7 +100,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void delete(UUID id) {
         this.courseRepository.delete(id);
     }
