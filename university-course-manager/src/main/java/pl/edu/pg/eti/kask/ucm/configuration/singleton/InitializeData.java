@@ -7,14 +7,14 @@ import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
-import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
+import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
 import pl.edu.pg.eti.kask.ucm.enums.course.StudyType;
 import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
-import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
+import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
-import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
+import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,41 +23,29 @@ import java.util.UUID;
 
 @Singleton
 @Startup
-@TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
+@TransactionAttribute(value = TransactionAttributeType.REQUIRED)
 @NoArgsConstructor
 public class InitializeData {
 
-    private TutorService tutorService;
+    @Inject
+    private TutorRepository tutorRepository;
 
-    private UniversityService universityService;
+    @Inject
+    private UniversityRepository universityRepository;
 
-    private CourseService courseService;
+    @Inject
+    private CourseRepository courseRepository;
 
     @Inject
     @SuppressWarnings("CdiInjectionPointsInspection")
     private Pbkdf2PasswordHash passwordHash;
-
-    @EJB
-    public void setTutorService(TutorService tutorService) {
-        this.tutorService = tutorService;
-    }
-
-    @EJB
-    public void setUniversityService(UniversityService universityService) {
-        this.universityService = universityService;
-    }
-
-    @EJB
-    public void setCourseService(CourseService courseService) {
-        this.courseService = courseService;
-    }
 
     @PostConstruct
     @SneakyThrows
     private void init(){
         LocalDateTime now = LocalDateTime.now();
 
-        if (universityService.find(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4")).isEmpty()) {
+        if (universityRepository.find(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4")).isEmpty()) {
             University university1 = University.builder()
                     .id(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4"))
                     .createdAt(now)
@@ -88,9 +76,9 @@ public class InitializeData {
                     .dateOfFoundation(LocalDate.of(1901, 12, 21))
                     .build();
 
-            this.universityService.create(university1);
-            this.universityService.create(university2);
-            this.universityService.create(university3);
+            this.universityRepository.create(university1);
+            this.universityRepository.create(university2);
+            this.universityRepository.create(university3);
 
             Tutor tutor1 = Tutor.builder()
                     .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
@@ -148,10 +136,10 @@ public class InitializeData {
                     .roles(List.of(TutorRoles.ADMIN))
                     .build();
 
-            tutorService.create(tutor1);
-            tutorService.create(tutor2);
-            tutorService.create(tutor3);
-            tutorService.create(tutor4);
+            this.tutorRepository.create(tutor1);
+            this.tutorRepository.create(tutor2);
+            this.tutorRepository.create(tutor3);
+            this.tutorRepository.create(tutor4);
 
             Course course1 = Course.builder()
                     .id(UUID.fromString("cc0b0577-bb6f-45b7-81d6-3db88e6ac19f"))
@@ -192,9 +180,9 @@ public class InitializeData {
                     .tutor(tutor2)
                     .build();
 
-            this.courseService.create(course1);
-            this.courseService.create(course2);
-            this.courseService.create(course3);
+            this.courseRepository.create(course1);
+            this.courseRepository.create(course2);
+            this.courseRepository.create(course3);
         }
     }
 }
