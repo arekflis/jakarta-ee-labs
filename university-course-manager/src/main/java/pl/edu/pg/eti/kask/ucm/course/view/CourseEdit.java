@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.view;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Named
 public class CourseEdit implements Serializable {
 
-    private final CourseService service;
+    private CourseService service;
 
     private final ModelFunctionFactory factory;
 
@@ -33,10 +34,13 @@ public class CourseEdit implements Serializable {
     private CourseEditModel course;
 
     @Inject
-    public CourseEdit(CourseService service,
-                      ModelFunctionFactory factory) {
-        this.service = service;
+    public CourseEdit(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setCourseService(CourseService courseService) {
+        this.service = courseService;
     }
 
     public void init() throws IOException {

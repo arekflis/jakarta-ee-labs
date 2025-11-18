@@ -28,7 +28,7 @@ public class GetTutorsResponse {
 
         private LocalDateTime createdAt;
 
-        private String name;
+        private String login;
     }
 
     @Singular

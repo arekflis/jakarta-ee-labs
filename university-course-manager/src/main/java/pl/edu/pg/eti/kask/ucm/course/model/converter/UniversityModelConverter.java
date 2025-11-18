@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.model.converter;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -16,15 +17,18 @@ import java.util.UUID;
 @FacesConverter(forClass = UniversityModel.class, managed = true)
 public class UniversityModelConverter implements Converter<UniversityModel> {
 
-    private final UniversityService service;
+    private UniversityService service;
 
     private final ModelFunctionFactory factory;
 
     @Inject
-    public UniversityModelConverter(UniversityService service,
-                                    ModelFunctionFactory factory) {
+    public UniversityModelConverter(ModelFunctionFactory factory) {
         this.factory = factory;
-        this.service = service;
+    }
+
+    @EJB
+    public void setUniversityService(UniversityService universityService) {
+        this.service = universityService;
     }
 
     @Override

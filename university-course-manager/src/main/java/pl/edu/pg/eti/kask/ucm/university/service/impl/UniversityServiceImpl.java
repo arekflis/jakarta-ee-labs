@@ -1,10 +1,9 @@
 package pl.edu.pg.eti.kask.ucm.university.service.impl;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
-import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
@@ -13,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
-@Log
 public class UniversityServiceImpl implements UniversityService {
 
     private final UniversityRepository universityRepository;
@@ -42,7 +41,6 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    @Transactional
     public void create(University entity) {
         if (this.universityRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("University already exists");
@@ -52,13 +50,11 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    @Transactional
     public void update(University entity) {
         this.universityRepository.update(entity);
     }
 
     @Override
-    @Transactional
     public void delete(UUID id) {
         this.universityRepository.delete(id);
     }

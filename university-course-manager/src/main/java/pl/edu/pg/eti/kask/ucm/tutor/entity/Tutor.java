@@ -1,13 +1,14 @@
 package pl.edu.pg.eti.kask.ucm.tutor.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -18,6 +19,7 @@ import java.util.UUID;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Table(name = "tutors")
 public class Tutor implements Serializable {
 
     @Id
@@ -26,6 +28,11 @@ public class Tutor implements Serializable {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String login;
+
+    @ToString.Exclude
+    private String password;
 
     private String name;
 
@@ -38,4 +45,16 @@ public class Tutor implements Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private String avatar;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Course> courses;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @CollectionTable(name = "tutor__roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> roles;
 }

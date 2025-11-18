@@ -1,7 +1,9 @@
 package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
@@ -19,27 +21,43 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class TutorServiceImpl implements TutorService {
 
     private final TutorRepository repository;
+
     private final String avatarUploadPath;
 
+    private final Pbkdf2PasswordHash passwordHash;
+
     @Inject
-    public TutorServiceImpl(TutorRepository repository, @AvatarPath String avatarUploadPath) {
+    public TutorServiceImpl(TutorRepository repository,
+                            @AvatarPath String avatarUploadPath,
+                            @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash
+    ) {
         this.repository = repository;
         this.avatarUploadPath = avatarUploadPath;
+        this.passwordHash = passwordHash;
     }
 
     @Override
     public Optional<Tutor> find(UUID id) {
-        return this.repository.find(id);
+        Optional<Tutor> tutor = this.repository.find(id);
+        return tutor;
     }
 
     @Override
-    public Optional<Tutor> findByEmail(String email){
-        return this.repository.findByEmail(email);
+    public Optional<Tutor> findByEmail(String email) {
+        Optional<Tutor> tutor = this.repository.findByEmail(email);
+        return tutor;
+    }
+
+    @Override
+    public Optional<Tutor> findByLogin(String login) {
+        Optional<Tutor> tutor = this.repository.findByLogin(login);
+        return tutor;
     }
 
     @Override
@@ -57,6 +75,10 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     public void create(Tutor entity) {
+        if (this.repository.find(entity.getId()).isPresent()) {
+            throw new IllegalArgumentException("Tutor already exists");
+        }
+        entity.setPassword(passwordHash.generate(entity.getPassword().toCharArray()));
         this.repository.create(entity);
     }
 

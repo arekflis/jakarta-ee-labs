@@ -22,12 +22,11 @@ public interface CourseController {
     @Produces(MediaType.APPLICATION_JSON)
     GetCourseResponse getCourseById(@PathParam("id") UUID id);
 
-    /*
+
     @GET
     @Path("/tutors/{id}/courses")
     @Produces(MediaType.APPLICATION_JSON)
     GetCoursesResponse getCoursesByTutor(@PathParam("id") UUID id);
-    */
 
     @GET
     @Path("/universities/{id}/courses")

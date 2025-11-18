@@ -18,17 +18,14 @@ public class CourseToResponseFunction implements Function<Course, GetCourseRespo
                 .studyType(course.getStudyType())
                 .passingThreshold(course.getPassingThreshold())
                 .semester(course.getSemester())
+                .tutor(GetCourseResponse.Tutor.builder()
+                        .id(course.getTutor().getId())
+                        .name(course.getTutor().getName())
+                        .build())
                 .university(GetCourseResponse.University.builder()
                         .id(course.getUniversity().getId())
                         .name(course.getUniversity().getName())
                         .build())
                 .build();
-
-        /*
-                        .tutor(GetCourseResponse.Tutor.builder()
-                        .id(course.getTutor().getId())
-                        .name(course.getTutor().getName())
-                        .build())
-         */
     }
 }

@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.university.view;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -11,16 +12,20 @@ import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 @Named
 public class UniversityList {
 
-    private final UniversityService service;
+    private UniversityService service;
 
     private UniversitiesModel universities;
 
     private final ModelFunctionFactory factory;
 
     @Inject
-    public UniversityList(UniversityService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public UniversityList(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setUniversityService(UniversityService universityService) {
+        this.service = universityService;
     }
 
     public UniversitiesModel getUniversities() {

@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface TutorRepository extends Repository<Tutor, UUID> {
 
     Optional<Tutor> findByEmail(String email);
+
+    Optional<Tutor> findByLogin(String login);
 }

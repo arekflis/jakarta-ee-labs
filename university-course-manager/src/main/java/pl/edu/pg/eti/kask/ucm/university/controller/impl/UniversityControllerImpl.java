@@ -1,18 +1,18 @@
 package pl.edu.pg.eti.kask.ucm.university.controller.impl;
 
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBAccessException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.TransactionalException;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.ucm.component.DtoFunctionFactory;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.university.controller.api.UniversityController;
 import pl.edu.pg.eti.kask.ucm.university.dto.request.PatchUniversityRequest;
 import pl.edu.pg.eti.kask.ucm.university.dto.request.PutUniversityRequest;
@@ -28,7 +28,7 @@ import java.util.logging.Level;
 @Log
 public class UniversityControllerImpl implements UniversityController {
 
-    private final UniversityService service;
+    private UniversityService service;
 
     private final DtoFunctionFactory factory;
 
@@ -43,21 +43,26 @@ public class UniversityControllerImpl implements UniversityController {
 
     @Inject
     public UniversityControllerImpl(
-            UniversityService service,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo
     ) {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
     }
 
+    @EJB
+    public void setUniversityService(UniversityService universityService) {
+        this.service = universityService;
+    }
+
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetUniversitiesResponse getUniversities() {
         return this.factory.universitiesToResponse().apply(this.service.findAll());
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetUniversityResponse getUniversityById(UUID id) {
         return this.service.find(id)
                 .map(this.factory.universityToResponse())
@@ -65,6 +70,7 @@ public class UniversityControllerImpl implements UniversityController {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public GetUniversitiesResponse getUniversitiesByCity(String city) {
         return Optional.of(this.service.findByCity(city))
                 .filter(list -> !list.isEmpty())
@@ -74,6 +80,7 @@ public class UniversityControllerImpl implements UniversityController {
 
     @Override
     @SneakyThrows
+    @RolesAllowed(TutorRoles.ADMIN)
     public void putUniversity(UUID id, PutUniversityRequest request) {
         try {
             this.service.create(this.factory.requestToUniversity().apply(id, request));
@@ -89,16 +96,13 @@ public class UniversityControllerImpl implements UniversityController {
         } catch (IllegalArgumentException ex) {
             log.log(Level.WARNING, ex.getMessage(), ex);
             throw new BadRequestException(ex.getMessage());
-        } catch (TransactionalException ex) {
-            if (ex.getCause() instanceof IllegalArgumentException) {
-                log.log(Level.WARNING, ex.getMessage(), ex);
-                throw new BadRequestException(ex.getCause().getMessage());
-            }
-            throw ex;
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
         }
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void patchUniversity(UUID id, PatchUniversityRequest request) {
         this.service.find(id).ifPresentOrElse(
                 university -> this.service.update(this.factory.updateUniversity().apply(university, request)),
@@ -109,12 +113,17 @@ public class UniversityControllerImpl implements UniversityController {
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void deleteUniversity(UUID id) {
-        this.service.find(id).ifPresentOrElse(
-                university -> this.service.delete(id),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+        try {
+            this.service.find(id).ifPresentOrElse(
+                    university -> this.service.delete(id),
+                    () -> {
+                        throw new NotFoundException();
+                    }
+            );
+        } catch (EJBAccessException ex) {
+            throw new ForbiddenException();
+        }
     }
 }

@@ -1,0 +1,16 @@
+# Create new tutor. NO credentials.
+
+// @no-cookie-jar
+PUT http://localhost:9080/simple-ucm/api/tutors/3c6f1eb1-8069-44ab-988f-d7fed2b65d87
+Content-Type: application/json
+
+{
+  "name": "Sigrid",
+  "login": "Sigrid",
+  "password": "SigridPass",
+  "dateOfBirth": "2005-05-15",
+  "email": "Sigrid@sigrid.com",
+  "tutorRank": "PROFESSOR"
+}
+
+###

@@ -14,6 +14,10 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class PutTutorRequest {
 
+    private String login;
+
+    private String password;
+
     private String name;
 
     private LocalDate dateOfBirth;

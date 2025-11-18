@@ -1,6 +1,6 @@
 package pl.edu.pg.eti.kask.ucm.course.repository.impl;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequestScoped
+@Dependent
 public class CourseRepositoryImpl implements CourseRepository {
 
     private EntityManager em;
@@ -48,27 +48,27 @@ public class CourseRepositoryImpl implements CourseRepository {
         this.em.merge(entity);
     }
 
-    /*
-    @Override
-    public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
-        return this.dataStore.findAllCourses().stream()
-                .filter(course -> course.getId().equals(id))
-                .filter(course -> course.getTutor().equals(tutor))
-                .findFirst();
-    }
-
     @Override
     public List<Course> findAllByTutor(Tutor tutor) {
-        return this.dataStore.findAllCourses().stream()
-                .filter(course -> tutor.equals(course.getTutor()))
-                .collect(Collectors.toList());
+        return this.em.createQuery("select c from Course c where c.tutor = :tutor", Course.class)
+                .setParameter("tutor", tutor)
+                .getResultList();
     }
-    */
 
     @Override
     public List<Course> findAllByUniversity(University university) {
         return this.em.createQuery("select c from Course c where c.university = :university", Course.class)
                 .setParameter("university", university)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
+        List<Course> result = em.createQuery("select c from Course c where c.id = :id and c.tutor = :tutor", Course.class)
+                .setParameter("id", id)
+                .setParameter("tutor", tutor)
+                .getResultList();
+
+        return result.stream().findFirst();
     }
 }

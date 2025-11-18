@@ -7,7 +7,6 @@ import pl.edu.pg.eti.kask.ucm.university.entity.University;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 public class UpdateCourseWithRequestFunction implements TriFunction<Course, UUID, PatchCourseRequest, Course> {
 
@@ -24,6 +23,7 @@ public class UpdateCourseWithRequestFunction implements TriFunction<Course, UUID
                 .semester(entity.getSemester())
                 .studyType(entity.getStudyType())
                 .passingThreshold(request.getPassingThreshold())
+                .tutor(entity.getTutor())
                 .university(University.builder()
                         .id(universityId)
                         .build())

@@ -15,7 +15,7 @@ public class TutorsToResponseFunction implements Function<List<Tutor>, GetTutors
                         .map(tutor -> GetTutorsResponse.Tutor.builder()
                                 .id(tutor.getId())
                                 .createdAt(tutor.getCreatedAt())
-                                .name(tutor.getName())
+                                .login(tutor.getLogin())
                                 .build())
                         .toList())
                 .build();

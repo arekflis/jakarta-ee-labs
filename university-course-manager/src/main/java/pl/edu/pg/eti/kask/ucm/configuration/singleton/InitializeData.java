@@ -1,0 +1,188 @@
+package pl.edu.pg.eti.kask.ucm.configuration.singleton;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.*;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
+import pl.edu.pg.eti.kask.ucm.course.entity.Course;
+import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
+import pl.edu.pg.eti.kask.ucm.enums.course.StudyType;
+import pl.edu.pg.eti.kask.ucm.enums.tutor.TutorRank;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
+import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
+import pl.edu.pg.eti.kask.ucm.university.entity.University;
+import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+@Singleton
+@Startup
+@TransactionAttribute(value = TransactionAttributeType.REQUIRED)
+@NoArgsConstructor
+public class InitializeData {
+
+    @Inject
+    private TutorRepository tutorRepository;
+
+    @Inject
+    private UniversityRepository universityRepository;
+
+    @Inject
+    private CourseRepository courseRepository;
+
+    @Inject
+    @SuppressWarnings("CdiInjectionPointsInspection")
+    private Pbkdf2PasswordHash passwordHash;
+
+    @PostConstruct
+    @SneakyThrows
+    private void init(){
+        LocalDateTime now = LocalDateTime.now();
+
+        if (universityRepository.find(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4")).isEmpty()) {
+            University university1 = University.builder()
+                    .id(UUID.fromString("5d1da2ae-6a14-4b6d-8b4f-d117867118d4"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Gdansk University of Technology")
+                    .numberOfEmployees(120)
+                    .city("Gdansk")
+                    .dateOfFoundation(LocalDate.of(1892, 10, 10))
+                    .build();
+
+            University university2 = University.builder()
+                    .id(UUID.fromString("2d9b1e8c-67c5-4188-a911-5f064a63d8cd"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Medical University of Gdansk")
+                    .numberOfEmployees(220)
+                    .city("Gdansk")
+                    .dateOfFoundation(LocalDate.of(1920, 1, 19))
+                    .build();
+
+            University university3 = University.builder()
+                    .id(UUID.fromString("525d3e7b-bb1f-4c13-bf17-926d1a12e4c0"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Warsaw University of Technology")
+                    .numberOfEmployees(241)
+                    .city("Warsaw")
+                    .dateOfFoundation(LocalDate.of(1901, 12, 21))
+                    .build();
+
+            this.universityRepository.create(university1);
+            this.universityRepository.create(university2);
+            this.universityRepository.create(university3);
+
+            Tutor tutor1 = Tutor.builder()
+                    .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .login("john")
+                    .password(passwordHash.generate("john".toCharArray()))
+                    .name("John")
+                    .email("johndoe@gmail.com")
+                    .dateOfBirth(LocalDate.of(1990, 10, 10))
+                    .tutorRank(TutorRank.LECTURER)
+                    .avatar("ju2.jpg")
+                    .roles(List.of(TutorRoles.USER))
+                    .build();
+
+            Tutor tutor2 = Tutor.builder()
+                    .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .login("mark")
+                    .password(passwordHash.generate("mark".toCharArray()))
+                    .name("Mark")
+                    .email("markdoe@gmail.com")
+                    .dateOfBirth(LocalDate.of(1991, 10, 20))
+                    .tutorRank(TutorRank.ASSISTANT)
+                    .avatar("klopp-juergen.jpg")
+                    .roles(List.of(TutorRoles.USER))
+                    .build();
+
+            Tutor tutor3 = Tutor.builder()
+                    .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .login("peter")
+                    .password(passwordHash.generate("peter".toCharArray()))
+                    .name("Peter")
+                    .email("peter@pg.edu.pl")
+                    .dateOfBirth(LocalDate.of(1940, 1, 10))
+                    .tutorRank(TutorRank.PROFESSOR)
+                    .avatar("teacher.jpg")
+                    .roles(List.of(TutorRoles.USER))
+                    .build();
+
+            Tutor tutor4 = Tutor.builder()
+                    .id(UUID.fromString("f5875513-bf7b-4ae1-b8a5-5b70a1b90e76"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .login("george")
+                    .password(passwordHash.generate("george".toCharArray()))
+                    .name("George")
+                    .email("george@gmail.com")
+                    .dateOfBirth(LocalDate.of(2000, 10, 10))
+                    .tutorRank(TutorRank.LECTURER)
+                    .avatar("teacher2.jpg")
+                    .roles(List.of(TutorRoles.ADMIN))
+                    .build();
+
+            this.tutorRepository.create(tutor1);
+            this.tutorRepository.create(tutor2);
+            this.tutorRepository.create(tutor3);
+            this.tutorRepository.create(tutor4);
+
+            Course course1 = Course.builder()
+                    .id(UUID.fromString("cc0b0577-bb6f-45b7-81d6-3db88e6ac19f"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Object-Oriented Programming")
+                    .description("Object-Oriented Programming")
+                    .studyType(StudyType.ENGINEERING)
+                    .passingThreshold(3.0)
+                    .semester(2)
+                    .university(university1)
+                    .tutor(tutor1)
+                    .build();
+
+            Course course2 = Course.builder()
+                    .id(UUID.fromString("f08ef7e3-7f2a-4378-b1fb-2922d730c70d"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Algorithms and Data Structure")
+                    .description("Algorithms and Data Structure")
+                    .studyType(StudyType.ENGINEERING)
+                    .passingThreshold(3.5)
+                    .semester(2)
+                    .university(university1)
+                    .tutor(tutor1)
+                    .build();
+
+            Course course3 = Course.builder()
+                    .id(UUID.fromString("ff327e8a-77c0-4f9b-90a2-89e16895d1e1"))
+                    .createdAt(now)
+                    .updatedAt(now)
+                    .name("Economy")
+                    .description("Economy")
+                    .studyType(StudyType.MASTER)
+                    .passingThreshold(4.0)
+                    .semester(2)
+                    .university(university2)
+                    .tutor(tutor2)
+                    .build();
+
+            this.courseRepository.create(course1);
+            this.courseRepository.create(course2);
+            this.courseRepository.create(course3);
+        }
+    }
+}
