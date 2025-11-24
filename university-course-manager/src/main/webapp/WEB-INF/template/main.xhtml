@@ -12,7 +12,7 @@
         <meta name="keywords" content="UCM"/>
         <meta name="author" content="Arkadiusz Flisikowski"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Simple RPG</title>
+        <title>Simple University Course Manager</title>
 
         <h:outputStylesheet library="webjars" name="mdb-ui-kit/6.4.0/css/mdb.min.css"/>
         <h:outputStylesheet library="default" name="css/main.css"/>
@@ -22,9 +22,17 @@
 
     <h:body>
         <div class="container">
-            <header class="mb-4 mt-4 d-flex align-items-center">
-                <h:graphicImage class="logo" library="default" name="img/logo.jpg" alt="Gdansk Tech Logo"/>
-                <h1>Jakarta EE Labs - Simple University Course Manager</h1>
+            <header class="mb-4 mt-4">
+                <div class="d-flex align-items-center">
+                    <h:graphicImage class="logo" library="default" name="img/logo.jpg" alt="Gdansk Tech Logo"/>
+                    <h1>Jakarta EE Labs - Simple University Course Manager</h1>
+                </div>
+                <h:form styleClass="container d-flex align-items-center justify-content-end"
+                        rendered="#{facesContext.externalContext.userPrincipal != null}">
+                    Logged: <h:outputText value="#{facesContext.externalContext.userPrincipal.name}"/>
+                    <h:commandButton styleClass="btn btn-link" value="Logout"
+                                     action="#{userLogout.logoutAction()}"/>
+                </h:form>
             </header>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
