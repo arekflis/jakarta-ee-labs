@@ -43,6 +43,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public Optional<Course> find(UUID id) {
         if (this.isAdmin()){
             return this.courseRepository.find(id);
@@ -56,6 +57,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public List<Course> findAll() {
         if (this.isAdmin()) {
             return this.courseRepository.findAll();
@@ -71,6 +73,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void create(Course entity) {
         if (this.courseRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Course already exists");
@@ -91,6 +94,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void update(Course entity) {
         if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
             throw new IllegalArgumentException("University does not exists");
@@ -100,6 +104,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public void delete(UUID id) {
         this.courseRepository.delete(id);
     }

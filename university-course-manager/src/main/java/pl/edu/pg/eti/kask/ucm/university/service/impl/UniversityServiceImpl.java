@@ -25,22 +25,26 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public Optional<University> find(UUID id) {
         Optional<University> university = this.universityRepository.find(id);
         return university;
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public List<University> findAll() {
         return this.universityRepository.findAll();
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public List<University> findByCity(String city) {
         return this.universityRepository.findByCity(city);
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void create(University entity) {
         if (this.universityRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("University already exists");
@@ -50,11 +54,13 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void update(University entity) {
         this.universityRepository.update(entity);
     }
 
     @Override
+    @RolesAllowed(TutorRoles.ADMIN)
     public void delete(UUID id) {
         this.universityRepository.delete(id);
     }
