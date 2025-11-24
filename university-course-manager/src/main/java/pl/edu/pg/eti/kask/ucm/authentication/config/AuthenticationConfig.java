@@ -13,5 +13,12 @@ import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
         groupsQuery = "select role from tutor__roles where id = (select id from tutors where login = ?)",
         hashAlgorithm = Pbkdf2PasswordHash.class
 )
+
+@CustomFormAuthenticationMechanismDefinition(
+        loginToContinue = @LoginToContinue(
+                loginPage = "/authentication/login.xhtml",
+                errorPage = "/authentication/login_error.xhtml"
+        )
+)
 public class AuthenticationConfig {
 }
