@@ -1,9 +1,11 @@
 package pl.edu.pg.eti.kask.ucm.university.service.impl;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;

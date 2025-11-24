@@ -1,9 +1,11 @@
 package pl.edu.pg.eti.kask.ucm.course.service.impl;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
@@ -45,15 +47,21 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public Optional<Course> find(UUID id) {
-        if (this.isAdmin()){
-            return this.courseRepository.find(id);
+        Optional<Course> course = this.courseRepository.find(id);
+        
+        if (course.isEmpty()) {
+            throw new NotFoundException();
+        }
+
+        if (this.isAdmin()) {
+            return course;
         }
 
         if (this.isOwner(id)) {
-            return this.courseRepository.find(id);
+            return course;
         }
 
-        throw new NotFoundException();
+        throw new ForbiddenException();
     }
 
     @Override
@@ -100,6 +108,10 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("University does not exists");
         }
 
+        if (!this.isAdmin() && !this.isOwner(entity.getId())) {
+            throw new jakarta.ws.rs.ForbiddenException();
+        }
+
         this.courseRepository.update(entity);
     }
 
@@ -110,17 +122,35 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public Optional<List<Course>> findAllByUniversity(UUID id) {
         if (this.universityRepository.find(id).isEmpty()) {
             throw new IllegalArgumentException("University does not exists");
         }
 
+        if (this.isAdmin()) {
+            return this.universityRepository.find(id)
+                    .map(courseRepository::findAllByUniversity);
+        }
+
+        String login = this.getCurrentLogin();
+        Optional<Tutor> tutor = this.tutorRepository.findByLogin(login);
+        if (tutor.isEmpty()) {
+            throw new IllegalArgumentException("Tutor does not exists");
+        }
+
         return this.universityRepository.find(id)
-                .map(courseRepository::findAllByUniversity);
+                .map(university -> {
+                    List<Course> allCourses = courseRepository.findAllByUniversity(university);
+                    return allCourses.stream()
+                            .filter(course -> course.getTutor().equals(tutor.get()))
+                            .toList();
+                });
     }
 
 
     @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
     public Optional<List<Course>> findAllByTutor(UUID id) {
         if (this.tutorRepository.find(id).isEmpty()) {
             throw new IllegalArgumentException("Tutor does not exists");

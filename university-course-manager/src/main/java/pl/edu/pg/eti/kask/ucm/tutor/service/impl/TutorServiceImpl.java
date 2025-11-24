@@ -1,5 +1,7 @@
 package pl.edu.pg.eti.kask.ucm.tutor.service.impl;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -8,6 +10,7 @@ import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.configuration.producer.AvatarPath;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
+import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
