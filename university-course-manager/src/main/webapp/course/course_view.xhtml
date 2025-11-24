@@ -22,31 +22,31 @@
 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>ID:</strong>
+                            <strong>#{messages['id']}:</strong>
                             <span><h:outputText value="#{courseView.course.id}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Created At:</strong>
+                            <strong>#{courseMessages['course.createdAt']}:</strong>
                             <span><h:outputText value="#{courseView.course.createdAt}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Updated At:</strong>
+                            <strong>#{courseMessages['course.updatedAt']}:</strong>
                             <span><h:outputText value="#{courseView.course.updatedAt}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Description:</strong>
+                            <strong>#{messages['description']}:</strong>
                             <span><h:outputText value="#{courseView.course.description}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>StudyType:</strong>
+                            <strong>#{courseMessages['course.studyType']}:</strong>
                             <span><h:outputText value="#{courseView.course.studyType}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>PassingThreshold:</strong>
+                            <strong>#{courseMessages['course.passingThreshold']}:</strong>
                             <span><h:outputText value="#{courseView.course.passingThreshold}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Semester:</strong>
+                            <strong>#{courseMessages['course.semester']}:</strong>
                             <span><h:outputText value="#{courseView.course.semester}"/></span>
                         </li>
                     </ul>
@@ -55,7 +55,7 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <h:button styleClass="btn btn-secondary" outcome="/university/university_view.xhtml"
-                          value="Back to University Details">
+                          value="#{courseMessages['course.backToUniversity']}">
                     <f:param name="id" value="#{courseView.universityId}"/>
                 </h:button>
             </div>

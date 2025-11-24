@@ -13,8 +13,8 @@
                         <div class="card shadow-lg border-0">
                             <div class="card-body p-5">
                                 <header class="text-center mb-4">
-                                    <h2 class="fw-bold text-primary mb-2">Login</h2>
-                                    <p class="text-muted">Please enter your credentials to continue</p>
+                                    <h2 class="fw-bold text-primary mb-2">#{authMessages['login.title']}</h2>
+                                    <p class="text-muted">#{authMessages['login.description']}</p>
                                 </header>
 
                                 <h:form styleClass="mt-4">
@@ -28,7 +28,7 @@
                                                          placeholder=" "/>
                                             <h:outputLabel for="username" 
                                                           styleClass="form-label" 
-                                                          value="Username"/>
+                                                          value="#{authMessages['login.username']}"/>
                                         </div>
                                     </div>
 
@@ -41,18 +41,18 @@
                                                            placeholder=" "/>
                                             <h:outputLabel for="password" 
                                                           styleClass="form-label" 
-                                                          value="Password"/>
+                                                          value="#{authMessages['login.password']}"/>
                                         </div>
                                     </div>
 
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
                                         <h:commandButton styleClass="btn btn-primary btn-lg px-5" 
                                                         type="submit" 
-                                                        value="Login" 
+                                                        value="#{authMessages['login.button']}" 
                                                         action="#{tutorLogin.loginAction()}"/>
                                         <h:commandButton styleClass="btn btn-outline-secondary btn-lg px-5" 
                                                         type="reset" 
-                                                        value="Reset"/>
+                                                        value="#{messages['reset']}"/>
                                     </div>
                                 </h:form>
                             </div>

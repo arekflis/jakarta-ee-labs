@@ -8,11 +8,11 @@
 <f:view>
     <h:head>
         <meta charset="UTF-8"/>
-        <meta name="description" content="Jakarta EE Labs - Simple University Course Manager"/>
+        <meta name="description" content="#{messages['app.description']}"/>
         <meta name="keywords" content="UCM"/>
         <meta name="author" content="Arkadiusz Flisikowski"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Simple University Course Manager</title>
+        <title>#{messages['app.title']}</title>
 
         <h:outputStylesheet library="webjars" name="mdb-ui-kit/6.4.0/css/mdb.min.css"/>
         <h:outputStylesheet library="default" name="css/main.css"/>
@@ -24,13 +24,17 @@
         <div class="container">
             <header class="mb-4 mt-4">
                 <div class="d-flex align-items-center">
-                    <h:graphicImage class="logo" library="default" name="img/logo.jpg" alt="Gdansk Tech Logo"/>
-                    <h1>Jakarta EE Labs - Simple University Course Manager</h1>
+                    <h:link outcome="#{messages['logo.url']}">
+                        <h:graphicImage class="logo" library="default" 
+                                        name="img/logo_#{view.locale.language}.png" 
+                                        alt="#{messages['logo.text']} logo"/>
+                    </h:link>
+                    <h1>#{messages['app.name']}</h1>
                 </div>
                 <h:form styleClass="container d-flex align-items-center justify-content-end"
                         rendered="#{facesContext.externalContext.userPrincipal != null}">
-                    Logged: <h:outputText value="#{facesContext.externalContext.userPrincipal.name}"/>
-                    <h:commandButton styleClass="btn btn-link" value="Logout"
+                    #{messages['logged']}: <h:outputText value="#{facesContext.externalContext.userPrincipal.name}"/>
+                    <h:commandButton styleClass="btn btn-link" value="#{messages['logout']}"
                                      action="#{tutorLogout.logoutAction()}"/>
                 </h:form>
             </header>
@@ -39,11 +43,11 @@
                 <div class="container-fluid">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <h:link styleClass="nav-link" outcome="/index.xhtml">Home</h:link>
+                            <h:link styleClass="nav-link" outcome="/index.xhtml">#{messages['home']}</h:link>
                         </li>
                         <li class="nav-item">
                             <h:link styleClass="nav-link"
-                                    outcome="/university/university_list.xhtml">Universities</h:link>
+                                    outcome="/university/university_list.xhtml">#{universityMessages['universities']}</h:link>
                         </li>
                     </ul>
                 </div>
@@ -55,10 +59,10 @@
 
             <footer class="text-center text-lg-start bg-light text-muted p-2">
                 <div class="text-center">
-                    Copyright &#169; 2025, Arkadiusz Flisikowski
+                    #{messages['footer.copyright']} &#169; 2025, Arkadiusz Flisikowski
                 </div>
                 <div class="text-center">
-                    This is my project during my Jakarta EE Tools and Applications course.
+                    #{messages['footer.description']}
                 </div>
             </footer>
         </div>

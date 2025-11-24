@@ -13,14 +13,14 @@
                         <div class="card shadow-lg border-0">
                             <div class="card-body p-5">
                                 <header class="text-center mb-4">
-                                    <h2 class="fw-bold text-danger mb-3">Login Error</h2>
-                                    <p class="text-muted fs-5">Invalid username or password. Please try again.</p>
+                                    <h2 class="fw-bold text-danger mb-3">#{authMessages['login.error.title']}</h2>
+                                    <p class="text-muted fs-5">#{authMessages['login.error.message']}</p>
                                 </header>
 
                                 <section class="text-center mt-4">
                                     <h:button styleClass="btn btn-primary btn-lg px-5" 
                                               outcome="/authentication/login.xhtml" 
-                                              value="Return to Login"/>
+                                              value="#{authMessages['login.error.return']}"/>
                                 </section>
                             </div>
                         </div>
