@@ -52,7 +52,7 @@
             <div class="container">
                 <h3 class="text-center mb-3">#{universityMessages['university.courses.title']}</h3>
 
-                <h:dataTable value="#{universityView.university.courses}" var="course"
+                <h:dataTable id="coursesTable" value="#{universityView.university.courses}" var="course"
                              styleClass="table table-striped table-bordered align-middle text-center">
 
                     <h:column>

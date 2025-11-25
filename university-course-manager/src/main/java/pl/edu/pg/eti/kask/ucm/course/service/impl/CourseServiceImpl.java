@@ -4,10 +4,13 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptors;
 import jakarta.security.enterprise.SecurityContext;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
+import pl.edu.pg.eti.kask.ucm.configuration.interceptor.LogOperationInterceptor;
+import pl.edu.pg.eti.kask.ucm.configuration.interceptor.binding.LogOperation;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
@@ -82,6 +85,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
+    @Interceptors(LogOperationInterceptor.class)
+    @LogOperation("CREATE_COURSE")
     public void create(Course entity) {
         if (this.courseRepository.find(entity.getId()).isPresent()) {
             throw new IllegalArgumentException("Course already exists");
@@ -103,6 +108,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
+    @Interceptors(LogOperationInterceptor.class)
+    @LogOperation("UPDATE_COURSE")
     public void update(Course entity) {
         if (this.universityRepository.find(entity.getUniversity().getId()).isEmpty()) {
             throw new IllegalArgumentException("University does not exists");
@@ -117,6 +124,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
+    @Interceptors(LogOperationInterceptor.class)
+    @LogOperation("DELETE_COURSE")
     public void delete(UUID id) {
         this.courseRepository.delete(id);
     }
