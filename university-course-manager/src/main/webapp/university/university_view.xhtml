@@ -81,9 +81,11 @@
 
                     <h:column>
                         <f:facet name="header">#{messages['delete']}</f:facet>
-                        <h:form>
+                        <h:form id="deleteCourseForm#{course.id}">
                             <h:commandButton styleClass="btn btn-danger btn-sm" value="#{messages['delete']}"
-                                             action="#{universityView.deleteCourse(course.id)}"/>
+                                             action="#{universityView.deleteCourse(course.id)}">
+                                <f:ajax execute="@form" render=":coursesTable"/>
+                            </h:commandButton>
                         </h:form>
                     </h:column>
 

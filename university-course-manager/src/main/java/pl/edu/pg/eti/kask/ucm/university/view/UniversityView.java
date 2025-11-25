@@ -69,8 +69,14 @@ public class UniversityView implements Serializable {
         }
     }
 
-    public String deleteCourse(UUID courseId) {
+    public void deleteCourse(UUID courseId) {
         this.courseService.delete(courseId);
-        return "university_view?faces-redirect=true&amp;id=" + id;
+        this.courseService.findAllByUniversity(id)
+            .ifPresent(courses ->
+                this.university.setCourses(
+                    courses.stream()
+                        .map(this.factory.courseToModel())
+                        .toList()
+                    ));
     }
 }
