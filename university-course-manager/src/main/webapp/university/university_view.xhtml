@@ -22,27 +22,27 @@
 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>ID:</strong>
+                            <strong>#{universityMessages['university.id']}:</strong>
                             <span><h:outputText value="#{universityView.university.id}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Created At:</strong>
+                            <strong>#{universityMessages['university.createdAt']}:</strong>
                             <span><h:outputText value="#{universityView.university.createdAt}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Updated At:</strong>
+                            <strong>#{universityMessages['university.updatedAt']}:</strong>
                             <span><h:outputText value="#{universityView.university.updatedAt}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>City:</strong>
+                            <strong>#{universityMessages['university.city']}:</strong>
                             <span><h:outputText value="#{universityView.university.city}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Date of Foundation:</strong>
+                            <strong>#{universityMessages['university.dateOfFoundation']}:</strong>
                             <span><h:outputText value="#{universityView.university.dateOfFoundation}"/></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong>Number of Employees:</strong>
+                            <strong>#{universityMessages['university.numberOfEmployees']}:</strong>
                             <span><h:outputText value="#{universityView.university.numberOfEmployees}"/></span>
                         </li>
                     </ul>
@@ -50,46 +50,48 @@
             </div>
 
             <div class="container">
-                <h3 class="text-center mb-3">Courses in this university:</h3>
+                <h3 class="text-center mb-3">#{universityMessages['university.courses.title']}</h3>
 
-                <h:dataTable value="#{universityView.university.courses}" var="course"
+                <h:dataTable id="coursesTable" value="#{universityView.university.courses}" var="course"
                              styleClass="table table-striped table-bordered align-middle text-center">
 
                     <h:column>
-                        <f:facet name="header">Id</f:facet>
+                        <f:facet name="header">#{messages['id']}</f:facet>
                         <h:outputText value="#{course.id}"/>
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Name</f:facet>
+                        <f:facet name="header">#{messages['name']}</f:facet>
                         <h:outputText value="#{course.name}"/>
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">View</f:facet>
-                        <h:link outcome="/course/course_view.xhtml" value="View">
+                        <f:facet name="header">#{messages['view']}</f:facet>
+                        <h:link outcome="/course/course_view.xhtml" value="#{messages['view']}">
                             <f:param name="id" value="#{course.id}"/>
                         </h:link>
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Edit</f:facet>
-                        <h:link outcome="/course/course_edit.xhtml" value="Edit">
+                        <f:facet name="header">#{messages['edit']}</f:facet>
+                        <h:link outcome="/course/course_edit.xhtml" value="#{messages['edit']}">
                             <f:param name="id" value="#{course.id}"/>
                         </h:link>
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Delete</f:facet>
-                        <h:form>
-                            <h:commandButton styleClass="btn btn-danger btn-sm" value="Delete"
-                                             action="#{universityView.deleteCourse(course.id)}"/>
+                        <f:facet name="header">#{messages['delete']}</f:facet>
+                        <h:form id="deleteCourseForm#{course.id}">
+                            <h:commandButton styleClass="btn btn-danger btn-sm" value="#{messages['delete']}"
+                                             action="#{universityView.deleteCourse(course.id)}">
+                                <f:ajax execute="@form" render=":coursesTable"/>
+                            </h:commandButton>
                         </h:form>
                     </h:column>
 
                     <f:facet name="footer">
                         <h:button styleClass="btn btn-secondary mt-3" outcome="/university/university_list.xhtml"
-                                  value="Back to University List"/>
+                                  value="#{universityMessages['university.backToList']}"/>
                     </f:facet>
                 </h:dataTable>
             </div>

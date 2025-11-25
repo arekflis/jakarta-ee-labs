@@ -1,7 +1,5 @@
 package pl.edu.pg.eti.kask.ucm.tutor.controller.impl;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBAccessException;
 import jakarta.inject.Inject;
@@ -17,7 +15,6 @@ import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PatchTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.request.PutTutorRequest;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorResponse;
 import pl.edu.pg.eti.kask.ucm.tutor.dto.response.GetTutorsResponse;
-import pl.edu.pg.eti.kask.ucm.tutor.entity.TutorRoles;
 import pl.edu.pg.eti.kask.ucm.tutor.service.api.TutorService;
 
 import java.io.InputStream;
@@ -56,7 +53,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorsResponse getTutors() {
         try {
             return this.factory.tutorsToResponse().apply(this.service.findAll());
@@ -67,7 +63,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorResponse getTutorById(UUID id) {
         try {
             return this.service.find(id)
@@ -79,7 +74,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorResponse getTutorByEmail(String email) {
         try {
             return this.service.findByEmail(email)
@@ -91,7 +85,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public GetTutorResponse getTutorByLogin(String login) {
         try {
             return this.service.findByLogin(login)
@@ -103,7 +96,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public void deleteTutor(UUID id) {
         try {
             this.service.find(id).ifPresentOrElse(
@@ -118,7 +110,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @PermitAll
     public void putTutor(UUID id, PutTutorRequest request) {
         try {
             this.service.create(this.factory.requestToTutor().apply(id, request));
@@ -140,7 +131,6 @@ public class TutorControllerImpl implements TutorController {
     }
 
     @Override
-    @RolesAllowed(TutorRoles.ADMIN)
     public void patchTutor(UUID id, PatchTutorRequest request) {
         try {
             this.service.find(id).ifPresentOrElse(

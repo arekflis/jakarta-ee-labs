@@ -8,36 +8,38 @@
     <ui:define name="content">
         <article>
             <header>
-                <h2 class="text-center mb-4">Universities</h2>
+                <h2 class="text-center mb-4">#{universityMessages['university.list.title']}</h2>
             </header>
 
             <div class="container">
                 <div class="card shadow-sm p-4">
-                    <h:dataTable value="#{universityList.universities.universities}" var="university"
+                    <h:dataTable id="universitiesTable" value="#{universityList.universities.universities}" var="university"
                                  styleClass="table table-striped table-bordered align-middle text-center">
 
                         <h:column>
-                            <f:facet name="header">Id</f:facet>
+                            <f:facet name="header">#{messages['id']}</f:facet>
                             <h:outputText value="#{university.id}"/>
                         </h:column>
 
                         <h:column>
-                            <f:facet name="header">Name</f:facet>
+                            <f:facet name="header">#{messages['name']}</f:facet>
                             <h:outputText value="#{university.name}"/>
                         </h:column>
 
                         <h:column>
-                            <f:facet name="header">View</f:facet>
-                            <h:link outcome="/university/university_view.xhtml" value="View">
+                            <f:facet name="header">#{messages['view']}</f:facet>
+                            <h:link outcome="/university/university_view" value="#{messages['view']}">
                                 <f:param name="id" value="#{university.id}"/>
                             </h:link>
                         </h:column>
 
-                        <h:column>
-                            <f:facet name="header">Delete</f:facet>
-                            <h:form>
-                                <h:commandButton styleClass="btn btn-danger btn-sm" value="Delete"
-                                                 action="#{universityList.deleteAction(university)}"/>
+                        <h:column rendered="#{request.isUserInRole('admin')}">
+                            <f:facet name="header">#{messages['delete']}</f:facet>
+                            <h:form id="deleteForm#{university.id}">
+                                <h:commandButton styleClass="btn btn-danger btn-sm" value="#{messages['delete']}"
+                                                 action="#{universityList.deleteAction(university)}">
+                                    <f:ajax execute="@form" render=":universitiesTable"/>
+                                </h:commandButton>
                             </h:form>
                         </h:column>
 
@@ -45,7 +47,7 @@
                             <div class="text-center mt-3">
                                 <h:button styleClass="btn btn-secondary"
                                           outcome="/course/course_create.xhtml"
-                                          value="Add New Course"/>
+                                          value="#{universityMessages['university.addNewCourse']}"/>
                             </div>
                         </f:facet>
                     </h:dataTable>

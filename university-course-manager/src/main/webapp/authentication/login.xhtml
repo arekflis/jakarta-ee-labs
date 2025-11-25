@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <ui:define name="content">
+        <article class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                        <div class="card shadow-lg border-0">
+                            <div class="card-body p-5">
+                                <header class="text-center mb-4">
+                                    <h2 class="fw-bold text-primary mb-2">#{authMessages['login.title']}</h2>
+                                    <p class="text-muted">#{authMessages['login.description']}</p>
+                                </header>
+
+                                <h:form styleClass="mt-4">
+                                    <div class="mb-4">
+                                        <div class="form-outline">
+                                            <h:inputText id="username" 
+                                                         name="j_username" 
+                                                         type="text" 
+                                                         styleClass="form-control form-control-lg" 
+                                                         value="#{tutorLogin.login}"
+                                                         placeholder=" "/>
+                                            <h:outputLabel for="username" 
+                                                          styleClass="form-label" 
+                                                          value="#{authMessages['login.username']}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <div class="form-outline">
+                                            <h:inputSecret id="password" 
+                                                           name="j_password" 
+                                                           styleClass="form-control form-control-lg" 
+                                                           value="#{tutorLogin.password}"
+                                                           placeholder=" "/>
+                                            <h:outputLabel for="password" 
+                                                          styleClass="form-label" 
+                                                          value="#{authMessages['login.password']}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+                                        <h:commandButton styleClass="btn btn-primary btn-lg px-5" 
+                                                        type="submit" 
+                                                        value="#{authMessages['login.button']}" 
+                                                        action="#{tutorLogin.loginAction()}"/>
+                                        <h:commandButton styleClass="btn btn-outline-secondary btn-lg px-5" 
+                                                        type="reset" 
+                                                        value="#{messages['reset']}"/>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </ui:define>
+</ui:composition>
+

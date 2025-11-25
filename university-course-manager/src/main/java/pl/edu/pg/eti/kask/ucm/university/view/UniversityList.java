@@ -35,8 +35,8 @@ public class UniversityList {
         return universities;
     }
 
-    public String deleteAction(UniversitiesModel.University university) {
+    public void deleteAction(UniversitiesModel.University university) {
         this.service.delete(university.getId());
-        return "university_list?faces-redirect=true";
+        this.universities = null;
     }
 }

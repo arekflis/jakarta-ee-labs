@@ -15,30 +15,30 @@
             <div class="container d-flex justify-content-center mt-5">
                 <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
                     <header class="mb-4 text-center">
-                        <h2>Edit Course</h2>
+                        <h2>#{courseMessages['course.edit.title']}</h2>
                     </header>
 
                     <h:form enctype="multipart/form-data">
                         <div class="mb-3">
-                            <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                            <h:outputLabel for="name" value="#{messages['name']}:" styleClass="form-label"/>
                             <h:inputText id="name" value="#{courseEdit.course.name}" styleClass="form-control"/>
                         </div>
 
                         <div class="mb-3">
-                            <h:outputLabel for="description" value="Description:" styleClass="form-label"/>
+                            <h:outputLabel for="description" value="#{messages['description']}:" styleClass="form-label"/>
                             <h:inputTextarea id="description" value="#{courseEdit.course.description}"
                                              styleClass="form-control" rows="3"/>
                         </div>
 
                         <div class="mb-3">
-                            <h:outputLabel for="passingThreshold" value="Passing Threshold:" styleClass="form-label"/>
+                            <h:outputLabel for="passingThreshold" value="#{courseMessages['course.passingThreshold']}:" styleClass="form-label"/>
                             <h:inputText id="passingThreshold" value="#{courseEdit.course.passingThreshold}" styleClass="form-control">
                                 <f:convertNumber type="number" />
                             </h:inputText>
                         </div>
 
                         <div class="text-center mt-4">
-                            <h:commandButton value="Edit" styleClass="btn btn-primary"
+                            <h:commandButton value="#{messages['save']}" styleClass="btn btn-primary"
                                              action="#{courseEdit.saveAction()}"/>
                         </div>
                     </h:form>
