@@ -21,13 +21,14 @@
                     <h:messages globalOnly="true" styleClass="alert alert-danger" showSummary="true" showDetail="true"/>
 
                     <h:form id="editForm" enctype="multipart/form-data">
+                        <f:validateWholeBean value="#{courseEdit.course}"/>
                         <h:inputHidden value="#{courseEdit.course.id}"/>
                         <h:inputHidden value="#{courseEdit.course.version}"/>
                         <div class="mb-3">
                             <h:outputLabel for="name" value="#{messages['name']}:" styleClass="form-label"/>
                             <h:panelGroup>
                                 <h:inputText id="name" value="#{courseEdit.course.name}" styleClass="form-control"/>
-                                <h:message for="name" styleClass="text-warning d-block mt-1" showSummary="true" showDetail="false"/>
+                                <h:message for="name" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
                             </h:panelGroup>
                         </div>
 
@@ -36,17 +37,15 @@
                             <h:panelGroup>
                                 <h:inputTextarea id="description" value="#{courseEdit.course.description}"
                                                  styleClass="form-control" rows="3"/>
-                                <h:message for="description" styleClass="text-warning d-block mt-1" showSummary="true" showDetail="false"/>
+                                <h:message for="description" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
                             </h:panelGroup>
                         </div>
 
                         <div class="mb-3">
                             <h:outputLabel for="passingThreshold" value="#{courseMessages['course.passingThreshold']}:" styleClass="form-label"/>
                             <h:panelGroup>
-                                <h:inputText id="passingThreshold" value="#{courseEdit.course.passingThreshold}" styleClass="form-control">
-                                    <f:convertNumber type="number" />
-                                </h:inputText>
-                                <h:message for="passingThreshold" styleClass="text-warning d-block mt-1" showSummary="true" showDetail="false"/>
+                                <h:inputText id="passingThreshold" value="#{courseEdit.course.passingThreshold}" styleClass="form-control"/>
+                                <h:message for="passingThreshold" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
                             </h:panelGroup>
                         </div>
 

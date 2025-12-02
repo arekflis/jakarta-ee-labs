@@ -17,45 +17,62 @@
                         <h2>#{courseMessages['course.create.title']}</h2>
                     </header>
 
-                    <h:form enctype="multipart/form-data">
+                    <h:messages globalOnly="true" styleClass="alert alert-danger" showSummary="true" showDetail="true"/>
+
+                    <h:form id="createForm" enctype="multipart/form-data">
+                        <f:validateWholeBean value="#{courseCreate.course}"/>
                         <div class="mb-3">
                             <h:outputLabel for="name" value="#{messages['name']}:" styleClass="form-label"/>
-                            <h:inputText id="name" value="#{courseCreate.course.name}" styleClass="form-control"/>
+                            <h:panelGroup>
+                                <h:inputText id="name" value="#{courseCreate.course.name}" styleClass="form-control"/>
+                                <h:message for="name" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
+                            </h:panelGroup>
                         </div>
 
                         <div class="mb-3">
                             <h:outputLabel for="description" value="#{messages['description']}:" styleClass="form-label"/>
-                            <h:inputTextarea id="description" value="#{courseCreate.course.description}"
-                                             styleClass="form-control" rows="3"/>
+                            <h:panelGroup>
+                                <h:inputTextarea id="description" value="#{courseCreate.course.description}"
+                                                 styleClass="form-control" rows="3"/>
+                                <h:message for="description" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
+                            </h:panelGroup>
                         </div>
 
                         <div class="mb-3">
                             <h:outputLabel for="studyType" value="#{courseMessages['course.studyType']}:" styleClass="form-label"/>
-                            <h:selectOneMenu id="studyType" value="#{courseCreate.course.studyType}" styleClass="form-select">
-                                <f:selectItems value="#{courseCreate.studyTypes}" var="type" itemValue="#{type}" itemLabel="#{type}"/>
-                            </h:selectOneMenu>
+                            <h:panelGroup>
+                                <h:selectOneMenu id="studyType" value="#{courseCreate.course.studyType}" styleClass="form-select">
+                                    <f:selectItems value="#{courseCreate.studyTypes}" var="type" itemValue="#{type}" itemLabel="#{type}"/>
+                                </h:selectOneMenu>
+                                <h:message for="studyType" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
+                            </h:panelGroup>
                         </div>
 
                         <div class="mb-3">
                             <h:outputLabel for="passingThreshold" value="#{courseMessages['course.passingThreshold']}:" styleClass="form-label"/>
-                            <h:inputText id="passingThreshold" value="#{courseCreate.course.passingThreshold}" styleClass="form-control">
-                                <f:convertNumber type="number" />
-                            </h:inputText>
+                            <h:panelGroup>
+                                <h:inputText id="passingThreshold" value="#{courseCreate.course.passingThreshold}" styleClass="form-control"/>
+                                <h:message for="passingThreshold" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
+                            </h:panelGroup>
                         </div>
 
                         <div class="mb-3">
                             <h:outputLabel for="semester" value="#{courseMessages['course.semester']}:" styleClass="form-label"/>
-                            <h:inputText id="semester" value="#{courseCreate.course.semester}" styleClass="form-control">
-                                <f:convertNumber integerOnly="true"/>
-                            </h:inputText>
+                            <h:panelGroup>
+                                <h:inputText id="semester" value="#{courseCreate.course.semester}" styleClass="form-control"/>
+                                <h:message for="semester" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
+                            </h:panelGroup>
                         </div>
 
                         <div class="mb-3">
                             <h:outputLabel for="university" value="#{courseMessages['course.university']}:" styleClass="form-label"/>
-                            <h:selectOneMenu id="university" value="#{courseCreate.course.university}" styleClass="form-select">
-                                <f:selectItems value="#{courseCreate.universities}" var="uni"
-                                               itemValue="#{uni}" itemLabel="#{uni.name}"/>
-                            </h:selectOneMenu>
+                            <h:panelGroup>
+                                <h:selectOneMenu id="university" value="#{courseCreate.course.university}" styleClass="form-select">
+                                    <f:selectItems value="#{courseCreate.universities}" var="uni"
+                                                   itemValue="#{uni}" itemLabel="#{uni.name}"/>
+                                </h:selectOneMenu>
+                                <h:message for="university" styleClass="text-danger d-block mt-1" showSummary="true" showDetail="false"/>
+                            </h:panelGroup>
                         </div>
 
                         <div class="text-center mt-4">
