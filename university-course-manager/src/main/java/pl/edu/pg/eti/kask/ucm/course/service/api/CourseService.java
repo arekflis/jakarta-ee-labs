@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.ucm.course.service.api;
 
 import jakarta.ejb.Local;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
+import pl.edu.pg.eti.kask.ucm.course.model.CourseFilterModel;
 import pl.edu.pg.eti.kask.ucm.service.api.Service;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
@@ -16,4 +17,6 @@ public interface CourseService extends Service<Course, UUID> {
     Optional<List<Course>> findAllByTutor(UUID id);
 
     Optional<List<Course>> findAllByUniversity(UUID id);
+
+    Optional<List<Course>> findAllByUniversityWithFilter(UUID id, CourseFilterModel filter);
 }

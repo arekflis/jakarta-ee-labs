@@ -52,7 +52,64 @@
             <div class="container">
                 <h3 class="text-center mb-3">#{universityMessages['university.courses.title']}</h3>
 
-                <h:dataTable id="coursesTable" value="#{universityView.university.courses}" var="course"
+                <h:form id="filterForm">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">#{courseMessages['course.filter.title']}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <h:outputLabel for="filterName" value="#{messages['name']}:" styleClass="form-label"/>
+                                    <h:inputText id="filterName" value="#{universityView.filter.name}" styleClass="form-control"/>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <h:outputLabel for="filterDescription" value="#{messages['description']}:" styleClass="form-label"/>
+                                    <h:inputText id="filterDescription" value="#{universityView.filter.description}" styleClass="form-control"/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <h:outputLabel for="filterStudyType" value="#{courseMessages['course.studyType']}:" styleClass="form-label"/>
+                                    <h:selectOneMenu id="filterStudyType" value="#{universityView.filter.studyType}" styleClass="form-select">
+                                        <f:selectItem itemValue="#{null}" itemLabel="#{courseMessages['course.filter.all']}"/>
+                                        <f:selectItems value="#{universityView.studyTypes}" var="type" itemValue="#{type}" itemLabel="#{type.name()}"/>
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <h:outputLabel for="filterPassingThreshold" value="#{courseMessages['course.passingThreshold']}:" styleClass="form-label"/>
+                                    <h:inputText id="filterPassingThreshold" value="#{universityView.filter.passingThreshold}" styleClass="form-control">
+                                        <f:convertNumber type="number" />
+                                    </h:inputText>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <h:outputLabel for="filterSemester" value="#{courseMessages['course.semester']}:" styleClass="form-label"/>
+                                    <h:inputText id="filterSemester" value="#{universityView.filter.semester}" styleClass="form-control">
+                                        <f:convertNumber integerOnly="true" />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="text-end">
+                                <h:commandButton value="#{courseMessages['course.filter.apply']}" styleClass="btn btn-primary me-2"
+                                                action="#{universityView.applyFilter()}">
+                                    <f:ajax execute="@form" render=":coursesTableWrapper"/>
+                                </h:commandButton>
+                                <h:commandButton value="#{courseMessages['course.filter.clear']}" styleClass="btn btn-secondary"
+                                                action="#{universityView.clearFilter()}">
+                                    <f:ajax execute="@form" render=":coursesTableWrapper"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+                <h:panelGroup id="coursesTableWrapper">
+                    <h:dataTable id="coursesTable" value="#{universityView.university.courses}" var="course"
                              styleClass="table table-striped table-bordered align-middle text-center">
 
                     <h:column>
@@ -103,7 +160,7 @@
                         <h:form id="deleteCourseForm#{course.id}">
                             <h:commandButton styleClass="btn btn-danger btn-sm" value="#{messages['delete']}"
                                              action="#{universityView.deleteCourse(course.id)}">
-                                <f:ajax execute="@form" render=":coursesTable"/>
+                                <f:ajax execute="@form" render="coursesTableWrapper"/>
                             </h:commandButton>
                         </h:form>
                     </h:column>
@@ -113,6 +170,7 @@
                                   value="#{universityMessages['university.backToList']}"/>
                     </f:facet>
                 </h:dataTable>
+                </h:panelGroup>
             </div>
         </article>
     </ui:define>

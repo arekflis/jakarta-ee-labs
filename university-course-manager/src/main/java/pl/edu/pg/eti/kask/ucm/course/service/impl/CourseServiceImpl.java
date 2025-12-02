@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.ucm.configuration.interceptor.LogOperationInterceptor;
 import pl.edu.pg.eti.kask.ucm.configuration.interceptor.binding.LogOperation;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
+import pl.edu.pg.eti.kask.ucm.course.model.CourseFilterModel;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
@@ -167,6 +168,33 @@ public class CourseServiceImpl implements CourseService {
 
         return this.tutorRepository.find(id)
                 .map(courseRepository::findAllByTutor);
+    }
+
+    @Override
+    @RolesAllowed({TutorRoles.ADMIN, TutorRoles.USER})
+    public Optional<List<Course>> findAllByUniversityWithFilter(UUID id, CourseFilterModel filter) {
+        if (this.universityRepository.find(id).isEmpty()) {
+            throw new IllegalArgumentException("University does not exists");
+        }
+
+        if (this.isAdmin()) {
+            return this.universityRepository.find(id)
+                    .map(university -> courseRepository.findAllByUniversityWithFilter(university, filter));
+        }
+
+        String login = this.getCurrentLogin();
+        Optional<Tutor> tutor = this.tutorRepository.findByLogin(login);
+        if (tutor.isEmpty()) {
+            throw new IllegalArgumentException("Tutor does not exists");
+        }
+
+        return this.universityRepository.find(id)
+                .map(university -> {
+                    List<Course> allCourses = courseRepository.findAllByUniversityWithFilter(university, filter);
+                    return allCourses.stream()
+                            .filter(course -> course.getTutor().equals(tutor.get()))
+                            .toList();
+                });
     }
 
     private boolean isAdmin() {

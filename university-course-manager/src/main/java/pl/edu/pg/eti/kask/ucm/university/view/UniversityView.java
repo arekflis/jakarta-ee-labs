@@ -9,13 +9,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
 import pl.edu.pg.eti.kask.ucm.component.ModelFunctionFactory;
+import pl.edu.pg.eti.kask.ucm.course.entity.Course;
+import pl.edu.pg.eti.kask.ucm.course.model.CourseFilterModel;
 import pl.edu.pg.eti.kask.ucm.course.service.api.CourseService;
+import pl.edu.pg.eti.kask.ucm.enums.course.StudyType;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.model.UniversityModel;
 import pl.edu.pg.eti.kask.ucm.university.service.api.UniversityService;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,9 +40,17 @@ public class UniversityView implements Serializable {
     @Getter
     private UniversityModel university;
 
+    @Getter
+    private CourseFilterModel filter;
+
+    @Getter
+    private StudyType[] studyTypes;
+
     @Inject
     public UniversityView(ModelFunctionFactory factory) {
         this.factory = factory;
+        this.filter = CourseFilterModel.builder().build();
+        this.studyTypes = StudyType.values();
     }
 
     @EJB
@@ -56,13 +68,7 @@ public class UniversityView implements Serializable {
         if (university.isPresent()) {
             this.university = this.factory.universityToModel().apply(university.get());
 
-            this.courseService.findAllByUniversity(id)
-                    .ifPresent(courses ->
-                            this.university.setCourses(
-                                    courses.stream()
-                                            .map(this.factory.courseToModel())
-                                            .toList()
-                            ));
+            applyFilter();
         }
         else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "University not found");
@@ -71,12 +77,25 @@ public class UniversityView implements Serializable {
 
     public void deleteCourse(UUID courseId) {
         this.courseService.delete(courseId);
-        this.courseService.findAllByUniversity(id)
-            .ifPresent(courses ->
-                this.university.setCourses(
-                    courses.stream()
-                        .map(this.factory.courseToModel())
-                        .toList()
-                    ));
+        applyFilter();
+    }
+
+    public void applyFilter() {
+        Optional<List<Course>> coursesOpt =
+            this.courseService.findAllByUniversityWithFilter(id, filter);
+        if (coursesOpt.isPresent()) {
+            this.university.setCourses(
+                coursesOpt.get().stream()
+                    .map(this.factory.courseToModel())
+                    .toList()
+            );
+        } else {
+            this.university.setCourses(java.util.Collections.emptyList());
+        }
+    }
+
+    public void clearFilter() {
+        this.filter = CourseFilterModel.builder().build();
+        applyFilter();
     }
 }

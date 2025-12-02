@@ -1,6 +1,7 @@
 package pl.edu.pg.eti.kask.ucm.course.repository.api;
 
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
+import pl.edu.pg.eti.kask.ucm.course.model.CourseFilterModel;
 import pl.edu.pg.eti.kask.ucm.repository.api.Repository;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
@@ -16,4 +17,6 @@ public interface CourseRepository extends Repository<Course, UUID> {
     List<Course> findAllByTutor(Tutor tutor);
 
     List<Course> findAllByUniversity(University university);
+
+    List<Course> findAllByUniversityWithFilter(University university, CourseFilterModel filter);
 }
