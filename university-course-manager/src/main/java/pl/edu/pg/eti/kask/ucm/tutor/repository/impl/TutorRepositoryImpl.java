@@ -2,7 +2,11 @@ package pl.edu.pg.eti.kask.ucm.tutor.repository.impl;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
 import pl.edu.pg.eti.kask.ucm.tutor.repository.api.TutorRepository;
 
@@ -27,7 +31,11 @@ public class TutorRepositoryImpl implements TutorRepository {
 
     @Override
     public List<Tutor> findAll(){
-        return this.em.createQuery("select t from Tutor t", Tutor.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Tutor> query = cb.createQuery(Tutor.class);
+        Root<Tutor> root = query.from(Tutor.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -47,15 +55,29 @@ public class TutorRepositoryImpl implements TutorRepository {
 
     @Override
     public Optional<Tutor> findByEmail(String email){
-        return Optional.ofNullable(this.em.createQuery("select t from Tutor t where t.email = :email", Tutor.class)
-                .setParameter("email", email)
-                .getSingleResult());
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Tutor> query = cb.createQuery(Tutor.class);
+            Root<Tutor> root = query.from(Tutor.class);
+            query.select(root)
+                    .where(cb.equal(root.get("email"), email));
+            return Optional.of(em.createQuery(query).getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public Optional<Tutor> findByLogin(String login){
-        return Optional.ofNullable(this.em.createQuery("select t from Tutor t where t.login = :login", Tutor.class)
-                .setParameter("login", login)
-                .getSingleResult());
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Tutor> query = cb.createQuery(Tutor.class);
+            Root<Tutor> root = query.from(Tutor.class);
+            query.select(root)
+                    .where(cb.equal(root.get("login"), login));
+            return Optional.of(em.createQuery(query).getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 }

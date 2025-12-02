@@ -2,7 +2,11 @@ package pl.edu.pg.eti.kask.ucm.course.repository.impl;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import pl.edu.pg.eti.kask.ucm.course.entity.Course;
 import pl.edu.pg.eti.kask.ucm.course.repository.api.CourseRepository;
 import pl.edu.pg.eti.kask.ucm.tutor.entity.Tutor;
@@ -11,7 +15,6 @@ import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Dependent
 public class CourseRepositoryImpl implements CourseRepository {
@@ -25,7 +28,11 @@ public class CourseRepositoryImpl implements CourseRepository {
 
     @Override
     public List<Course> findAll() {
-        return this.em.createQuery("select c from Course c", Course.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Course> query = cb.createQuery(Course.class);
+        Root<Course> root = query.from(Course.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -50,25 +57,38 @@ public class CourseRepositoryImpl implements CourseRepository {
 
     @Override
     public List<Course> findAllByTutor(Tutor tutor) {
-        return this.em.createQuery("select c from Course c where c.tutor = :tutor", Course.class)
-                .setParameter("tutor", tutor)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Course> query = cb.createQuery(Course.class);
+        Root<Course> root = query.from(Course.class);
+        query.select(root)
+                .where(cb.equal(root.get("tutor"), tutor));
+        return em.createQuery(query).getResultList();
     }
 
     @Override
     public List<Course> findAllByUniversity(University university) {
-        return this.em.createQuery("select c from Course c where c.university = :university", Course.class)
-                .setParameter("university", university)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Course> query = cb.createQuery(Course.class);
+        Root<Course> root = query.from(Course.class);
+        query.select(root)
+                .where(cb.equal(root.get("university"), university));
+        return em.createQuery(query).getResultList();
     }
 
     @Override
     public Optional<Course> findByIdAndTutor(UUID id, Tutor tutor) {
-        List<Course> result = em.createQuery("select c from Course c where c.id = :id and c.tutor = :tutor", Course.class)
-                .setParameter("id", id)
-                .setParameter("tutor", tutor)
-                .getResultList();
-
-        return result.stream().findFirst();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Course> query = cb.createQuery(Course.class);
+            Root<Course> root = query.from(Course.class);
+            query.select(root)
+                    .where(cb.and(
+                            cb.equal(root.get("id"), id),
+                            cb.equal(root.get("tutor"), tutor)
+                    ));
+            return Optional.of(em.createQuery(query).getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 }
