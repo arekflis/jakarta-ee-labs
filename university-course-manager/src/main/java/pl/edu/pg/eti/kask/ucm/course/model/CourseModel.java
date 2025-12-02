@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -18,4 +19,10 @@ public class CourseModel implements Serializable {
     private UUID id;
 
     private String name;
+
+    private Long version;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

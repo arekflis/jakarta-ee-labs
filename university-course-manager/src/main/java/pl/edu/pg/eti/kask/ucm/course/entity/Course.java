@@ -38,6 +38,8 @@ public class Course implements Serializable {
 
     private Integer semester;
 
+    @Version
+    private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tutor_id")
@@ -50,4 +52,15 @@ public class Course implements Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private University university;
+
+    @PrePersist
+    public void updateCreationDateTime() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void updateModificationDateTime() {
+        updatedAt = LocalDateTime.now();
+    }
 }

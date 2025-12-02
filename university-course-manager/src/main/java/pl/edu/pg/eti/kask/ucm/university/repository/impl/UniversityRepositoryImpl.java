@@ -3,6 +3,9 @@ package pl.edu.pg.eti.kask.ucm.university.repository.impl;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import pl.edu.pg.eti.kask.ucm.university.entity.University;
 import pl.edu.pg.eti.kask.ucm.university.repository.api.UniversityRepository;
 
@@ -27,7 +30,11 @@ public class UniversityRepositoryImpl implements UniversityRepository {
 
     @Override
     public List<University> findAll() {
-        return this.em.createQuery("select u from University u", University.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<University> query = cb.createQuery(University.class);
+        Root<University> root = query.from(University.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -47,8 +54,11 @@ public class UniversityRepositoryImpl implements UniversityRepository {
 
     @Override
     public List<University> findByCity(String city) {
-        return this.em.createQuery("select u from University u where u.city = :city", University.class)
-                .setParameter("city", city)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<University> query = cb.createQuery(University.class);
+        Root<University> root = query.from(University.class);
+        query.select(root)
+                .where(cb.equal(root.get("city"), city));
+        return em.createQuery(query).getResultList();
     }
 }

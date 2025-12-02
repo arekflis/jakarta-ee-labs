@@ -21,6 +21,11 @@
     </context-param>
 
     <context-param>
+        <param-name>jakarta.faces.validator.ENABLE_VALIDATE_WHOLE_BEAN</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>jakarta.faces.LOCALE_SOURCE</param-name>
         <param-value>acceptLanguage</param-value>
     </context-param>

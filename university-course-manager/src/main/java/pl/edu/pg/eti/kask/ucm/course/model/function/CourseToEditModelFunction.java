@@ -15,6 +15,7 @@ public class CourseToEditModelFunction implements Function<Course, CourseEditMod
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .passingThreshold(entity.getPassingThreshold())
+                .version(entity.getVersion())
                 .build();
     }
 }

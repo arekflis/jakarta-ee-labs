@@ -13,6 +13,9 @@ public class CourseToModelFunction implements Function<Course, CourseModel>, Ser
         return CourseModel.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .version(entity.getVersion())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }
