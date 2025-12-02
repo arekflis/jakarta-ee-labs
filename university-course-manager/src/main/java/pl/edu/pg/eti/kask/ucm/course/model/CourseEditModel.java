@@ -21,4 +21,6 @@ public class CourseEditModel {
     private String description;
 
     private Double passingThreshold;
+
+    private Long version;
 }

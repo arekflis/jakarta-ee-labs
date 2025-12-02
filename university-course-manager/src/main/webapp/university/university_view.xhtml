@@ -66,6 +66,11 @@
                     </h:column>
 
                     <h:column>
+                        <f:facet name="header">#{courseMessages['course.version']}</f:facet>
+                        <h:outputText value="#{course.version}"/>
+                    </h:column>
+
+                    <h:column>
                         <f:facet name="header">#{messages['view']}</f:facet>
                         <h:link outcome="/course/course_view.xhtml" value="#{messages['view']}">
                             <f:param name="id" value="#{course.id}"/>

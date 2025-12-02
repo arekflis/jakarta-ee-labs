@@ -26,6 +26,7 @@ public class UpdateCourseWithModelFunction implements BiFunction<Course, CourseE
                 .studyType(entity.getStudyType())
                 .tutor(entity.getTutor())
                 .university(entity.getUniversity())
+                .version(model.getVersion())
                 .build();
     }
 }

@@ -38,6 +38,8 @@ public class Course implements Serializable {
 
     private Integer semester;
 
+    @Version
+    private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tutor_id")

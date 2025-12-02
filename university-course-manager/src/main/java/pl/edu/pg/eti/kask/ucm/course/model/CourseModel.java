@@ -18,4 +18,6 @@ public class CourseModel implements Serializable {
     private UUID id;
 
     private String name;
+
+    private Long version;
 }
