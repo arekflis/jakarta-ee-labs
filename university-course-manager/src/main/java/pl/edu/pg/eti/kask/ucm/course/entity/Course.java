@@ -52,4 +52,15 @@ public class Course implements Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private University university;
+
+    @PrePersist
+    public void updateCreationDateTime() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void updateModificationDateTime() {
+        updatedAt = LocalDateTime.now();
+    }
 }

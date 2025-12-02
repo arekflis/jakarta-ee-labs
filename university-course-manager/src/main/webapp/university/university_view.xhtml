@@ -71,6 +71,20 @@
                     </h:column>
 
                     <h:column>
+                        <f:facet name="header">#{courseMessages['course.createdAt']}</f:facet>
+                        <h:outputText value="#{course.createdAt}">
+                            <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">#{courseMessages['course.updatedAt']}</f:facet>
+                        <h:outputText value="#{course.updatedAt}">
+                            <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
                         <f:facet name="header">#{messages['view']}</f:facet>
                         <h:link outcome="/course/course_view.xhtml" value="#{messages['view']}">
                             <f:param name="id" value="#{course.id}"/>
